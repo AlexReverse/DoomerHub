@@ -3,10 +3,7 @@ package com.hub.doomer.repository;
 import com.hub.doomer.entity.Post;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class InMemoryPostRepository implements PostRepository {
@@ -28,5 +25,17 @@ public class InMemoryPostRepository implements PostRepository {
         this.postsList.add(post);
         return post;
 
+    }
+
+    @Override
+    public Optional<Post> findById(Integer postId) {
+        return this.postsList.stream()
+                .filter(post -> Objects.equals(postId, post.getId()))
+                .findFirst();
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        this.postsList.removeIf(post -> Objects.equals(id, post.getId()));
     }
 }

@@ -6,9 +6,7 @@ import com.hub.doomer.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,6 +29,6 @@ public class PostsController {
     @PostMapping("create")
     public String createPost(NewPostPayload payload) {
         Post post = this.postService.createPost(payload.title(), payload.description());
-        return "redirect:/search/posts/list";
+        return "redirect:/search/posts/%d".formatted(post.getId());
     }
 }

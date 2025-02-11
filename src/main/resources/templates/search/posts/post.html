@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${post.title}]] &ndash; DoomerHub</title>
+</head>
+<body>
+<a data-th-href="@{search/posts/list}">&larr; Поиск постов</a>
+<h1 data-th-text="${post.title}"></h1>
+<ul>
+    <li><strong>ID</strong>: <span data-th-text="${post.id}"></span></li>
+    <li><strong>Название</strong>: <span data-th-text="${post.title}"></span></li>
+    <li><strong>Описание</strong>: <span data-th-text="${post.description}"></span></li>
+</ul>
+<a data-th-href="@{/search/posts/{postId}/edit(postId=${post.id})}">Изменить</a>
+<form method="post" data-th-action="@{/search/posts/{postId}/delete(postId=${post.id})}">
+    <button type="submit">Удалить</button>
+</form>
+</body>
+</html>
