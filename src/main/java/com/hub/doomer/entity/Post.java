@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Post {
 
     private Integer id;
-    private String name;
-    private String surname;
+    private String title;
+    private String description;
 
 }
