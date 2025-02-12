@@ -7,14 +7,20 @@
 <body>
 <a data-th-href="@{search/posts/{postId}(postId=${post.id})}">&larr; К посту</a>
 <h1>Редактирование поста &laquo;[[${post.title}]]&raquo;</h1>
+<div data-th-if="${errors}">
+    <h2>Допущены ошибки</h2>
+    <ul>
+        <li data-th-each="error: ${error}" data-th-text="${error}"></li>
+    </ul>
+</div>
 <form method="post" data-th-action="@{/search/posts/{postId}/edit(postId=${post.id})}">
     <label>
         Название:<br>
-        <input type="text" name="title" data-th-value="${post.title}">
+        <input type="text" name="title" data-th-value="${payload != null ? payload.title : post.title}">
     </label><br>
     <label>
         Описание:<br>
-        <textarea name="description" data-th-value="${post.description}"></textarea>
+        <textarea name="description" data-th-value="${payload != null ? payload.description : post.description}"></textarea>
     </label><br>
     <button type="submit">Изменить</button>
 </form>
