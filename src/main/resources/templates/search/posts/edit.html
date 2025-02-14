@@ -5,7 +5,7 @@
     <title>Редактирование поста &laquo;[[${post.title}]]&raquo; &ndash; DoomerHub</title>
 </head>
 <body>
-<a data-th-href="@{search/posts/{postId}(postId=${post.id})}">&larr; К посту</a>
+<a data-th-href="@{/search/posts/{postId}(postId=${post.id})}">&larr; К посту</a>
 <h1>Редактирование поста &laquo;[[${post.title}]]&raquo;</h1>
 <div data-th-if="${errors}">
     <h2>Допущены ошибки</h2>

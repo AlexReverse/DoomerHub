@@ -16,6 +16,7 @@ public class DefaultPostService implements PostService {
 
     private final PostRepository postRepository;
 
+    @Override
     public List<Post> findAllPosts() {
         return this.postRepository.findAll();
     }

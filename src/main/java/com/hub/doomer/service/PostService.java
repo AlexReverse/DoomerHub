@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface PostService {
     List<Post> findAllPosts();
 
-    Post createPost(String name, String description);
+    Post createPost(String title, String description);
 
     Optional<Post> findPost(int postId);
 
