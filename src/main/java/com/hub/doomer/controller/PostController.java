@@ -70,6 +70,6 @@ public class PostController {
         model.addAttribute("error",
                 this.messageSource.getMessage(exception.getMessage(), new Object[0],
                         exception.getMessage(), locale));
-        return "search/errors/404";
+        return "errors/404";
     }
 }

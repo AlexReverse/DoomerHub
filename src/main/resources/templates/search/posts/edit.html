@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Редактирование поста &laquo;[[${post.title}]]&raquo; &ndash; DoomerHub</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 <a data-th-href="@{/search/posts/{postId}(postId=${post.id})}">&larr; К посту</a>
@@ -20,7 +24,7 @@
     </label><br>
     <label>
         Описание:<br>
-        <textarea name="description" data-th-value="${payload != null ? payload.description : post.description}"></textarea>
+        <textarea name="description" data-th-text="${payload != null ? payload.description : post.description}"></textarea>
     </label><br>
     <button type="submit">Изменить</button>
 </form>
