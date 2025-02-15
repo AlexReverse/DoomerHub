@@ -1,0 +1,4 @@
+doomerhub:
+  services:
+    search:
+      uri: http://localhost:8081
