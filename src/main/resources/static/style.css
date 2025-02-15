@@ -4,3 +4,9 @@ html {
   font-weight: 700;
   font-style: normal;
 }
+h1 {
+  font-family: "Comfortaa", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
