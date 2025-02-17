@@ -4,9 +4,9 @@ import hub.doomer.search.entity.Post;
 import hub.doomer.search.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -17,11 +17,17 @@ public class DefaultPostService implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public List<Post> findAllPosts() {
-        return this.postRepository.findAll();
+    public Iterable<Post> findAllPosts(String filter) {
+        if (filter != null && !filter.isBlank()) {
+            return this.postRepository.findAllByTitleLikeIgnoreCase("%" + filter + "%");
+        } else {
+            return this.postRepository.findAll();
+
+        }
     }
 
     @Override
+    @Transactional
     public Post createPost(String title, String description) {
         return this.postRepository.save(new Post(null, title, description));
     }
@@ -32,6 +38,7 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
+    @Transactional
     public void updatePost(Integer id, String title, String description) {
         this.postRepository.findById(id)
                 .ifPresentOrElse(post -> {
@@ -43,6 +50,7 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
+    @Transactional
     public void deletePost(Integer id) {
         this.postRepository.deleteById(id);
     }

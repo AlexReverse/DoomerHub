@@ -3,11 +3,10 @@ package hub.doomer.search.service;
 
 import hub.doomer.search.entity.Post;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface PostService {
-    List<Post> findAllPosts();
+    Iterable<Post> findAllPosts(String filter);
 
     Post createPost(String title, String description);
 

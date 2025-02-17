@@ -19,8 +19,9 @@ public class PostsController {
     private final PostsRestClient postsRestClient;
 
     @GetMapping(value = "list")
-    public String getPostsList(Model model) {
-        model.addAttribute("posts", this.postsRestClient.findAllPosts());
+    public String getPostsList(Model model, @RequestParam(name = "filter", required = false) String filter) {
+        model.addAttribute("posts", this.postsRestClient.findAllPosts(filter));
+        model.addAttribute("filter", filter);
         return "search/posts/list";
     }
 

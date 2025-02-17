@@ -24,10 +24,10 @@ public class PostsRestClientImpl implements PostsRestClient {
     private final RestClient restClient;
 
     @Override
-    public List<Post> findAllPosts() {
+    public List<Post> findAllPosts(String filter) {
         return this.restClient
                 .get()
-                .uri("/search-api/posts")
+                .uri("/search-api/posts?filter={filter}", filter)
                 .retrieve()
                 .body(POSTS_TYPE_REFERENCE);
     }

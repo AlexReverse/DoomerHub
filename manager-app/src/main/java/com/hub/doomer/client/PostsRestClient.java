@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface PostsRestClient {
 
-    List<Post> findAllPosts();
+    List<Post> findAllPosts(String filter);
 
     Post createPost(String title, String description);
 

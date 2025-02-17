@@ -21,8 +21,8 @@ public class PostsRestController {
     private final PostService postService;
 
     @GetMapping
-    public List<Post> findPosts() {
-        return this.postService.findAllPosts();
+    public Iterable<Post> findPosts(@RequestParam(name = "filter", required = false) String filter) {
+        return this.postService.findAllPosts(filter);
     }
 
     @PostMapping

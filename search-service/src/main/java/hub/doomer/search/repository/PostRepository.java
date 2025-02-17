@@ -1,16 +1,13 @@
 package hub.doomer.search.repository;
 
 import hub.doomer.search.entity.Post;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-import java.util.Optional;
+public interface PostRepository extends CrudRepository<Post, Integer> {
 
-public interface PostRepository {
-    List<Post> findAll();
-
-    Post save(Post post);
-
-    Optional<Post> findById(Integer postId);
-
-    void deleteById(Integer id);
+    //@Query(value = "select p from Post p where p.title ilike :filter")
+    @Query(value = "select * from search.t_post where c_title ilike :filter", nativeQuery = true)
+    Iterable<Post> findAllByTitleLikeIgnoreCase(@Param("filter") String filter);
 }
