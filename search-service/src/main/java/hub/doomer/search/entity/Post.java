@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "search", name = "t_post")
+@Table(schema = "doomerhub", name = "t_post")
 public class Post {
 
     @Id

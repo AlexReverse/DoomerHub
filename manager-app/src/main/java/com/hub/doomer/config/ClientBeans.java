@@ -10,9 +10,9 @@ import org.springframework.web.client.RestClient;
 public class ClientBeans {
     @Bean
     public PostsRestClientImpl postsRestClient(@Value("${doomerhub.service.search.uri:http://localhost:8081}")
-                                                   String catalogBaseUri){
+                                                   String searchBaseUri){
         return new PostsRestClientImpl(RestClient.builder()
-                .baseUrl(catalogBaseUri)
+                .baseUrl(searchBaseUri)
                 .build());
     }
 }
