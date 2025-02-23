@@ -1,4 +1,10 @@
 spring:
+  security:
+    user:
+      name: admin_role
+      password: '***'
+      roles:
+        - SERVICE
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/doomerhub
@@ -25,3 +31,4 @@ logging:
     sql: info
 
 #  docker run --name search-db -p 5432:5432 -e POSTGRES_DB=doomerhub -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD="***" postgres:16.1
+#  docker run --name manager-db -p 5433:5432 -e POSTGRES_DB=manager -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD="***" postgres:16.1
