@@ -1,10 +1,13 @@
 package com.hub.doomer.controller;
 
+import com.hub.doomer.client.BadRequestException;
 import com.hub.doomer.client.PostsRestClient;
 import com.hub.doomer.controller.payload.NewPostPayload;
 import com.hub.doomer.entity.Post;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,16 +34,15 @@ public class PostsController {
     }
 
     @PostMapping("create")
-    public String createPost(@Valid NewPostPayload payload, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("payload", payload);
-            model.addAttribute("errors", result.getAllErrors().stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .toList());
-            return "search/posts/new_post";
-        } else {
+    public String createPost(@Valid NewPostPayload payload, Model model, HttpServletResponse response) {
+        try {
             Post post = this.postsRestClient.createPost(payload.title(), payload.description());
             return "redirect:/search/posts/%d".formatted(post.id());
+        } catch (BadRequestException exception) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            model.addAttribute("payload", payload);
+            model.addAttribute("errors", exception.getErrors());
+            return "search/posts/new_post";
         }
     }
 }

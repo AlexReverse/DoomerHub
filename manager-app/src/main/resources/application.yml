@@ -3,7 +3,7 @@ doomerhub:
     search:
       uri: http://localhost:8081
       username: admin_role
-      password: '***'
+      password: "***"
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
