@@ -10,7 +10,7 @@ public interface PostService {
 
     Post createPost(String title, String description);
 
-    Optional<Post> findPost(int postId);
+    Optional<Post> findPost(Integer postId);
 
     void updatePost(Integer id, String title, String description);
 

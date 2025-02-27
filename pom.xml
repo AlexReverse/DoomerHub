@@ -23,7 +23,8 @@
 	</developers>
 	<modules>
 		<module>search-service</module>
-	</modules>
+        <module>author-app</module>
+    </modules>
 	<scm>
 		<connection/>
 		<developerConnection/>

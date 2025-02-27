@@ -28,7 +28,7 @@ public class PostController {
 
     private final MessageSource messageSource;
     @ModelAttribute("post")
-    public Post post(@PathVariable("postId") int postId){
+    public Post post(@PathVariable("postId") Integer postId){
         return this.postsRestClient.findPost(postId)
                 .orElseThrow(() -> new NoSuchElementException("search.errors.post.not_found"));
     }

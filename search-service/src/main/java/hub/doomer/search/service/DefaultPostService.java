@@ -33,7 +33,7 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public Optional<Post> findPost(int postId) {
+    public Optional<Post> findPost(Integer postId) {
         return this.postRepository.findById(postId);
     }
 
