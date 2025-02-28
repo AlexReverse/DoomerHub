@@ -12,5 +12,5 @@ public interface FavouritePostsService {
 
     Mono<FavouritePost> findFavouritePostByPost(Integer id);
 
-    Flux<FavouritePost> findFavouriteProducts();
+    Flux<FavouritePost> findFavouritePosts();
 }

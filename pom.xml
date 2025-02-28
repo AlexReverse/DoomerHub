@@ -24,6 +24,7 @@
 	<modules>
 		<module>search-service</module>
         <module>author-app</module>
+        <module>feedback-service</module>
     </modules>
 	<scm>
 		<connection/>

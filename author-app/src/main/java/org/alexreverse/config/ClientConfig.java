@@ -1,5 +1,7 @@
 package org.alexreverse.config;
 
+import org.alexreverse.client.WebClientFavouritePostsClient;
+import org.alexreverse.client.WebClientPostReviewsClient;
 import org.alexreverse.client.WebClientPostsClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,24 @@ public class ClientConfig {
     ) {
         return new WebClientPostsClient(WebClient.builder()
                 .baseUrl(baseUrl)
+                .build());
+    }
+
+    @Bean
+    public WebClientFavouritePostsClient webClientFavouritePostsClien(
+            @Value("${doomerhub.services.search.uri:http://localhost:8083}") String feedbackBaseUrl
+    ) {
+        return new WebClientFavouritePostsClient(WebClient.builder()
+                .baseUrl(feedbackBaseUrl)
+                .build());
+    }
+
+    @Bean
+    public WebClientPostReviewsClient webClientPostReviewsClient(
+            @Value("${doomerhub.services.search.uri:http://localhost:8083}") String feedbackBaseUrl
+    ) {
+        return new WebClientPostReviewsClient(WebClient.builder()
+                .baseUrl(feedbackBaseUrl)
                 .build());
     }
 }

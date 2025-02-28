@@ -22,6 +22,6 @@ public class InMemoryPostReviewRepository implements PostReviewRepository {
     @Override
     public Flux<PostReview> findAllByPostId(Integer postId) {
         return Flux.fromIterable(this.postReviews)
-                .filter(postReview -> postReview.getPostId() == (postId));
+                .filter(postReview -> postReview.getPostId().equals(postId));
     }
 }

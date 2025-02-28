@@ -21,14 +21,14 @@ public class InMemoryFavouritePostRepository implements FavouritePostRepository 
 
     @Override
     public Mono<Void> deleteByPostId(Integer postId) {
-        this.favouritePostList.removeIf(favouritePost -> favouritePost.getPostId() == (postId));
+        this.favouritePostList.removeIf(favouritePost -> favouritePost.getPostId().equals(postId));
         return Mono.empty();
     }
 
     @Override
     public Mono<FavouritePost> findByPostId(Integer postId) {
         return Flux.fromIterable(this.favouritePostList)
-                .filter(favouritePost -> favouritePost.getPostId() == (postId))
+                .filter(favouritePost -> favouritePost.getPostId().equals(postId))
                 .singleOrEmpty();
     }
 

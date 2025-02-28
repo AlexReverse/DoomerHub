@@ -1,6 +1,5 @@
 package org.alexreverse.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.entity.FavouritePost;
 import org.alexreverse.repository.FavouritePostRepository;
@@ -32,7 +31,7 @@ public class DefaultFavouritePostsService implements FavouritePostsService {
     }
 
     @Override
-    public Flux<FavouritePost> findFavouriteProducts() {
+    public Flux<FavouritePost> findFavouritePosts() {
         return this.favouriteRepository.findAll();
     }
 }
