@@ -33,13 +33,13 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public Optional<Post> findPost(Integer postId) {
+    public Optional<Post> findPost(int postId) {
         return this.postRepository.findById(postId);
     }
 
     @Override
     @Transactional
-    public void updatePost(Integer id, String title, String description) {
+    public void updatePost(int id, String title, String description) {
         this.postRepository.findById(id)
                 .ifPresentOrElse(post -> {
                     post.setTitle(title);

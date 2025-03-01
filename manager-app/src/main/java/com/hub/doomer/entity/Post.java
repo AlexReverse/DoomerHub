@@ -1,4 +1,4 @@
 package com.hub.doomer.entity;
 
-public record Post(Integer id, String title, String description) {
+public record Post(int id, String title, String description) {
 }

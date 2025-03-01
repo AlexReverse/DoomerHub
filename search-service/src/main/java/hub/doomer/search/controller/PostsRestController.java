@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,8 +25,10 @@ public class PostsRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPost(@Valid @RequestBody NewPostPayload payload, BindingResult bindingResult,
-                                           UriComponentsBuilder uriComponentsBuilder) throws BindException {
+    public ResponseEntity<?> createPost(@Valid @RequestBody NewPostPayload payload,
+                                           BindingResult bindingResult,
+                                           UriComponentsBuilder uriComponentsBuilder)
+            throws BindException {
         if (bindingResult.hasErrors()) {
             if (bindingResult instanceof BindException exception) {
                 throw exception;
@@ -36,7 +37,8 @@ public class PostsRestController {
             }
         } else {
             Post post = this.postService.createPost(payload.title(), payload.description());
-            return ResponseEntity.created(uriComponentsBuilder
+            return ResponseEntity
+                    .created(uriComponentsBuilder
                             .replacePath("/search-api/posts/{postId}")
                             .build(Map.of("postId", post.getId())))
                     .body(post);

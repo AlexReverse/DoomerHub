@@ -25,7 +25,7 @@ public class PostRestController {
     private final MessageSource messageSource;
 
     @ModelAttribute("post")
-    public Post getPost(@PathVariable("postId") Integer postId) {
+    public Post getPost(@PathVariable("postId") int postId) {
         return this.postService.findPost(postId)
                 .orElseThrow(() -> new NoSuchElementException("search.errors.post.not_found"));
     }
@@ -36,7 +36,7 @@ public class PostRestController {
     }
 
     @PatchMapping
-    public ResponseEntity<?> updatePost(@PathVariable("postId") Integer postId,
+    public ResponseEntity<?> updatePost(@PathVariable("postId") int postId,
                                         @Valid @RequestBody UpdatePostPayload payload,
                                         BindingResult bindingResult) throws BindException {
         if (bindingResult.hasErrors()) {
@@ -52,7 +52,7 @@ public class PostRestController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deletePost(@PathVariable("postId") Integer postId) {
+    public ResponseEntity<Void> deletePost(@PathVariable("postId") int postId) {
         this.postService.deletePost(postId);
         return ResponseEntity.noContent().build();
     }

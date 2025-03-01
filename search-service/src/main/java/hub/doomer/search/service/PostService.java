@@ -10,9 +10,9 @@ public interface PostService {
 
     Post createPost(String title, String description);
 
-    Optional<Post> findPost(Integer postId);
+    Optional<Post> findPost(int postId);
 
-    void updatePost(Integer id, String title, String description);
+    void updatePost(int id, String title, String description);
 
     void deletePost(Integer id);
 }

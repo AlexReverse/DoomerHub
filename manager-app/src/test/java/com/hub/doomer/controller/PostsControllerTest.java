@@ -34,13 +34,12 @@ class PostsControllerTest {
         // given
         var payload = new NewPostPayload("Новый пост", "Описание поста");
         var model = new ConcurrentModel();
-        var response = new MockHttpServletResponse();
 
         doReturn(new Post(1, "Новый пост", "Описание поста"))
                 .when(this.postsRestClient)
                 .createPost("Новый пост", "Описание поста");
         // when
-        var result = this.postsController.createPost(payload, model, response);
+        var result = this.postsController.createPost(payload, model);
 
         // then
         assertEquals("redirect:/search/posts/1", result);
@@ -55,13 +54,12 @@ class PostsControllerTest {
         // given
         var payload = new NewPostPayload(" ", null);
         var model = new ConcurrentModel();
-        var response = new MockHttpServletResponse();
 
         doThrow(new BadRequestException(List.of("Ошибка 1", "Ошибка 2")))
                 .when(this.postsRestClient)
                 .createPost(" ", null);
         // when
-        var result = this.postsController.createPost(payload, model, response);
+        var result = this.postsController.createPost(payload, model);
 
         // then
         assertEquals("search/posts/new_post", result);

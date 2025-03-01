@@ -11,9 +11,9 @@ public interface PostsRestClient {
 
     Post createPost(String title, String description);
 
-    Optional<Post> findPost(Integer postId);
+    Optional<Post> findPost(int postId);
 
-    void updatePost(Integer postId, String title, String description);
+    void updatePost(int postId, String title, String description);
 
-    void deletePost(Integer postId);
+    void deletePost(int postId);
 }

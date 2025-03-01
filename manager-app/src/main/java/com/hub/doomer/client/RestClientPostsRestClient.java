@@ -3,21 +3,22 @@ package com.hub.doomer.client;
 import com.hub.doomer.controller.payload.NewPostPayload;
 import com.hub.doomer.controller.payload.UpdatePostPayload;
 import com.hub.doomer.entity.Post;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-@AllArgsConstructor
-public class PostsRestClientImpl implements PostsRestClient {
+@RequiredArgsConstructor
+public class RestClientPostsRestClient implements PostsRestClient {
 
-    private final static ParameterizedTypeReference<List<Post>> POSTS_TYPE_REFERENCE =
+    private static final ParameterizedTypeReference<List<Post>> POSTS_TYPE_REFERENCE =
             new ParameterizedTypeReference<>() {
             };
 
@@ -35,7 +36,8 @@ public class PostsRestClientImpl implements PostsRestClient {
     @Override
     public Post createPost(String title, String description) {
         try {
-            return this.restClient.post()
+            return this.restClient
+                    .post()
                     .uri("/search-api/posts")
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(new NewPostPayload(title, description))
@@ -48,7 +50,7 @@ public class PostsRestClientImpl implements PostsRestClient {
     }
 
     @Override
-    public Optional<Post> findPost(Integer postId) {
+    public Optional<Post> findPost(int postId) {
         try {
             return Optional.ofNullable(this.restClient.get()
                     .uri("/search-api/posts/{postId}", postId)
@@ -60,9 +62,10 @@ public class PostsRestClientImpl implements PostsRestClient {
     }
 
     @Override
-    public void updatePost(Integer postId, String title, String description) {
+    public void updatePost(int postId, String title, String description) {
         try {
-            this.restClient.patch()
+            this.restClient
+                    .patch()
                     .uri("/search-api/posts/{postId}", postId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(new UpdatePostPayload(title, description))
@@ -75,12 +78,13 @@ public class PostsRestClientImpl implements PostsRestClient {
     }
 
     @Override
-    public void deletePost(Integer postId) {
+    public void deletePost(int postId) {
         try {
-            this.restClient.delete()
+            this.restClient
+                    .delete()
                     .uri("/search-api/posts/{postId}", postId)
                     .retrieve()
-                    .body(Post.class);
+                    .toBodilessEntity();
         } catch (HttpClientErrorException.NotFound exception) {
             throw new NoSuchElementException(exception);
         }

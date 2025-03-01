@@ -1,6 +1,6 @@
 package hub.doomer.search.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.Locale;
 
 @ControllerAdvice
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BadRequestControllerAdvice {
     private final MessageSource messageSource;
 

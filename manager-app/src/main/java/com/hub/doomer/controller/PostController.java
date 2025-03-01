@@ -1,5 +1,6 @@
 package com.hub.doomer.controller;
 
+import com.hub.doomer.client.BadRequestException;
 import com.hub.doomer.client.PostsRestClient;
 import com.hub.doomer.controller.payload.UpdatePostPayload;
 
@@ -28,7 +29,7 @@ public class PostController {
 
     private final MessageSource messageSource;
     @ModelAttribute("post")
-    public Post post(@PathVariable("postId") Integer postId){
+    public Post post(@PathVariable("postId") int postId){
         return this.postsRestClient.findPost(postId)
                 .orElseThrow(() -> new NoSuchElementException("search.errors.post.not_found"));
     }
@@ -44,16 +45,14 @@ public class PostController {
 
     @PostMapping("edit")
     public String updatePost(@ModelAttribute(name = "post", binding = false) Post post,
-                             @Valid UpdatePostPayload updatePostPayload, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("payload", updatePostPayload);
-            model.addAttribute("errors", result.getAllErrors().stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .toList());
-            return "search/posts/edit";
-        } else {
-            this.postsRestClient.updatePost(post.id(), updatePostPayload.title(), updatePostPayload.description());
+                             UpdatePostPayload payload, Model model) {
+        try {
+            this.postsRestClient.updatePost(post.id(), payload.title(), payload.description());
             return "redirect:/search/posts/%d".formatted(post.id());
+        } catch (BadRequestException exception) {
+            model.addAttribute("payload", payload);
+            model.addAttribute("errors", exception.getErrors());
+            return "search/posts/edit";
         }
     }
 
