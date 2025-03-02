@@ -8,5 +8,5 @@ public interface PostsClient {
 
     Flux<Post> findAllPosts(String filter);
 
-    Mono<Post> findPost(Integer Id);
+    Mono<Post> findPost(int Id);
 }

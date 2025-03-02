@@ -30,10 +30,10 @@ public class FavouritePostsRestController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<FavouritePost>> createFavouritePost(@Valid @RequestBody Mono<NewFavouritePostPayload>
+    public Mono<ResponseEntity<FavouritePost>> addPostToFavourites(@Valid @RequestBody Mono<NewFavouritePostPayload>
                                                                                payloadMono,
                                                                    UriComponentsBuilder uriComponentsBuilder) {
-        return payloadMono.flatMap(payload -> this.favouritePostsService.addPostToFavourites(payload.id()))
+        return payloadMono.flatMap(payload -> this.favouritePostsService.addPostToFavourites(payload.postId()))
                 .map(favouritePost -> ResponseEntity
                         .created(uriComponentsBuilder.replacePath("feedback-api/favourite-posts/{id}")
                                 .build(favouritePost.getId()))

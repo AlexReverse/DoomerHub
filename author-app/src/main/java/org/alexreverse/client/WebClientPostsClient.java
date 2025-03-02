@@ -20,7 +20,7 @@ public class WebClientPostsClient implements PostsClient {
     }
 
     @Override
-    public Mono<Post> findPost(Integer id) {
+    public Mono<Post> findPost(int id) {
         return this.webClient.get()
                 .uri("/search-api/posts/{postId}", id)
                 .retrieve()

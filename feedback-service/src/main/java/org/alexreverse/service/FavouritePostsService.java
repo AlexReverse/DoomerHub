@@ -6,11 +6,11 @@ import reactor.core.publisher.Mono;
 
 public interface FavouritePostsService {
 
-    Mono<FavouritePost> addPostToFavourites(Integer postId);
+    Mono<FavouritePost> addPostToFavourites(int postId);
 
-    Mono<Void> removePostFromFavourites(Integer postId);
+    Mono<Void> removePostFromFavourites(int postId);
 
-    Mono<FavouritePost> findFavouritePostByPost(Integer id);
+    Mono<FavouritePost> findFavouritePostByPost(int id);
 
     Flux<FavouritePost> findFavouritePosts();
 }

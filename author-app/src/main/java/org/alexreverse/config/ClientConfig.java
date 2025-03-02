@@ -21,8 +21,8 @@ public class ClientConfig {
     }
 
     @Bean
-    public WebClientFavouritePostsClient webClientFavouritePostsClien(
-            @Value("${doomerhub.services.search.uri:http://localhost:8083}") String feedbackBaseUrl
+    public WebClientFavouritePostsClient webClientFavouritePostsClient(
+            @Value("${doomerhub.services.feedback.uri:http://localhost:8083}") String feedbackBaseUrl
     ) {
         return new WebClientFavouritePostsClient(WebClient.builder()
                 .baseUrl(feedbackBaseUrl)
@@ -31,7 +31,7 @@ public class ClientConfig {
 
     @Bean
     public WebClientPostReviewsClient webClientPostReviewsClient(
-            @Value("${doomerhub.services.search.uri:http://localhost:8083}") String feedbackBaseUrl
+            @Value("${doomerhub.services.feedback.uri:http://localhost:8083}") String feedbackBaseUrl
     ) {
         return new WebClientPostReviewsClient(WebClient.builder()
                 .baseUrl(feedbackBaseUrl)

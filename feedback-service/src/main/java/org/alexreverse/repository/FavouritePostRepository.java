@@ -1,16 +1,16 @@
 package org.alexreverse.repository;
 
 import org.alexreverse.entity.FavouritePost;
-import reactor.core.publisher.Flux;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
-public interface FavouritePostRepository {
+import java.util.UUID;
 
-    Mono<FavouritePost> save(FavouritePost favouritePost);
+public interface FavouritePostRepository extends ReactiveCrudRepository<FavouritePost, UUID> {
 
-    Mono<Void> deleteByPostId(Integer postId);
 
-    Mono<FavouritePost> findByPostId(Integer postId);
+    Mono<Void> deleteByPostId(int postId);
 
-    Flux<FavouritePost> findAll();
+    Mono<FavouritePost> findByPostId(int postId);
+
 }

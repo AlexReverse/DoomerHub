@@ -20,7 +20,7 @@ public class PostReviewsRestController {
     private final PostReviewsService postReviewsService;
 
     @GetMapping("by-post-id/{postId:\\d+}")
-    public Flux<PostReview> findPostReviewsByPostId(@PathVariable("postId") Integer postId) {
+    public Flux<PostReview> findPostReviewsByPostId(@PathVariable("postId") int postId) {
         return this.postReviewsService.findPostReviewsByPost(postId);
     }
 

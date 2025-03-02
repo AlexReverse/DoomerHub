@@ -1,12 +1,14 @@
 package org.alexreverse.repository;
 
 import org.alexreverse.entity.PostReview;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-public interface PostReviewRepository {
+import java.util.UUID;
 
-    Mono<PostReview> save(PostReview postReview);
+public interface PostReviewRepository extends ReactiveCrudRepository<PostReview, UUID> {
 
-    Flux<PostReview> findAllByPostId(Integer postId);
+    @Query("{'postId': ?0}")
+    Flux<PostReview> findAllByPostId(int postId);
 }

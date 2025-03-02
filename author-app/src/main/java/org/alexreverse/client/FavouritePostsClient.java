@@ -1,6 +1,5 @@
 package org.alexreverse.client;
 
-import io.micrometer.observation.ObservationFilter;
 import org.alexreverse.entity.FavouritePost;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

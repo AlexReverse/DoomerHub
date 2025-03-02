@@ -1,6 +1,5 @@
 package org.alexreverse.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alexreverse.client.FavouritePostsClient;
@@ -29,7 +28,7 @@ public class PostController {
     private final PostReviewsClient postReviewsClient;
 
     @ModelAttribute(name = "post", binding = false)
-    public Mono<Post> loadPost(@PathVariable("postId") Integer id) {
+    public Mono<Post> loadPost(@PathVariable("postId") int id) {
         return this.postsClient.findPost(id)
                 .switchIfEmpty(Mono.error(new NoSuchElementException("search.posts.error.not_found")));
     }

@@ -1,2 +1,10 @@
 server:
   port: 8083
+spring:
+  data:
+    mangodb:
+      uri: mongodb://localhost:27017/feedback
+
+# docker run --name feedback-db -p 27017:27017 mongo:7
+# docker exec -it feedback-db mongosh feedback
+# db.postReview.find()
