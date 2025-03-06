@@ -1,0 +1,25 @@
+package org.alexreverse.service;
+
+
+import lombok.RequiredArgsConstructor;
+import org.alexreverse.entity.AuthorUser;
+import org.alexreverse.repository.AuthorUserRepository;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
+
+@Service
+@RequiredArgsConstructor
+public class AuthorUserDetailsService implements ReactiveUserDetailsService {
+
+    private final AuthorUserRepository userRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public Mono<UserDetails> findByUsername(String username) {
+        Mono<AuthorUser> data = userRepository.findByUsername(username);
+        return data.cast(UserDetails.class);
+    }
+}
