@@ -1,6 +1,8 @@
-package org.alexreverse.security;
+package org.alexreverse.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -10,29 +12,25 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-
+@Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-public class WebSecurityConfig {
+public class SecurityBeans {
 
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity) throws Exception {
+    public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
-                .authorizeExchange((exchanges) -> exchanges
-                        .anyExchange().authenticated()
-                )
-                .httpBasic(withDefaults())
-                .formLogin(withDefaults())
+
+                .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers("/search-api/**").hasAuthority("ROLE_SERVICE")
+                        .anyExchange().authenticated())
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 }

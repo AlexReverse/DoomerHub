@@ -4,6 +4,32 @@ spring:
   data:
     mangodb:
       uri: mongodb://localhost:27017/feedback
+  security:
+    user:
+      name: admin_role
+      username: admin_role
+      password: '***'
+      roles:
+        - SERVICE
+        - ADMIN
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/doomerhub
+    username: postgres
+    password: "***"
+  flyway:
+    baselineOnMigrate: true
+    schema:
+      - public
+      - search
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        ddl-auto: update
+        use-new-id-generator-mappings: false
 
 # docker run --name feedback-db -p 27017:27017 mongo:7
 # docker exec -it feedback-db mongosh feedback

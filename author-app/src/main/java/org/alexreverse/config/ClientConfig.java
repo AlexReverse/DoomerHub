@@ -13,7 +13,7 @@ public class ClientConfig {
 
     @Bean
     public WebClientPostsClient webClientPostsClient(
-            @Value("${doomerhub.services.search.uri:http://localhost:8081}") String baseUrl
+            @Value("${doomerhub.services.search.uri:http://localhost:8083}") String baseUrl
     ) {
         return new WebClientPostsClient(WebClient.builder()
                 .baseUrl(baseUrl)
