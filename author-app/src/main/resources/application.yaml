@@ -1,7 +1,9 @@
 doomerhub:
   services:
     search:
-      uri: http://localhost:8081
+      uri: http://localhost:8083
+      username: admin_role
+      password: 1234567890
 server:
   port: 8082
 spring:
