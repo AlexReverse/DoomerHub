@@ -36,7 +36,7 @@ public class FavouritePostsRestController {
         return payloadMono.flatMap(payload -> this.favouritePostsService.addPostToFavourites(payload.postId()))
                 .map(favouritePost -> ResponseEntity
                         .created(uriComponentsBuilder.replacePath("feedback-api/favourite-posts/{id}")
-                                .build(favouritePost.getId()))
+                                .build(favouritePost.getIdFavouritePost()))
                         .body(favouritePost));
     }
 

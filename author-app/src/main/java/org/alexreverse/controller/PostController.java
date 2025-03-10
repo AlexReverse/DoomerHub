@@ -41,7 +41,7 @@ public class PostController {
                 .doOnNext(postReviews -> model.addAttribute("reviews", postReviews))
                 .then(this.favouritePostsClient.findFavouritePostByPostId(id)
                         .doOnNext(favouritePost -> model.addAttribute("inFavourite", true)))
-                .thenReturn("author/posts/post");
+                .thenReturn("search/posts/post");
     }
 
     @PostMapping("add-to-favourites")
@@ -49,10 +49,10 @@ public class PostController {
         return postMono
                 .map(Post::id)
                 .flatMap(postId -> this.favouritePostsClient.addPostToFavourites(postId)
-                        .thenReturn("redirect:/author/posts/%d".formatted(postId))
+                        .thenReturn("redirect:/search/posts/%d".formatted(postId))
                         .onErrorResume(exception -> {
                             log.error(exception.getMessage(), exception);
-                            return Mono.just("redirect:/author/posts/%d".formatted(postId));
+                            return Mono.just("redirect:/search/posts/%d".formatted(postId));
                         }));
     }
 
@@ -60,7 +60,7 @@ public class PostController {
     public Mono<String> removePostFromFavourites(@ModelAttribute("post") Mono<Post> postMono) {
         return postMono.map(Post::id)
                 .flatMap(postId -> this.favouritePostsClient.removePostFromFavourites(postId)
-                        .thenReturn("redirect:/author/posts/%d".formatted(postId)));
+                        .thenReturn("redirect:/search/posts/%d".formatted(postId)));
     }
 
     @PostMapping("create-review")
@@ -68,14 +68,14 @@ public class PostController {
                                      NewPostReviewPayload payload,
                                      Model model) {
         return this.postReviewsClient.createPostReview(id, payload.rating(), payload.review())
-                .thenReturn("redirect:/author/posts/%d".formatted(id))
+                .thenReturn("redirect:/search/posts/%d".formatted(id))
                 .onErrorResume(ClientBadRequestException.class, exception -> {
                     model.addAttribute("inFavourite", false);
                     model.addAttribute("payload", payload);
                     model.addAttribute("errors", exception.getErrors());
                     return this.favouritePostsClient.findFavouritePostByPostId(id)
                             .doOnNext(favouritePost -> model.addAttribute("inFavourite", true))
-                            .thenReturn("author/posts/post");
+                            .thenReturn("search/posts/post");
                 });
     }
 

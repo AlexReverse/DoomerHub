@@ -13,7 +13,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ClientConfig {
 
     @Bean
-    @Scope(scopeName = "prototype")
     public WebClientPostsClient webClientPostsClient(
             @Value("${doomerhub.services.search.uri:http://localhost:8083}") String baseUrl,
             @Value("${doomerhub.services.search.username:}") String searchUsername,
@@ -27,19 +26,25 @@ public class ClientConfig {
 
     @Bean
     public WebClientFavouritePostsClient webClientFavouritePostsClient(
-            @Value("${doomerhub.services.feedback.uri:http://localhost:8083}") String feedbackBaseUrl
+            @Value("${doomerhub.services.feedback.uri:http://localhost:8083}") String feedbackBaseUrl,
+            @Value("${doomerhub.services.search.username:}") String searchUsername,
+            @Value("${doomerhub.services.search.password:}") String searchPassword
     ) {
         return new WebClientFavouritePostsClient(WebClient.builder()
                 .baseUrl(feedbackBaseUrl)
+                .defaultHeaders(headers -> headers.setBasicAuth(searchUsername, searchPassword))
                 .build());
     }
 
     @Bean
     public WebClientPostReviewsClient webClientPostReviewsClient(
-            @Value("${doomerhub.services.feedback.uri:http://localhost:8083}") String feedbackBaseUrl
+            @Value("${doomerhub.services.feedback.uri:http://localhost:8083}") String feedbackBaseUrl,
+            @Value("${doomerhub.services.search.username:}") String searchUsername,
+            @Value("${doomerhub.services.search.password:}") String searchPassword
     ) {
         return new WebClientPostReviewsClient(WebClient.builder()
                 .baseUrl(feedbackBaseUrl)
+                .defaultHeaders(headers -> headers.setBasicAuth(searchUsername, searchPassword))
                 .build());
     }
 }

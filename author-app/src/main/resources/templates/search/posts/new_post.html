@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать пост &ndash; DoomerHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+    <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
+</head>
+<body>
+<a data-th-href="@{/search/posts/list}">&larr; Поиск постов</a>
+<h1>Новый пост</h1>
+<div data-th-if="${errors}">
+    <h2>Допущены ошибки</h2>
+    <ul>
+        <li data-th-each="error: ${error}" data-th-text="${error}"></li>
+    </ul>
+</div>
+<form method="post" data-th-action="@{/search/posts/create}">
+    <label>
+        Название:<br>
+        <input type="text" name="title" data-th-value="${payload?.title}">
+    </label><br>
+    <label>
+        Описание:<br>
+        <textarea name="description" data-th-text="${payload?.description}"></textarea>
+    </label><br>
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>
