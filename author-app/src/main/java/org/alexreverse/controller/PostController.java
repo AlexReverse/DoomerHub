@@ -7,7 +7,9 @@ import org.alexreverse.client.PostReviewsClient;
 import org.alexreverse.client.PostsClient;
 import org.alexreverse.client.exception.ClientBadRequestException;
 import org.alexreverse.controller.payload.NewPostReviewPayload;
+import org.alexreverse.controller.payload.UpdatePostPayload;
 import org.alexreverse.entity.Post;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,14 +36,32 @@ public class PostController {
     }
 
     @GetMapping
-    public Mono<String> getPostPage(@PathVariable("postId") int id, Model model) {
-        model.addAttribute("inFavourite", false);
-        return this.postReviewsClient.findPostReviewsByPostId(id)
-                .collectList()
-                .doOnNext(postReviews -> model.addAttribute("reviews", postReviews))
-                .then(this.favouritePostsClient.findFavouritePostByPostId(id)
-                        .doOnNext(favouritePost -> model.addAttribute("inFavourite", true)))
-                .thenReturn("search/posts/post");
+    public Mono<String> getPost() {
+        return Mono.just("search/posts/post");
+    }
+
+    @GetMapping("edit")
+    public String getPostEditPage() {
+        return "search/posts/edit";
+    }
+
+    @PostMapping("edit")
+    public Mono<String> updatePost(@ModelAttribute(name = "post", binding = false) Post post,
+                             UpdatePostPayload payload, Model model) {
+        try {
+            this.postsClient.updatePost(post.id(), payload.title(), payload.description());
+            return Mono.just("redirect:/search/posts/%d".formatted(post.id()));
+        } catch (BadRequestException exception) {
+            model.addAttribute("payload", payload);
+            model.addAttribute("errors", exception.getMessage());
+            return Mono.just("search/posts/edit");
+        }
+    }
+
+    @PostMapping("delete")
+    public Mono<String> deletePost(@ModelAttribute("post") Post post) {
+        this.postsClient.deletePost(post.id());
+        return Mono.just("redirect:/search/posts/list");
     }
 
     @PostMapping("add-to-favourites")
