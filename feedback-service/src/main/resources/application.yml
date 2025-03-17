@@ -1,17 +1,11 @@
 server:
   port: 8083
 spring:
-  data:
-    mangodb:
-      uri: mongodb://localhost:27017/feedback
   security:
-    user:
-      name: admin_role
-      username: admin_role
-      password: '***'
-      roles:
-        - SERVICE
-        - ADMIN
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8084/realms/doomerhub
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/doomerhub
     username: postgres
@@ -30,7 +24,8 @@ spring:
           auto: update
         ddl-auto: update
         use-new-id-generator-mappings: false
-
-# docker run --name feedback-db -p 27017:27017 mongo:7
-# docker exec -it feedback-db mongosh feedback
-# db.postReview.find()
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    io.r2dbc.spi: DEBUG

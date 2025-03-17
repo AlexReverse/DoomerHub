@@ -2,9 +2,11 @@ spring:
   security:
     user:
       name: admin_role
+      username: admin_role
       password: '***'
       roles:
         - SERVICE
+        - ADMIN
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/doomerhub

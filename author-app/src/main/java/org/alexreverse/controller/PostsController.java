@@ -5,14 +5,12 @@ import org.alexreverse.client.FavouritePostsClient;
 import org.alexreverse.client.PostsClient;
 import org.alexreverse.controller.payload.NewPostPayload;
 import org.alexreverse.entity.FavouritePost;
-import org.alexreverse.entity.Post;
-import org.apache.coyote.BadRequestException;
+import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
+import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Controller
@@ -34,19 +32,19 @@ public class PostsController {
     }
 
     @GetMapping("create")
-    public String getNewPostPage() {
-        return "search/posts/new_post";
+    public Mono<String> getNewPostPage() {
+        return Mono.just("search/posts/new_post");
     }
 
     @PostMapping("create")
-    public String createPost(NewPostPayload payload, Model model) {
+    public Mono<String> createPost(NewPostPayload payload, Model model) {
         try {
-            Mono<Post> post = this.postsClient.createPost(payload.title(), payload.description());
-            return "redirect:/search/posts/%d".formatted(post.map(Post::id));
-        } catch (BadRequestException exception) {
+            return this.postsClient.createPost(payload.title(), payload.description())
+                    .thenReturn("redirect:/search/posts/list");
+        } catch (Exception exception) {
             model.addAttribute("payload", payload);
             model.addAttribute("errors", exception.getMessage());
-            return "search/posts/new_post";
+            return Mono.just("search/posts/new_post");
         }
     }
 
@@ -62,5 +60,12 @@ public class PostsController {
                         .collectList()
                         .doOnNext(posts -> model.addAttribute("posts", posts)))
                 .thenReturn("search/posts/favourites");
+    }
+
+    @ModelAttribute
+    public Mono<CsrfToken> loadCsrfToken(ServerWebExchange exchange) {
+        return exchange.<Mono<CsrfToken>>getAttribute(CsrfToken.class.getName())
+                .doOnSuccess(token -> exchange.getAttributes()
+                        .put(CsrfRequestDataValueProcessor.DEFAULT_CSRF_ATTR_NAME, token));
     }
 }

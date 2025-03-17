@@ -9,10 +9,12 @@ import org.alexreverse.client.exception.ClientBadRequestException;
 import org.alexreverse.controller.payload.NewPostReviewPayload;
 import org.alexreverse.controller.payload.UpdatePostPayload;
 import org.alexreverse.entity.Post;
-import org.apache.coyote.BadRequestException;
+import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
+import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.NoSuchElementException;
@@ -29,7 +31,7 @@ public class PostController {
 
     private final PostReviewsClient postReviewsClient;
 
-    @ModelAttribute(name = "post", binding = false)
+    @ModelAttribute(name = "post")
     public Mono<Post> loadPost(@PathVariable("postId") int id) {
         return this.postsClient.findPost(id)
                 .switchIfEmpty(Mono.error(new NoSuchElementException("search.posts.error.not_found")));
@@ -41,17 +43,17 @@ public class PostController {
     }
 
     @GetMapping("edit")
-    public String getPostEditPage() {
-        return "search/posts/edit";
+    public Mono<String> getPostEditPage() {
+        return Mono.just("search/posts/edit");
     }
 
     @PostMapping("edit")
     public Mono<String> updatePost(@ModelAttribute(name = "post", binding = false) Post post,
                              UpdatePostPayload payload, Model model) {
         try {
-            this.postsClient.updatePost(post.id(), payload.title(), payload.description());
-            return Mono.just("redirect:/search/posts/%d".formatted(post.id()));
-        } catch (BadRequestException exception) {
+            return this.postsClient.updatePost(post.id(), payload.title(), payload.description())
+                    .thenReturn("redirect:/search/posts/%d".formatted(post.id()));
+        } catch (Exception exception) {
             model.addAttribute("payload", payload);
             model.addAttribute("errors", exception.getMessage());
             return Mono.just("search/posts/edit");
@@ -60,8 +62,8 @@ public class PostController {
 
     @PostMapping("delete")
     public Mono<String> deletePost(@ModelAttribute("post") Post post) {
-        this.postsClient.deletePost(post.id());
-        return Mono.just("redirect:/search/posts/list");
+        return this.postsClient.deletePost(post.id())
+                .thenReturn("redirect:/search/posts/list");
     }
 
     @PostMapping("add-to-favourites")
@@ -103,5 +105,12 @@ public class PostController {
     public String handleNoSuchElementException(NoSuchElementException exception, Model model) {
         model.addAttribute("error", exception.getMessage());
         return "errors/404";
+    }
+
+    @ModelAttribute
+    public Mono<CsrfToken> loadCsrfToken(ServerWebExchange exchange) {
+        return exchange.<Mono<CsrfToken>>getAttribute(CsrfToken.class.getName())
+                .doOnSuccess(token -> exchange.getAttributes()
+                        .put(CsrfRequestDataValueProcessor.DEFAULT_CSRF_ATTR_NAME, token));
     }
 }

@@ -1,7 +1,7 @@
 package org.alexreverse.client;
 
 import org.alexreverse.entity.Post;
-import org.apache.coyote.BadRequestException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -11,9 +11,9 @@ public interface PostsClient {
 
     Mono<Post> findPost(int Id);
 
-    Mono<Post> createPost(String title, String description) throws BadRequestException;
+    Mono<Post> createPost(String title, String description);
 
-    Mono<Void> updatePost(int postId, String title, String description) throws BadRequestException;
+    Mono<Void> updatePost(int postId, String title, String description);
 
     Mono<Void> deletePost(int postId);
 }

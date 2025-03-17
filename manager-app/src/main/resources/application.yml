@@ -1,5 +1,5 @@
 doomerhub:
-  service:
+  services:
     search:
       uri: http://localhost:8081
       username: admin_role
