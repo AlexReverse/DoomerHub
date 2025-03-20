@@ -12,8 +12,10 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity) {
         return httpSecurity
-                .authorizeExchange(customizer -> customizer.anyExchange().authenticated())
-                .oauth2Login(Customizer.withDefaults())
+                .authorizeExchange(customizer -> customizer.pathMatchers("/author_login",
+                                "/images/favicon.png", "style.css").permitAll()
+                        .anyExchange().authenticated())
+                .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.loginPage("/author_login"))
                 .oauth2Client(Customizer.withDefaults())
                 .build();
     }
