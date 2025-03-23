@@ -12,8 +12,10 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity) {
         return httpSecurity
-                .authorizeExchange(customizer -> customizer.anyExchange().authenticated())
-                .oauth2Login(Customizer.withDefaults())
+                .authorizeExchange(customizer -> customizer.pathMatchers("/images/favicon.png",
+                                "style.css").permitAll()
+                        .anyExchange().authenticated())
+                .oauth2Login(Customizer.withDefaults()) //todo: переписать 'base' login theme
                 .oauth2Client(Customizer.withDefaults())
                 .build();
     }

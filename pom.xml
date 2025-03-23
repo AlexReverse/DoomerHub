@@ -25,6 +25,7 @@
 		<module>search-service</module>
         <module>author-app</module>
         <module>feedback-service</module>
+        <module>doomer-ai</module>
     </modules>
 	<scm>
 		<connection/>
