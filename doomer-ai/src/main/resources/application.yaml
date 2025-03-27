@@ -1,0 +1,13 @@
+server:
+  port: 8086
+spring:
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: deepseek-r1:1.5b
+          temperature: 1
+
+#          docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+#          docker exec -it ollama ollama run deepseek-r1:1.5b
