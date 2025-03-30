@@ -1,13 +1,23 @@
 server:
-  port: 8086
+  port: 8085
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8084/realms/doomerhub
   ai:
     ollama:
       base-url: http://localhost:11434
       chat:
         options:
-          model: deepseek-r1:1.5b
+          model: owl/t-lite #deepseek-r1:1.5b
           temperature: 1
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    io.r2dbc.spi: DEBUG
 
 #          docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 #          docker exec -it ollama ollama run deepseek-r1:1.5b
