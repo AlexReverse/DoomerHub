@@ -8,4 +8,6 @@ public record NewPostPayload(
     @Size(min = 3, max = 50, message = "{feedback.posts.create.errors.title_size_is_invalid}")
     String title,
     @Size(min = 100, max = 5000, message = "{feedback.posts.create.errors.description_size_is_invalid}")
-    String description) {}
+    String description,
+    @NotNull(message = "{feedback.posts.create.errors.userid_is_null}")
+    String userId) {}

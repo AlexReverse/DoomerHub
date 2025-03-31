@@ -5,6 +5,7 @@ import org.alexreverse.client.FavouritePostsClient;
 import org.alexreverse.client.PostsClient;
 import org.alexreverse.controller.payload.NewPostPayload;
 import org.alexreverse.entity.FavouritePost;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
@@ -37,9 +38,10 @@ public class PostsController {
     }
 
     @PostMapping("create")
-    public Mono<String> createPost(NewPostPayload payload, Model model) {
+    public Mono<String> createPost(NewPostPayload payload, Model model, OAuth2AuthenticationToken token) {
         try {
-            return this.postsClient.createPost(payload.title(), payload.description())
+            return this.postsClient.createPost(payload.title(), payload.description(),
+                            token.getPrincipal().getAttribute("sub"))
                     .thenReturn("redirect:/search/posts/list");
         } catch (Exception exception) {
             model.addAttribute("payload", payload);

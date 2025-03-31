@@ -9,6 +9,8 @@ import org.alexreverse.client.exception.ClientBadRequestException;
 import org.alexreverse.controller.payload.NewPostReviewPayload;
 import org.alexreverse.controller.payload.UpdatePostPayload;
 import org.alexreverse.entity.Post;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
@@ -49,10 +51,17 @@ public class PostController {
 
     @PostMapping("edit")
     public Mono<String> updatePost(@ModelAttribute(name = "post", binding = false) Post post,
-                             UpdatePostPayload payload, Model model) {
+                                   UpdatePostPayload payload, Model model, OAuth2AuthenticationToken token) {
         try {
+            if (!post.userId().equals(token.getPrincipal().getAttribute("sub"))) {
+                throw new AccessDeniedException("The user %s is not authorized or has no rights for post id = %d"
+                        .formatted(token.getPrincipal().getAttribute("sub"), post.id()));
+            }
             return this.postsClient.updatePost(post.id(), payload.title(), payload.description())
                     .thenReturn("redirect:/search/posts/%d".formatted(post.id()));
+        } catch (AccessDeniedException exception) {
+            log.info(exception.getMessage());
+            return Mono.just("redirect:/search/posts/list");
         } catch (Exception exception) {
             model.addAttribute("payload", payload);
             model.addAttribute("errors", exception.getMessage());
@@ -61,9 +70,18 @@ public class PostController {
     }
 
     @PostMapping("delete")
-    public Mono<String> deletePost(@ModelAttribute("post") Post post) {
-        return this.postsClient.deletePost(post.id())
-                .thenReturn("redirect:/search/posts/list");
+    public Mono<String> deletePost(@ModelAttribute("post") Post post, OAuth2AuthenticationToken token) {
+        try {
+            if (!post.userId().equals(token.getPrincipal().getAttribute("sub"))) {
+                throw new AccessDeniedException("The user %s is not authorized or has no rights for post id = %d".formatted(
+                        token.getPrincipal().getAttribute("sub"), post.id()));
+            }
+            return this.postsClient.deletePost(post.id())
+                    .thenReturn("redirect:/search/posts/list");
+        } catch (AccessDeniedException exception) {
+            log.info(exception.getMessage());
+            return Mono.just("redirect:/search/posts/list");
+        }
     }
 
     @PostMapping("add-to-favourites")

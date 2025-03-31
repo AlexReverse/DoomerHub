@@ -29,4 +29,9 @@ public class Post {
     @NotNull
     @Size(max = 5000)
     private String description;
+
+    @Column(name = "userId")
+    @NotNull
+    @Size(max = 50)
+    private String userId;
 }

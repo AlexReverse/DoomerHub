@@ -26,7 +26,8 @@ public class PostsRestController {
     public Mono<ResponseEntity<Post>> createPost(@Valid @RequestBody Mono<NewPostPayload> newPostPayloadMono,
                                                  UriComponentsBuilder uriComponentsBuilder) {
         return newPostPayloadMono
-                .flatMap(newPostPayload -> this.postService.createPost(newPostPayload.title(), newPostPayload.description()))
+                .flatMap(newPostPayload -> this.postService.createPost(newPostPayload.title(),
+                        newPostPayload.description(), newPostPayload.userId()))
                 .map(postService -> ResponseEntity
                         .created(uriComponentsBuilder.replacePath("/search-api/posts/{postId}")
                                 .build(postService.getId()))
