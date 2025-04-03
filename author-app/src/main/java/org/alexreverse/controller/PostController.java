@@ -40,7 +40,9 @@ public class PostController {
     }
 
     @GetMapping
-    public Mono<String> getPost() {
+    public Mono<String> getPost(Post post, Model model, OAuth2AuthenticationToken token) {
+        model.addAttribute("isCurrentAuthor",
+                post.userId().equals(token.getPrincipal().getAttribute("sub")));
         return Mono.just("search/posts/post");
     }
 

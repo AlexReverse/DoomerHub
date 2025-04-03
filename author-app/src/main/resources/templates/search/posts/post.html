@@ -25,8 +25,8 @@
     <li><strong>Название</strong>: <span data-th-text="${post.title}"></span></li>
     <li><strong>Описание</strong>: <span data-th-text="${post.description}"></span></li>
 </ul>
-<a data-th-href="@{/search/posts/{postId}/edit(postId=${post.id})}">Изменить</a>
-<form method="post" data-th-action="@{/search/posts/{postId}/delete(postId=${post.id})}">
+<a data-th-href="@{/search/posts/{postId}/edit(postId=${post.id})}" data-th-if="${isCurrentAuthor}">Изменить</a>
+<form method="post" data-th-action="@{/search/posts/{postId}/delete(postId=${post.id})}" data-th-if="${isCurrentAuthor}">
     <button type="submit">Удалить</button>
 </form>
 </body>
