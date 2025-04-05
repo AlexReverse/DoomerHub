@@ -52,9 +52,10 @@ public class PostsController {
 
     @GetMapping("favourites")
     public Mono<String> getFavouritePostsPage(Model model,
-                                                 @RequestParam(name = "filter", required = false) String filter) {
+                                                 @RequestParam(name = "filter", required = false) String filter,
+                                              OAuth2AuthenticationToken token) {
         model.addAttribute("filter", filter);
-        return this.favouritePostsService.findFavouritePosts()
+        return this.favouritePostsService.findFavouritePosts(token.getPrincipal().getAttribute("preferred_username"))
                 .map(FavouritePost::postId)
                 .collectList()
                 .flatMap(favouritePosts -> this.postsClient.findAllPosts(filter)

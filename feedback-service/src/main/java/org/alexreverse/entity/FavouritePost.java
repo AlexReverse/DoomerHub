@@ -1,6 +1,8 @@
 package org.alexreverse.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,4 +26,9 @@ public class FavouritePost {
             joinColumns = @JoinColumn(name = "id_favourite_post"),
             inverseJoinColumns = @JoinColumn(name = "id_post"))
     private int postId;
+
+    @Column(name = "user")
+    @NotNull
+    @Size(max = 50)
+    private String user;
 }

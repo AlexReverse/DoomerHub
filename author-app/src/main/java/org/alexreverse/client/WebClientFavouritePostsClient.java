@@ -17,27 +17,27 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
 
     private final WebClient webClient;
     @Override
-    public Flux<FavouritePost> findFavouritePosts() {
+    public Flux<FavouritePost> findFavouritePosts(String user) {
         return this.webClient.get()
-                .uri("/feedback-api/favourite-posts")
+                .uri("favourite/{user}", user)
                 .retrieve()
                 .bodyToFlux(FavouritePost.class);
     }
 
     @Override
-    public Mono<FavouritePost> findFavouritePostByPostId(int postId) {
+    public Mono<FavouritePost> findFavouritePostByPostId(int postId, String user) {
         return this.webClient.get()
-                .uri("/feedback-api/favourite-posts/by-post-id/{postId}", postId)
+                .uri("favourite/by-post-id/{postId}", postId, user)
                 .retrieve()
                 .bodyToMono(FavouritePost.class)
                 .onErrorComplete(WebClientResponseException.NotFound.class);
     }
 
     @Override
-    public Mono<FavouritePost> addPostToFavourites(int postId) {
+    public Mono<FavouritePost> addPostToFavourites(int postId, String user) {
         return this.webClient.post()
-                .uri("/feedback-api/favourite-posts")
-                .bodyValue(new NewFavouritePostPayload(postId))
+                .uri("favourite")
+                .bodyValue(new NewFavouritePostPayload(postId, user))
                 .retrieve()
                 .bodyToMono(FavouritePost.class)
                 .onErrorMap(WebClientResponseException.BadRequest.class,
@@ -47,8 +47,8 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
     }
 
     @Override
-    public Mono<Void> removePostFromFavourites(int postId) {
-        return this.webClient.delete().uri("/feedback-api/favourite-posts/by-post-id/{postId}", postId)
+    public Mono<Void> removePostFromFavourites(int postId, String userId) {
+        return this.webClient.delete().uri("favourite/by-post-id/{postId}", postId)
                 .retrieve()
                 .toBodilessEntity()
                 .then();

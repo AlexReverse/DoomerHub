@@ -12,30 +12,31 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Controller
-@RequestMapping("feedback-api/favourite-posts")
+@RestController
+@RequestMapping("favourite/{user}")
 @RequiredArgsConstructor
 public class FavouritePostsRestController {
 
     private final FavouritePostsService favouritePostsService;
 
     @GetMapping
-    public Flux<FavouritePost> findFavouritePosts() {
-        return this.favouritePostsService.findFavouritePosts();
+    public Flux<FavouritePost> findFavouritePosts(@PathVariable("user") String user) {
+        return this.favouritePostsService.findFavouritePosts(user);
     }
 
     @GetMapping("by-post-id/{postId:\\d+}")
-    public Mono<FavouritePost> findFavouritePostByPostId(@PathVariable("postId") Integer postId) {
-        return this.favouritePostsService.findFavouritePostByPost(postId);
+    public Mono<FavouritePost> findFavouritePostByPostId(@PathVariable("postId") Integer postId, String user) {
+        return this.favouritePostsService.findFavouritePostByPost(postId, user);
     }
 
     @PostMapping
     public Mono<ResponseEntity<FavouritePost>> addPostToFavourites(@Valid @RequestBody Mono<NewFavouritePostPayload>
                                                                                payloadMono,
                                                                    UriComponentsBuilder uriComponentsBuilder) {
-        return payloadMono.flatMap(payload -> this.favouritePostsService.addPostToFavourites(payload.postId()))
+        return payloadMono.flatMap(payload -> this.favouritePostsService.addPostToFavourites(payload.postId(),
+                        payload.userId()))
                 .map(favouritePost -> ResponseEntity
-                        .created(uriComponentsBuilder.replacePath("feedback-api/favourite-posts/{id}")
+                        .created(uriComponentsBuilder.replacePath("favourite/{id}")
                                 .build(favouritePost.getIdFavouritePost()))
                         .body(favouritePost));
     }

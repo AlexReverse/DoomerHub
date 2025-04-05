@@ -8,6 +8,7 @@ import org.alexreverse.client.PostsClient;
 import org.alexreverse.client.exception.ClientBadRequestException;
 import org.alexreverse.controller.payload.NewPostReviewPayload;
 import org.alexreverse.controller.payload.UpdatePostPayload;
+import org.alexreverse.entity.FavouritePost;
 import org.alexreverse.entity.Post;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -41,8 +42,10 @@ public class PostController {
 
     @GetMapping
     public Mono<String> getPost(Post post, Model model, OAuth2AuthenticationToken token) {
+        Mono<FavouritePost> result = favouritePostsClient.findFavouritePostByPostId(post.id(), post.userId());
         model.addAttribute("isCurrentAuthor",
                 post.userId().equals(token.getPrincipal().getAttribute("sub")));
+        model.addAttribute("inFavourite", result);
         return Mono.just("search/posts/post");
     }
 
@@ -87,10 +90,11 @@ public class PostController {
     }
 
     @PostMapping("add-to-favourites")
-    public Mono<String> addPostToFavourites(@ModelAttribute("post") Mono<Post> postMono) {
+    public Mono<String> addPostToFavourites(@ModelAttribute("post") Mono<Post> postMono,
+                                            OAuth2AuthenticationToken token) {
         return postMono
                 .map(Post::id)
-                .flatMap(postId -> this.favouritePostsClient.addPostToFavourites(postId)
+                .flatMap(postId -> this.favouritePostsClient.addPostToFavourites(postId, token.getPrincipal().getAttribute("sub"))
                         .thenReturn("redirect:/search/posts/%d".formatted(postId))
                         .onErrorResume(exception -> {
                             log.error(exception.getMessage(), exception);
@@ -99,23 +103,26 @@ public class PostController {
     }
 
     @PostMapping("remove-from-favourites")
-    public Mono<String> removePostFromFavourites(@ModelAttribute("post") Mono<Post> postMono) {
-        return postMono.map(Post::id)
-                .flatMap(postId -> this.favouritePostsClient.removePostFromFavourites(postId)
+    public Mono<String> removePostFromFavourites(@ModelAttribute("post") Mono<Post> post,
+                                                 OAuth2AuthenticationToken token) {
+        return post.map(Post::id)
+                .flatMap(postId -> this.favouritePostsClient.removePostFromFavourites(postId,
+                                token.getPrincipal().getAttribute("sub"))
                         .thenReturn("redirect:/search/posts/%d".formatted(postId)));
     }
 
     @PostMapping("create-review")
     public Mono<String> createReview(@PathVariable("postId") int id,
                                      NewPostReviewPayload payload,
-                                     Model model) {
+                                     Model model, OAuth2AuthenticationToken token) {
         return this.postReviewsClient.createPostReview(id, payload.rating(), payload.review())
                 .thenReturn("redirect:/search/posts/%d".formatted(id))
                 .onErrorResume(ClientBadRequestException.class, exception -> {
                     model.addAttribute("inFavourite", false);
                     model.addAttribute("payload", payload);
                     model.addAttribute("errors", exception.getErrors());
-                    return this.favouritePostsClient.findFavouritePostByPostId(id)
+                    return this.favouritePostsClient.findFavouritePostByPostId(id,
+                                    token.getPrincipal().getAttribute("sub"))
                             .doOnNext(favouritePost -> model.addAttribute("inFavourite", true))
                             .thenReturn("search/posts/post");
                 });
