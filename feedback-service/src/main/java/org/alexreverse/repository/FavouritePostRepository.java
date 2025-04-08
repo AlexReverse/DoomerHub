@@ -9,8 +9,7 @@ import java.util.UUID;
 
 public interface FavouritePostRepository extends ReactiveCrudRepository<FavouritePost, UUID> {
 
-
-    Mono<Void> deleteByPostId(int postId);
+    Mono<Void> deleteByPostIdAndUser(int postId, String user);
 
     Mono<FavouritePost> findByPostIdAndUser(int postId, String user);
 

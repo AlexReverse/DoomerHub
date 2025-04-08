@@ -11,14 +11,14 @@
 </head>
 <body>
 <a data-th-href="@{/search/posts/list}">&larr; Поиск постов</a>
-<!--<form method="post" data-th-action="@{/search/posts/{postId}/add-to-favourites(postId=${post.id})}"-->
-<!--      data-th-if="${!inFavourite}">-->
-<!--    <button type="submit">Добавить в избранное</button>-->
-<!--</form>-->
-<!--<form method="post" data-th-action="@{/search/posts/{postId}/remove-from-favourites(postId=${post.id})}"-->
-<!--      data-th-if="${inFavourite}">-->
-<!--    <button type="submit">Удалить из избранного</button>-->
-<!--</form>-->
+<form method="post" data-th-action="@{/search/posts/{postId}/add-to-favourites(postId=${post.id})}"
+      data-th-if="${!inFavourite}">
+    <button type="submit">Добавить в избранное</button>
+</form>
+<form method="post" data-th-action="@{/search/posts/{postId}/remove-from-favourites(postId=${post.id})}"
+      data-th-if="${inFavourite}">
+    <button type="submit">Удалить из избранного</button>
+</form>
 <h1 data-th-text="${post.title}"></h1>
 <ul>
     <li><strong>ID</strong>: <span data-th-text="${post.id}"></span></li>

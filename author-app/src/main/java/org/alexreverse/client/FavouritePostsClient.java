@@ -8,7 +8,7 @@ public interface FavouritePostsClient {
 
     Flux<FavouritePost> findFavouritePosts(String user);
 
-    Mono<FavouritePost> findFavouritePostByPostId(int postId, String userId);
+    Mono<FavouritePost> findFavouritePostByPostIdAndUser(int postId, String user);
 
     Mono<FavouritePost> addPostToFavourites(int postId, String userId);
 

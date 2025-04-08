@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+
 @Service
 @RequiredArgsConstructor
 public class DefaultFavouritePostsService implements FavouritePostsService {
@@ -21,8 +22,8 @@ public class DefaultFavouritePostsService implements FavouritePostsService {
     }
 
     @Override
-    public Mono<Void> removePostFromFavourites(int postId) {
-        return this.favouriteRepository.deleteByPostId(postId);
+    public Mono<Void> removePostFromFavourites(int postId, String user) {
+        return this.favouriteRepository.deleteByPostIdAndUser(postId, user);
     }
 
     @Override

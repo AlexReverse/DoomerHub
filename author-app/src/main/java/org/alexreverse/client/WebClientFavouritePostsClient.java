@@ -25,9 +25,9 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
     }
 
     @Override
-    public Mono<FavouritePost> findFavouritePostByPostId(int postId, String user) {
+    public Mono<FavouritePost> findFavouritePostByPostIdAndUser(int postId, String user) {
         return this.webClient.get()
-                .uri("favourite/by-post-id/{postId}", postId, user)
+                .uri("favourite/{user}/by-post-id/{postId}", user, postId)
                 .retrieve()
                 .bodyToMono(FavouritePost.class)
                 .onErrorComplete(WebClientResponseException.NotFound.class);
@@ -47,8 +47,8 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
     }
 
     @Override
-    public Mono<Void> removePostFromFavourites(int postId, String userId) {
-        return this.webClient.delete().uri("favourite/by-post-id/{postId}", postId)
+    public Mono<Void> removePostFromFavourites(int postId, String user) {
+        return this.webClient.delete().uri("favourite/by-post-id/{postId}&{user}", postId, user)
                 .retrieve()
                 .toBodilessEntity()
                 .then();
