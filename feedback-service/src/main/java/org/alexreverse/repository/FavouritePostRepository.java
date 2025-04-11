@@ -5,13 +5,12 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
 
-public interface FavouritePostRepository extends ReactiveCrudRepository<FavouritePost, UUID> {
+public interface FavouritePostRepository extends ReactiveCrudRepository<FavouritePost, Integer> {
 
-    Mono<Void> deleteByPostIdAndUser(int postId, String user);
+    Mono<Void> deleteByPostIdAndUserName(int postId, String userName);
 
-    Mono<FavouritePost> findByPostIdAndUser(int postId, String user);
+    Mono<FavouritePost> findByPostIdAndUserName(int postId, String userName);
 
-    Flux<FavouritePost> findAllByUser(String user);
+    Flux<FavouritePost> findAllByUserName(String userName);
 }

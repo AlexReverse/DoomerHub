@@ -7,40 +7,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
-
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(schema = "doomerhub",name = "favourite_post")
-public class FavouritePost implements Persistable<UUID>{
+public class FavouritePost {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    private UUID idFavouritePost;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(schema = "doomerhub", name = "favourite_post_list",
-            joinColumns = @JoinColumn(name = "id_favourite_post"),
-            inverseJoinColumns = @JoinColumn(name = "id_post"))
-    private int postId;
-
-    @Column(name = "user")
+    @Column(name = "post_id")
     @NotNull
     @Size(max = 50)
-    private String user;
+    private int postId;
 
-    @Override
-    public UUID getId() {
-        return this.idFavouritePost;
-    }
-
-    @Override
-    public boolean isNew() {
-        return true;
-    }
+    @Column(name = "user_name")
+    @NotNull
+    @Size(max = 50)
+    private String userName;
 }

@@ -1,6 +1,4 @@
 package org.alexreverse.entity;
 
-import java.util.UUID;
-
-public record FavouritePost(UUID id, int postId, String user) {
+public record FavouritePost(Integer id, int postId, String userName) {
 }

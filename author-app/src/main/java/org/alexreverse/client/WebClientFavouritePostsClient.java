@@ -17,27 +17,27 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
 
     private final WebClient webClient;
     @Override
-    public Flux<FavouritePost> findFavouritePosts(String user) {
+    public Flux<FavouritePost> findFavouritePosts(String userName) {
         return this.webClient.get()
-                .uri("favourite/{user}", user)
+                .uri("favourite/{userName}", userName)
                 .retrieve()
                 .bodyToFlux(FavouritePost.class);
     }
 
     @Override
-    public Mono<FavouritePost> findFavouritePostByPostIdAndUser(int postId, String user) {
+    public Mono<FavouritePost> findFavouritePostByPostIdAndUser(int postId, String userName) {
         return this.webClient.get()
-                .uri("favourite/{user}/by-post-id/{postId}", user, postId)
+                .uri("favourite/{userName}/by-post-id/{postId}", userName, postId)
                 .retrieve()
                 .bodyToMono(FavouritePost.class)
                 .onErrorComplete(WebClientResponseException.NotFound.class);
     }
 
     @Override
-    public Mono<FavouritePost> addPostToFavourites(int postId, String user) {
+    public Mono<FavouritePost> addPostToFavourites(int postId, String userName) {
         return this.webClient.post()
-                .uri("favourite")
-                .bodyValue(new NewFavouritePostPayload(postId, user))
+                .uri("favourite/{userName}", userName)
+                .bodyValue(new NewFavouritePostPayload(postId, userName))
                 .retrieve()
                 .bodyToMono(FavouritePost.class)
                 .onErrorMap(WebClientResponseException.BadRequest.class,
@@ -47,8 +47,8 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
     }
 
     @Override
-    public Mono<Void> removePostFromFavourites(int postId, String user) {
-        return this.webClient.delete().uri("favourite/by-post-id/{postId}&{user}", postId, user)
+    public Mono<Void> removePostFromFavourites(int postId, String userName) {
+        return this.webClient.delete().uri("favourite/{userName}/by-post-id/{postId}", userName, postId)
                 .retrieve()
                 .toBodilessEntity()
                 .then();

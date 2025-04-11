@@ -12,37 +12,39 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("favourite/{user}")
+@RequestMapping("favourite/{userName}")
 @RequiredArgsConstructor
 public class FavouritePostsRestController {
 
     private final FavouritePostsService favouritePostsService;
 
     @GetMapping
-    public Flux<FavouritePost> findFavouritePosts(@PathVariable("user") String user) {
-        return this.favouritePostsService.findFavouritePosts(user);
+    public Flux<FavouritePost> findFavouritePosts(@PathVariable("userName") String userName) {
+        return this.favouritePostsService.findFavouritePosts(userName);
     }
     @GetMapping("by-post-id/{postId:\\d+}")
     public Mono<FavouritePost> findFavouritePostByPostId(@PathVariable("postId") Integer postId,
-                                                         @PathVariable("user") String user) {
-        return this.favouritePostsService.findFavouritePostByPost(postId, user);
+                                                         @PathVariable("userName") String userName) {
+        return this.favouritePostsService.findFavouritePostByPost(postId, userName);
     }
     @PostMapping
-    public Mono<ResponseEntity<FavouritePost>> addPostToFavourites(@Valid @RequestBody Mono<NewFavouritePostPayload>
-                                                                               payloadMono,
-                                                                   UriComponentsBuilder uriComponentsBuilder) {
-        return payloadMono.flatMap(payload -> this.favouritePostsService.addPostToFavourites(payload.postId(),
-                        payload.user()))
+    public Mono<ResponseEntity<FavouritePost>> addPostToFavourites(
+            @Valid @RequestBody Mono<NewFavouritePostPayload> payloadMono,
+            UriComponentsBuilder uriComponentsBuilder
+    ) {
+        return payloadMono
+                .flatMap(payload -> this.favouritePostsService.createFavouritePost(payload.postId(), payload.userName()))
                 .map(favouritePost -> ResponseEntity
-                        .created(uriComponentsBuilder.replacePath("favourite/{idFavouritePost}")
-                                .build(favouritePost.getIdFavouritePost()))
+                        .created(uriComponentsBuilder.replacePath("favourite/{userName}")
+                                .build(favouritePost.getUserName()))
                         .body(favouritePost))
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 
     @DeleteMapping("by-post-id/{postId:\\d+}")
-    public Mono<ResponseEntity<Void>> removePostFromFavourites(@PathVariable("postId") int postId, String user) {
-        return this.favouritePostsService.removePostFromFavourites(postId, user)
+    public Mono<ResponseEntity<Void>> removePostFromFavourites(@PathVariable("postId") int postId,
+                                                               @PathVariable("userName") String userName) {
+        return this.favouritePostsService.removePostFromFavourites(postId, userName)
                 .then(Mono.just(ResponseEntity.noContent().build()));
     }
 }

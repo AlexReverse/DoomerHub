@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 
 @Service
 @RequiredArgsConstructor
@@ -17,22 +15,22 @@ public class DefaultFavouritePostsService implements FavouritePostsService {
     private final FavouritePostRepository favouriteRepository;
 
     @Override
-    public Mono<FavouritePost> addPostToFavourites(int postId, String user) {
-        return this.favouriteRepository.save(new FavouritePost(UUID.randomUUID(), postId, user));
+    public Mono<FavouritePost> createFavouritePost(int postId, String userName) {
+        return this.favouriteRepository.save(new FavouritePost(null, postId, userName));
     }
 
     @Override
-    public Mono<Void> removePostFromFavourites(int postId, String user) {
-        return this.favouriteRepository.deleteByPostIdAndUser(postId, user);
+    public Mono<Void> removePostFromFavourites(int postId, String userName) {
+        return this.favouriteRepository.deleteByPostIdAndUserName(postId, userName);
     }
 
     @Override
-    public Mono<FavouritePost> findFavouritePostByPost(int postId, String user) {
-        return this.favouriteRepository.findByPostIdAndUser(postId, user);
+    public Mono<FavouritePost> findFavouritePostByPost(int postId, String userName) {
+        return this.favouriteRepository.findByPostIdAndUserName(postId, userName);
     }
 
     @Override
-    public Flux<FavouritePost> findFavouritePosts(String user) {
-        return this.favouriteRepository.findAllByUser(user);
+    public Flux<FavouritePost> findFavouritePosts(String userName) {
+        return this.favouriteRepository.findAllByUserName(userName);
     }
 }

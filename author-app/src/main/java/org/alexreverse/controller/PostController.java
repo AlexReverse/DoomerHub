@@ -95,7 +95,8 @@ public class PostController {
                                             OAuth2AuthenticationToken token) {
         return postMono
                 .map(Post::id)
-                .flatMap(postId -> this.favouritePostsClient.addPostToFavourites(postId, token.getPrincipal().getAttribute("sub"))
+                .flatMap(postId -> this.favouritePostsClient.addPostToFavourites(postId,
+                                token.getPrincipal().getAttribute("preferred_username"))
                         .thenReturn("redirect:/search/posts/%d".formatted(postId))
                         .onErrorResume(exception -> {
                             log.error(exception.getMessage(), exception);
@@ -108,7 +109,7 @@ public class PostController {
                                                  OAuth2AuthenticationToken token) {
         return post.map(Post::id)
                 .flatMap(postId -> this.favouritePostsClient.removePostFromFavourites(postId,
-                                token.getPrincipal().getAttribute("sub"))
+                                token.getPrincipal().getAttribute("preferred_username"))
                         .thenReturn("redirect:/search/posts/%d".formatted(postId)));
     }
 
