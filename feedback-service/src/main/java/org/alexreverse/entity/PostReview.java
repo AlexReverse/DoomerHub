@@ -17,12 +17,12 @@ import java.util.UUID;
 public class PostReview {
 
     @Id
-    private UUID id;
+    private Long id;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinTable(schema = "doomerhub", name = "post_review_list",
             joinColumns = @JoinColumn(name = "id_favourite_post"),
             inverseJoinColumns = @JoinColumn(name = "id_post"))
-    private int postId;
-    private int rating;
+    private Long postId;
+    private Long rating;
     private String review;
 }

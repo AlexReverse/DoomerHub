@@ -1,4 +1,4 @@
 package org.alexreverse.client.payload;
 
-public record NewFavouritePostPayload(int postId, String userName) {
+public record NewFavouritePostPayload(Long postId, String userName) {
 }

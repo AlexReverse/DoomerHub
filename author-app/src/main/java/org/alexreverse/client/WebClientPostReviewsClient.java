@@ -17,7 +17,7 @@ public class WebClientPostReviewsClient implements PostReviewsClient {
 
     private final WebClient webClient;
     @Override
-    public Flux<PostReview> findPostReviewsByPostId(Integer postId) {
+    public Flux<PostReview> findPostReviewsByPostId(Long postId) {
         return this.webClient
                 .get()
                 .uri("/feedback-api/post-reviews/by-post-id/{postId}", postId)
@@ -26,7 +26,7 @@ public class WebClientPostReviewsClient implements PostReviewsClient {
     }
 
     @Override
-    public Mono<PostReview> createPostReview(Integer postId, Integer rating, String review) {
+    public Mono<PostReview> createPostReview(Long postId, Long rating, String review) {
         return this.webClient
                 .post()
                 .uri("/feedback-api/post-reviews")

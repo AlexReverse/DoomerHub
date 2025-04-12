@@ -15,14 +15,14 @@ public class DefaultPostReviewsService implements PostReviewsService {
 
     private final PostReviewRepository postReviewRepository;
     @Override
-    public Mono<PostReview> createPostReview(int postId, int rating, String review) {
+    public Mono<PostReview> createPostReview(Long postId, Long rating, String review) {
         return this.postReviewRepository.save(
-                new PostReview(UUID.randomUUID(), postId, rating, review)
+                new PostReview(null, postId, rating, review)
         );
     }
 
     @Override
-    public Flux<PostReview> findPostReviewsByPost(int postId) {
+    public Flux<PostReview> findPostReviewsByPost(Long postId) {
         return this.postReviewRepository.findAllByPostId(postId);
     }
 }

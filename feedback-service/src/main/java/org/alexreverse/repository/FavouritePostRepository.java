@@ -8,9 +8,9 @@ import reactor.core.publisher.Mono;
 
 public interface FavouritePostRepository extends ReactiveCrudRepository<FavouritePost, Long> {
 
-    Mono<Void> deleteByPostIdAndUserName(int postId, String userName);
+    Mono<Void> deleteByPostIdAndUserName(Long postId, String userName);
 
-    Mono<FavouritePost> findByPostIdAndUserName(int postId, String userName);
+    Mono<FavouritePost> findByPostIdAndUserName(Long postId, String userName);
 
     Flux<FavouritePost> findAllByUserName(String userName);
 }

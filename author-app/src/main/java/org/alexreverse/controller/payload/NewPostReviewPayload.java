@@ -1,4 +1,4 @@
 package org.alexreverse.controller.payload;
 
-public record NewPostReviewPayload(Integer rating, String review) {
+public record NewPostReviewPayload(Long rating, String review) {
 }

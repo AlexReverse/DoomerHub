@@ -35,7 +35,7 @@ public class PostController {
     private final PostReviewsClient postReviewsClient;
 
     @ModelAttribute(name = "post")
-    public Mono<Post> loadPost(@PathVariable("postId") int id) {
+    public Mono<Post> loadPost(@PathVariable("postId") Long id) {
         return this.postsClient.findPost(id)
                 .switchIfEmpty(Mono.error(new NoSuchElementException("search.posts.error.not_found")));
     }
@@ -114,7 +114,7 @@ public class PostController {
     }
 
     @PostMapping("create-review")
-    public Mono<String> createReview(@PathVariable("postId") int id,
+    public Mono<String> createReview(@PathVariable("postId") Long id,
                                      NewPostReviewPayload payload,
                                      Model model, OAuth2AuthenticationToken token) {
         return this.postReviewsClient.createPostReview(id, payload.rating(), payload.review())

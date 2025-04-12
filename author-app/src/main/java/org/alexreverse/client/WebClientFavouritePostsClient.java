@@ -25,7 +25,7 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
     }
 
     @Override
-    public Mono<FavouritePost> findFavouritePostByPostIdAndUser(int postId, String userName) {
+    public Mono<FavouritePost> findFavouritePostByPostIdAndUser(Long postId, String userName) {
         return this.webClient.get()
                 .uri("favourite/{userName}/by-post-id/{postId}", userName, postId)
                 .retrieve()
@@ -34,7 +34,7 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
     }
 
     @Override
-    public Mono<FavouritePost> addPostToFavourites(int postId, String userName) {
+    public Mono<FavouritePost> addPostToFavourites(Long postId, String userName) {
         return this.webClient.post()
                 .uri("favourite/{userName}", userName)
                 .bodyValue(new NewFavouritePostPayload(postId, userName))
@@ -47,7 +47,7 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
     }
 
     @Override
-    public Mono<Void> removePostFromFavourites(int postId, String userName) {
+    public Mono<Void> removePostFromFavourites(Long postId, String userName) {
         return this.webClient.delete().uri("favourite/{userName}/by-post-id/{postId}", userName, postId)
                 .retrieve()
                 .toBodilessEntity()

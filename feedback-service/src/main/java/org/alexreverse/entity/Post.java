@@ -13,12 +13,12 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "doomerhub", name = "t_post")
+@Table(schema = "doomerhub", name = "author_post")
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "title")
     @NotNull
@@ -30,7 +30,7 @@ public class Post {
     @Size(max = 5000)
     private String description;
 
-    @Column(name = "userId")
+    @Column(name = "user_id")
     @NotNull
     @Size(max = 50)
     private String userId;

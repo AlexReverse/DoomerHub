@@ -9,9 +9,9 @@ public interface PostService {
 
     Mono<Post> createPost(String title, String description, String userId);
 
-    Mono<Post> findPost(int postId);
+    Mono<Post> findPost(Long id);
 
-    Mono<Void> updatePost(int id, String title, String description);
+    Mono<Void> updatePost(Long id, String title, String description);
 
-    Mono<Void> deletePost(Integer id);
+    Mono<Void> deletePost(Long id);
 }

@@ -20,10 +20,10 @@ public class FavouritePost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
     @Column(name = "post_id")
     @NotNull
-    @Size(max = 50)
-    private int postId;
+    private Long postId;
 
     @Column(name = "user_name")
     @NotNull

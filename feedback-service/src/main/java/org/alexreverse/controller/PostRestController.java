@@ -25,7 +25,7 @@ public class PostRestController {
     private final MessageSource messageSource;
 
     @ModelAttribute(name = "post", binding = false)
-    public Mono<Post> getPost(@PathVariable("postId") int id) {
+    public Mono<Post> getPost(@PathVariable("postId") Long id) {
         return this.postService.findPost(id).switchIfEmpty(Mono.error(new NoSuchElementException("search.posts.error.not_found")));
     }
 
@@ -35,7 +35,7 @@ public class PostRestController {
     }
 
     @PatchMapping
-    public Mono<ResponseEntity<Void>> updatePost(@PathVariable("postId") int postId,
+    public Mono<ResponseEntity<Void>> updatePost(@PathVariable("postId") Long postId,
                                         @Valid @RequestBody UpdatePostPayload payload) throws BindException {
 
             return this.postService.findPost(postId).flatMap(p ->
@@ -46,7 +46,7 @@ public class PostRestController {
     }
 
     @DeleteMapping
-    public Mono<ResponseEntity<Void>> deletePost(@PathVariable("postId") int postId) {
+    public Mono<ResponseEntity<Void>> deletePost(@PathVariable("postId") Long postId) {
         return this.postService.findPost(postId).flatMap(p ->
                         postService.deletePost(postId)
                                 .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))

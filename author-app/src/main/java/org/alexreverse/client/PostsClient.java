@@ -8,11 +8,11 @@ public interface PostsClient {
 
     Flux<Post> findAllPosts(String filter);
 
-    Mono<Post> findPost(int Id);
+    Mono<Post> findPost(Long Id);
 
     Mono<Post> createPost(String title, String description, String userId);
 
-    Mono<Void> updatePost(int postId, String title, String description);
+    Mono<Void> updatePost(Long postId, String title, String description);
 
-    Mono<Void> deletePost(int postId);
+    Mono<Void> deletePost(Long postId);
 }

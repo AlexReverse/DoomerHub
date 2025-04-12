@@ -15,17 +15,17 @@ public class DefaultFavouritePostsService implements FavouritePostsService {
     private final FavouritePostRepository favouriteRepository;
 
     @Override
-    public Mono<FavouritePost> createFavouritePost(int postId, String userName) {
+    public Mono<FavouritePost> createFavouritePost(Long postId, String userName) {
         return this.favouriteRepository.save(new FavouritePost(null, postId, userName));
     }
 
     @Override
-    public Mono<Void> removePostFromFavourites(int postId, String userName) {
+    public Mono<Void> removePostFromFavourites(Long postId, String userName) {
         return this.favouriteRepository.deleteByPostIdAndUserName(postId, userName);
     }
 
     @Override
-    public Mono<FavouritePost> findFavouritePostByPost(int postId, String userName) {
+    public Mono<FavouritePost> findFavouritePostByPost(Long postId, String userName) {
         return this.favouriteRepository.findByPostIdAndUserName(postId, userName);
     }
 

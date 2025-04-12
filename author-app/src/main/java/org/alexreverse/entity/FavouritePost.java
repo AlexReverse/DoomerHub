@@ -1,4 +1,4 @@
 package org.alexreverse.entity;
 
-public record FavouritePost(Integer id, int postId, String userName) {
+public record FavouritePost(Long id, Long postId, String userName) {
 }

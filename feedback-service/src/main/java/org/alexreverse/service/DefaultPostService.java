@@ -6,7 +6,6 @@ import org.alexreverse.repository.PostRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,12 +30,12 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public Mono<Post> findPost(int postId) {
+    public Mono<Post> findPost(Long postId) {
         return this.postRepository.findById(postId);
     }
 
     @Override
-    public Mono<Void> updatePost(int id, String title, String description) {
+    public Mono<Void> updatePost(Long id, String title, String description) {
         return this.postRepository.findById(id)
                 .flatMap(post -> {
                     post.setTitle(title);
@@ -48,7 +47,7 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public Mono<Void> deletePost(Integer id) {
+    public Mono<Void> deletePost(Long id) {
         return this.postRepository.deleteById(id);
     }
 }

@@ -30,7 +30,7 @@ public class WebClientPostsClient implements PostsClient {
     }
 
     @Override
-    public Mono<Post> findPost(int id) {
+    public Mono<Post> findPost(Long id) {
         return this.webClient.get()
                 .uri("/search-api/posts/{postId}", id)
                 .retrieve()
@@ -54,7 +54,7 @@ public class WebClientPostsClient implements PostsClient {
     }
 
     @Override
-    public Mono<Void> updatePost(int postId, String title, String description) {
+    public Mono<Void> updatePost(Long postId, String title, String description) {
         return this.webClient
                 .patch()
                 .uri("/search-api/posts/{postId}", postId)
@@ -69,7 +69,7 @@ public class WebClientPostsClient implements PostsClient {
     }
 
     @Override
-    public Mono<Void> deletePost(int postId) {
+    public Mono<Void> deletePost(Long postId) {
         try {
             return this.webClient
                     .delete()

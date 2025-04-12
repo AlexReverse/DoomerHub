@@ -23,7 +23,7 @@ public class FavouritePostsRestController {
         return this.favouritePostsService.findFavouritePosts(userName);
     }
     @GetMapping("by-post-id/{postId:\\d+}")
-    public Mono<FavouritePost> findFavouritePostByPostId(@PathVariable("postId") Integer postId,
+    public Mono<FavouritePost> findFavouritePostByPostId(@PathVariable("postId") Long postId,
                                                          @PathVariable("userName") String userName) {
         return this.favouritePostsService.findFavouritePostByPost(postId, userName);
     }
@@ -42,7 +42,7 @@ public class FavouritePostsRestController {
     }
 
     @DeleteMapping("by-post-id/{postId:\\d+}")
-    public Mono<ResponseEntity<Void>> removePostFromFavourites(@PathVariable("postId") int postId,
+    public Mono<ResponseEntity<Void>> removePostFromFavourites(@PathVariable("postId") Long postId,
                                                                @PathVariable("userName") String userName) {
         return this.favouritePostsService.removePostFromFavourites(postId, userName)
                 .then(Mono.just(ResponseEntity.noContent().build()));
