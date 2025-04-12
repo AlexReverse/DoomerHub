@@ -19,7 +19,7 @@
     <li data-th-each="post : ${posts}">
         <strong>
             <a data-th-text="${post.title}"
-               data-th-href="@{/search/posts/{postId}(postsId=${post.id})}"></a>
+               data-th-href="@{/search/posts/{postId}(postId=${post.id})}"></a>
         </strong>
         <p data-th-text="${post.description}"></p>
     </li>

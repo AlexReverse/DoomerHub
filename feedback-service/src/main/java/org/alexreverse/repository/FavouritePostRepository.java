@@ -6,7 +6,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
-public interface FavouritePostRepository extends ReactiveCrudRepository<FavouritePost, Integer> {
+public interface FavouritePostRepository extends ReactiveCrudRepository<FavouritePost, Long> {
 
     Mono<Void> deleteByPostIdAndUserName(int postId, String userName);
 
