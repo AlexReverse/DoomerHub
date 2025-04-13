@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 
 public interface PostReviewsService {
 
-    Mono<PostReview> createPostReview(Long postId, Long rating, String review);
+    Mono<PostReview> createPostReview(Long postId, String review, String userName);
 
-    Flux<PostReview> findPostReviewsByPost(Long postId);
+    Flux<PostReview> findPostReviewsByPostId(Long postId);
 }

@@ -21,14 +21,15 @@ public class PostReviewsRestController {
 
     @GetMapping("by-post-id/{postId:\\d+}")
     public Flux<PostReview> findPostReviewsByPostId(@PathVariable("postId") Long postId) {
-        return this.postReviewsService.findPostReviewsByPost(postId);
+        return this.postReviewsService.findPostReviewsByPostId(postId);
     }
 
     @PostMapping
     public Mono<ResponseEntity<PostReview>> createPostReview(@Valid @RequestBody Mono<NewPostReviewPayload> payloadMono,
                                                              UriComponentsBuilder uriComponentsBuilder) {
         return payloadMono
-                .flatMap(payload -> this.postReviewsService.createPostReview(payload.postId(), payload.rating(), payload.review()))
+                .flatMap(payload -> this.postReviewsService.createPostReview(payload.postId(), payload.review(),
+                        payload.userName()))
                 .map(postReview -> ResponseEntity
                         .created(uriComponentsBuilder.replacePath("/feedback-api/post-reviews/{id}")
                                 .build(postReview.getId()))

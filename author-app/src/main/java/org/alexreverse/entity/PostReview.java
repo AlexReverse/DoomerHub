@@ -1,6 +1,4 @@
 package org.alexreverse.entity;
 
-import java.util.UUID;
-
-public record PostReview(UUID id, int postId, int rating, String review) {
+public record PostReview(Long id, Long postId, String review, String userName) {
 }

@@ -8,5 +8,5 @@ public interface PostReviewsClient {
 
     Flux<PostReview> findPostReviewsByPostId(Long postId);
 
-    Mono<PostReview> createPostReview(Long postId, Long rating, String review);
+    Mono<PostReview> createPostReview(Long postId, String review, String userName);
 }

@@ -29,5 +29,17 @@
 <form method="post" data-th-action="@{/search/posts/{postId}/delete(postId=${post.id})}" data-th-if="${isCurrentAuthor}">
     <button type="submit">Удалить</button>
 </form>
+<h2>Комментарии: </h2>
+<div data-th-each="comment : ${comments}">
+    <h3>[[${comment.review}]]</h3>
+    <p data-th-text="${comment.userName}"></p>
+</div>
+<form method="post" data-th-action="@{/search/posts/{postId}/create-review(postId=${post.id})}">
+    <br>
+    <label>Комментарий:<br>
+        <textarea name="review" data-th-text="${payload?.review}"></textarea>
+    </label><br>
+    <button type="submit">Отправить комментарий</button>
+</form>
 </body>
 </html>

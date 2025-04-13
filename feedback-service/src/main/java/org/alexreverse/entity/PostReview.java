@@ -1,13 +1,13 @@
 package org.alexreverse.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
-
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -18,11 +18,18 @@ public class PostReview {
 
     @Id
     private Long id;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinTable(schema = "doomerhub", name = "post_review_list",
-            joinColumns = @JoinColumn(name = "id_favourite_post"),
-            inverseJoinColumns = @JoinColumn(name = "id_post"))
+
+    @ManyToOne
+    @Column(name = "post_id")
+    @NotNull
     private Long postId;
-    private Long rating;
+
+    @Column(name = "review")
+    @NotNull
+    @Size(min = 3, max = 100)
     private String review;
+
+    @Column(name = "user_name")
+    @NotNull
+    private String userName;
 }

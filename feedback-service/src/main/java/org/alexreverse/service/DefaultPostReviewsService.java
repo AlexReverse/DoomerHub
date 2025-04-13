@@ -7,22 +7,18 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class DefaultPostReviewsService implements PostReviewsService {
 
     private final PostReviewRepository postReviewRepository;
     @Override
-    public Mono<PostReview> createPostReview(Long postId, Long rating, String review) {
-        return this.postReviewRepository.save(
-                new PostReview(null, postId, rating, review)
-        );
+    public Mono<PostReview> createPostReview(Long postId, String review, String userName) {
+        return this.postReviewRepository.save(new PostReview(null, postId, review, userName));
     }
 
     @Override
-    public Flux<PostReview> findPostReviewsByPost(Long postId) {
+    public Flux<PostReview> findPostReviewsByPostId(Long postId) {
         return this.postReviewRepository.findAllByPostId(postId);
     }
 }

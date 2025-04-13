@@ -47,6 +47,7 @@ public class PostController {
         model.addAttribute("isCurrentAuthor",
                 post.userId().equals(token.getPrincipal().getAttribute("sub")));
         model.addAttribute("inFavourite", result.hasElement());
+        model.addAttribute("comments", this.postReviewsClient.findPostReviewsByPostId(post.id()));
         return "search/posts/post";
     }
 
@@ -117,7 +118,8 @@ public class PostController {
     public Mono<String> createReview(@PathVariable("postId") Long id,
                                      NewPostReviewPayload payload,
                                      Model model, OAuth2AuthenticationToken token) {
-        return this.postReviewsClient.createPostReview(id, payload.rating(), payload.review())
+        return this.postReviewsClient.createPostReview(id, payload.review(),
+                        token.getPrincipal().getAttribute("preferred_username"))
                 .thenReturn("redirect:/search/posts/%d".formatted(id))
                 .onErrorResume(ClientBadRequestException.class, exception -> {
                     model.addAttribute("inFavourite", false);

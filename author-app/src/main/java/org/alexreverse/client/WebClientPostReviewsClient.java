@@ -26,11 +26,11 @@ public class WebClientPostReviewsClient implements PostReviewsClient {
     }
 
     @Override
-    public Mono<PostReview> createPostReview(Long postId, Long rating, String review) {
+    public Mono<PostReview> createPostReview(Long postId, String review, String userName) {
         return this.webClient
                 .post()
                 .uri("/feedback-api/post-reviews")
-                .bodyValue(new NewPostReviewPayload(postId, rating, review))
+                .bodyValue(new NewPostReviewPayload(postId, review, userName))
                 .retrieve()
                 .bodyToMono(PostReview.class)
                 .onErrorMap(WebClientResponseException.BadRequest.class,
