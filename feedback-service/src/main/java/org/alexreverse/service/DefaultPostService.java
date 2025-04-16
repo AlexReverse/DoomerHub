@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class DefaultPostService implements PostService {
@@ -26,7 +28,7 @@ public class DefaultPostService implements PostService {
 
     @Override
     public Mono<Post> createPost(String title, String description, String userName) {
-        return this.postRepository.save(new Post(null, title, description, userName));
+        return this.postRepository.save(new Post(null, title, description, userName, LocalDateTime.now()));
     }
 
     @Override

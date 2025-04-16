@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class DefaultPostReviewsService implements PostReviewsService {
@@ -14,7 +16,7 @@ public class DefaultPostReviewsService implements PostReviewsService {
     private final PostReviewRepository postReviewRepository;
     @Override
     public Mono<PostReview> createPostReview(Long postId, String review, String userName) {
-        return this.postReviewRepository.save(new PostReview(null, postId, review, userName));
+        return this.postReviewRepository.save(new PostReview(null, postId, review, userName, LocalDateTime.now()));
     }
 
     @Override

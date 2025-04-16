@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +34,8 @@ public class PostReview {
     @Column(name = "user_name")
     @NotNull
     private String userName;
+
+    @Column(name = "post_review_date")
+    @NotNull
+    private LocalDateTime postReviewDate;
 }

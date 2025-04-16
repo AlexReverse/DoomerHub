@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public class DefaultFavouritePostsService implements FavouritePostsService {
 
     @Override
     public Mono<FavouritePost> createFavouritePost(Long postId, String userName) {
-        return this.favouriteRepository.save(new FavouritePost(null, postId, userName));
+        return this.favouriteRepository.save(new FavouritePost(null, postId, userName, LocalDateTime.now()));
     }
 
     @Override

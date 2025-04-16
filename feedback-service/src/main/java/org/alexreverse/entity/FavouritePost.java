@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,4 +31,9 @@ public class FavouritePost {
     @NotNull
     @Size(max = 50)
     private String userName;
+
+    @Column(name = "favourite_post_date")
+    @NotNull
+    private LocalDateTime favouritePostDate;
+
 }

@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,4 +36,8 @@ public class Post {
     @NotNull
     @Size(max = 50)
     private String userId;
+
+    @Column(name = "post_date")
+    @NotNull
+    private LocalDateTime postDate;
 }
