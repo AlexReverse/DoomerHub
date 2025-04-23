@@ -12,8 +12,8 @@ public class AiController {
 
     private final AiService aiService;
 
-    @PostMapping("/generate")
-    public PostReturnTranslate generate(@RequestBody PostGetTranslate text) {
+    @PostMapping("/translate")
+    public PostReturnTranslate translate(@RequestBody PostGetTranslate text) {
         return aiService.getTranslate(text);
     }
 }

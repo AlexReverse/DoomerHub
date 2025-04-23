@@ -10,6 +10,7 @@ import org.alexreverse.controller.payload.NewPostReviewPayload;
 import org.alexreverse.controller.payload.UpdatePostPayload;
 import org.alexreverse.entity.FavouritePost;
 import org.alexreverse.entity.Post;
+import org.alexreverse.entity.PostReview;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
@@ -130,6 +131,14 @@ public class PostController {
                             .doOnNext(favouritePost -> model.addAttribute("inFavourite", true))
                             .thenReturn("search/posts/post");
                 });
+    }
+
+    @PostMapping("delete-review/{commentId:\\d+}")
+    public Mono<String> deleteReview(@PathVariable("postId") Long id, @PathVariable("commentId") Long reviewId,
+                                   OAuth2AuthenticationToken token) {
+        return this.postReviewsClient.deletePostReview(reviewId,
+                token.getPrincipal().getAttribute("preferred_username"))
+                .thenReturn("redirect:/search/posts/%d".formatted(id));
     }
 
     @ExceptionHandler(NoSuchElementException.class)

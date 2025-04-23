@@ -36,4 +36,11 @@ public class PostReviewsRestController {
                         .body(postReview));
     }
 
+    @DeleteMapping("by-review-id/{reviewId:\\d+}&{userName}")
+    public Mono<ResponseEntity<Void>> deletePostReview(@PathVariable("reviewId") Long reviewId,
+                                       @PathVariable("userName") String userName) {
+        return this.postReviewsService.deletePostReview(reviewId, userName)
+                .then(Mono.just(ResponseEntity.noContent().build()));
+    }
+
 }

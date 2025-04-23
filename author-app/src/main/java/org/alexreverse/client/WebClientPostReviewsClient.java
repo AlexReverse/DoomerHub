@@ -38,4 +38,14 @@ public class WebClientPostReviewsClient implements PostReviewsClient {
                         ((List<String>) exception.getResponseBodyAs(ProblemDetail.class)
                                 .getProperties().get("errors"))));
     }
+
+    @Override
+    public Mono<Void> deletePostReview(Long reviewId, String userName) {
+        return this.webClient
+                .delete()
+                .uri("feedback-api/post-reviews/by-review-id/{reviewId:\\d+}&{userName}", reviewId, userName)
+                .retrieve()
+                .toBodilessEntity()
+                .then();
+    }
 }

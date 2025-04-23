@@ -23,4 +23,9 @@ public class DefaultPostReviewsService implements PostReviewsService {
     public Flux<PostReview> findPostReviewsByPostId(Long postId) {
         return this.postReviewRepository.findAllByPostId(postId);
     }
+
+    @Override
+    public Mono<Void> deletePostReview(Long reviewId, String userName) {
+        return this.postReviewRepository.deleteByIdAndUserName(reviewId, userName);
+    }
 }

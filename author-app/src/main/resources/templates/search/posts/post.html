@@ -25,13 +25,17 @@
     <li><strong>Название</strong>: <span data-th-text="${post.title}"></span></li>
     <li><strong>Описание</strong>: <span data-th-text="${post.description}"></span></li>
 </ul>
-<a data-th-href="@{/search/posts/{postId}/edit(postId=${post.id})}" data-th-if="${isCurrentAuthor}">Изменить</a>
+<a data-th-href="@{/search/posts/{postId}/edit(postId=${post.id})}" data-th-if="${isCurrentAuthor}">Изменить пост</a>
 <form method="post" data-th-action="@{/search/posts/{postId}/delete(postId=${post.id})}" data-th-if="${isCurrentAuthor}">
-    <button type="submit">Удалить</button>
+    <button type="submit">Удалить пост</button>
 </form>
 <h2>Комментарии: </h2>
 <div data-th-each="comment : ${comments}">
-    <h3>[[${comment.review}]]</h3>
+    <h3>[[${comment.review}]]
+        <form method="post" data-th-action="@{/search/posts/{postId}/delete-review/{commentId}(commentId=${comment.id}, postId=${post.id})}">
+            <button type="submit">Удалить</button>
+        </form>
+    </h3>
     <p data-th-text="${comment.userName}"></p>
 </div>
 <form method="post" data-th-action="@{/search/posts/{postId}/create-review(postId=${post.id})}">

@@ -9,4 +9,6 @@ public interface PostReviewsService {
     Mono<PostReview> createPostReview(Long postId, String review, String userName);
 
     Flux<PostReview> findPostReviewsByPostId(Long postId);
+
+    Mono<Void> deletePostReview(Long reviewId, String userName);
 }
