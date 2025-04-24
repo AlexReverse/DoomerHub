@@ -49,6 +49,7 @@ public class PostController {
                 post.userId().equals(token.getPrincipal().getAttribute("sub")));
         model.addAttribute("inFavourite", result.hasElement());
         model.addAttribute("comments", this.postReviewsClient.findPostReviewsByPostId(post.id()));
+        model.addAttribute("username", token.getPrincipal().getAttribute("preferred_username"));
         return "search/posts/post";
     }
 

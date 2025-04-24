@@ -32,7 +32,8 @@
 <h2>Комментарии: </h2>
 <div data-th-each="comment : ${comments}">
     <h3>[[${comment.review}]]
-        <form method="post" data-th-action="@{/search/posts/{postId}/delete-review/{commentId}(commentId=${comment.id}, postId=${post.id})}">
+        <form method="post" data-th-action="@{/search/posts/{postId}/delete-review/{commentId}(postId=${post.id},
+            commentId=${comment.id})}" data-th-if="${comment.userName} == ${username}">
             <button type="submit">Удалить</button>
         </form>
     </h3>
