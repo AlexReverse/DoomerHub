@@ -10,7 +10,7 @@ public interface PostsClient {
 
     Mono<Post> findPost(Long Id);
 
-    Mono<Post> createPost(String title, String description, String userId);
+    Mono<Post> createPost(String title, String description, String userId, Boolean translate);
 
     Mono<Void> updatePost(Long postId, String title, String description);
 

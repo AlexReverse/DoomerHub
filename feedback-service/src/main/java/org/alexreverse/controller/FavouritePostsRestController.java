@@ -12,22 +12,22 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("favourite/{userName}")
+@RequestMapping("favourite")
 @RequiredArgsConstructor
 public class FavouritePostsRestController {
 
     private final FavouritePostsService favouritePostsService;
 
-    @GetMapping
+    @GetMapping("{userName}")
     public Flux<FavouritePost> findFavouritePosts(@PathVariable("userName") String userName) {
         return this.favouritePostsService.findFavouritePosts(userName);
     }
-    @GetMapping("by-post-id/{postId:\\d+}")
+    @GetMapping("{userName}/by-post-id/{postId:\\d+}")
     public Mono<FavouritePost> findFavouritePostByPostId(@PathVariable("postId") Long postId,
                                                          @PathVariable("userName") String userName) {
         return this.favouritePostsService.findFavouritePostByPost(postId, userName);
     }
-    @PostMapping
+    @PostMapping("{userName}")
     public Mono<ResponseEntity<FavouritePost>> addPostToFavourites(
             @Valid @RequestBody Mono<NewFavouritePostPayload> payloadMono,
             UriComponentsBuilder uriComponentsBuilder
@@ -41,10 +41,16 @@ public class FavouritePostsRestController {
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 
-    @DeleteMapping("by-post-id/{postId:\\d+}")
+    @DeleteMapping("{userName}/by-post-id/{postId:\\d+}")
     public Mono<ResponseEntity<Void>> removePostFromFavourites(@PathVariable("postId") Long postId,
                                                                @PathVariable("userName") String userName) {
         return this.favouritePostsService.removePostFromFavourites(postId, userName)
+                .then(Mono.just(ResponseEntity.noContent().build()));
+    }
+
+    @DeleteMapping("by-post-id/{postId:\\d+}")
+    public Mono<ResponseEntity<Void>> deleteFavouritesFromPost(@PathVariable("postId") Long postId) {
+        return this.favouritePostsService.deleteFavouritesFromPost(postId)
                 .then(Mono.just(ResponseEntity.noContent().build()));
     }
 }

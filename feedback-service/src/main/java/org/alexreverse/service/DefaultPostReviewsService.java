@@ -28,4 +28,9 @@ public class DefaultPostReviewsService implements PostReviewsService {
     public Mono<Void> deletePostReview(Long reviewId, String userName) {
         return this.postReviewRepository.deleteByIdAndUserName(reviewId, userName);
     }
+
+    @Override
+    public Mono<Void> deletePostReviewByPostId(Long reviewId) {
+        return this.postReviewRepository.deleteByPostId(reviewId);
+    }
 }

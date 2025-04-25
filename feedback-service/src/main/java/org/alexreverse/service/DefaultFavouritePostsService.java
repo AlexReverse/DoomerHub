@@ -34,4 +34,11 @@ public class DefaultFavouritePostsService implements FavouritePostsService {
     public Flux<FavouritePost> findFavouritePosts(String userName) {
         return this.favouriteRepository.findAllByUserName(userName);
     }
+
+    @Override
+    public Mono<Void> deleteFavouritesFromPost(Long postId) {
+        return this.favouriteRepository.deleteByPostId(postId);
+    }
+
+
 }

@@ -38,4 +38,8 @@ public class PostReview {
     @Column(name = "post_review_date")
     @NotNull
     private LocalDateTime postReviewDate;
+
+//    @Column(name = "translation")
+//    @NotNull
+//    private Boolean translation;
 }

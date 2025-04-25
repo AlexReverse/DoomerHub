@@ -48,7 +48,19 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
 
     @Override
     public Mono<Void> removePostFromFavourites(Long postId, String userName) {
-        return this.webClient.delete().uri("favourite/{userName}/by-post-id/{postId}", userName, postId)
+        return this.webClient
+                .delete()
+                .uri("favourite/{userName}/by-post-id/{postId}", userName, postId)
+                .retrieve()
+                .toBodilessEntity()
+                .then();
+    }
+
+    @Override
+    public Mono<Void> deleteFavouritesFromPost(Long postId) {
+        return this.webClient
+                .delete()
+                .uri("favourite/by-post-id/{postId:\\d+}", postId)
                 .retrieve()
                 .toBodilessEntity()
                 .then();

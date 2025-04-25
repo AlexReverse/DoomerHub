@@ -9,6 +9,10 @@ public interface FavouritePostsService {
     Mono<FavouritePost> createFavouritePost(Long postId, String userName);
 
     Mono<Void> removePostFromFavourites(Long postId, String userName);
+
     Mono<FavouritePost> findFavouritePostByPost(Long postId, String userName);
+
     Flux<FavouritePost> findFavouritePosts(String userName);
+
+    Mono<Void> deleteFavouritesFromPost(Long postId);
 }

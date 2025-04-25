@@ -11,4 +11,6 @@ public interface PostReviewRepository extends ReactiveCrudRepository<PostReview,
     Flux<PostReview> findAllByPostId(Long postId);
 
     Mono<Void> deleteByIdAndUserName(Long reviewId, String userName);
+
+    Mono<Void> deleteByPostId(Long postId);
 }

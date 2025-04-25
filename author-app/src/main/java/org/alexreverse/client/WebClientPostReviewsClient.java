@@ -48,4 +48,14 @@ public class WebClientPostReviewsClient implements PostReviewsClient {
                 .toBodilessEntity()
                 .then();
     }
+
+    @Override
+    public Mono<Void> deletePostReviewByPostId(Long postId) {
+        return this.webClient
+                .delete()
+                .uri("feedback-api/post-reviews/by-post-id/{postId:\\d+}", postId)
+                .retrieve()
+                .toBodilessEntity()
+                .then();
+    }
 }

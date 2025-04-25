@@ -11,4 +11,6 @@ public interface PostReviewsService {
     Flux<PostReview> findPostReviewsByPostId(Long postId);
 
     Mono<Void> deletePostReview(Long reviewId, String userName);
+
+    Mono<Void> deletePostReviewByPostId(Long reviewId);
 }

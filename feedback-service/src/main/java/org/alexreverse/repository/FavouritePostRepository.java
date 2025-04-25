@@ -13,4 +13,6 @@ public interface FavouritePostRepository extends ReactiveCrudRepository<Favourit
     Mono<FavouritePost> findByPostIdAndUserName(Long postId, String userName);
 
     Flux<FavouritePost> findAllByUserName(String userName);
+
+    Mono<Void> deleteByPostId(Long postId);
 }

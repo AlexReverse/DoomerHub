@@ -86,6 +86,8 @@ public class PostController {
                         token.getPrincipal().getAttribute("sub"), post.id()));
             }
             return this.postsClient.deletePost(post.id())
+                    .then(this.postReviewsClient.deletePostReviewByPostId(post.id()))
+                    .then(this.favouritePostsClient.deleteFavouritesFromPost(post.id()))
                     .thenReturn("redirect:/search/posts/list");
         } catch (AccessDeniedException exception) {
             log.info(exception.getMessage());

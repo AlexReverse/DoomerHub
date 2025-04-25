@@ -13,4 +13,6 @@ public interface FavouritePostsClient {
     Mono<FavouritePost> addPostToFavourites(Long postId, String userId);
 
     Mono<Void> removePostFromFavourites(Long postId, String userId);
+
+    Mono<Void> deleteFavouritesFromPost(Long postId);
 }

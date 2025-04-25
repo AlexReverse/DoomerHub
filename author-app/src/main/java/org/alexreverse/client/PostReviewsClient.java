@@ -11,4 +11,6 @@ public interface PostReviewsClient {
     Mono<PostReview> createPostReview(Long postId, String review, String userName);
 
     Mono<Void> deletePostReview(Long reviewId, String userName);
+
+    Mono<Void> deletePostReviewByPostId(Long postId);
 }
