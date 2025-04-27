@@ -14,8 +14,9 @@ public class AiService {
         this.client = builder.build();
     }
 
-    public PostReturnTranslate getTranslate(PostGetTranslate post) {
-        ChatClient.CallResponseSpec callResponseSpec = client.prompt().user(post.text()).call();
+    public PostReturnTranslate getTranslateToEnglish(PostGetTranslate post) {
+        ChatClient.CallResponseSpec callResponseSpec = client.prompt().user("Переведи текст на Английский: " +
+                post.text()).call();
         String content = callResponseSpec.content();
         return new PostReturnTranslate(content);
     }

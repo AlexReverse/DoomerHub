@@ -27,8 +27,8 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public Mono<Post> createPost(String title, String description, String userName) {
-        return this.postRepository.save(new Post(null, title, description, userName, LocalDateTime.now()));
+    public Mono<Post> createPost(String title, String description, String userName, Long translationId) {
+        return this.postRepository.save(new Post(null, title, description, userName, LocalDateTime.now(), translationId));
     }
 
     @Override

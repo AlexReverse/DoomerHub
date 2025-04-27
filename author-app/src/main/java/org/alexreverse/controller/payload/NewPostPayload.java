@@ -1,4 +1,4 @@
 package org.alexreverse.controller.payload;
 
 public record NewPostPayload(
-    String title, String description, String userId, Boolean translation) {}
+    String title, String description, String userId, Long translationId) {}

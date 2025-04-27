@@ -1,11 +1,12 @@
 create schema if not exists doomerhub;
 
 CREATE TABLE doomerhub.author_post (
-	id serial8 NOT NULL,
+	id bigserial NOT NULL,
 	title varchar(50) NOT NULL,
 	description varchar(5000) NOT NULL,
 	user_id varchar NOT NULL,
 	post_date timestamp(6) NOT NULL,
+	translation_id bigserial NOT NULL,
 	CONSTRAINT author_post_pk PRIMARY KEY (id)
 );
 

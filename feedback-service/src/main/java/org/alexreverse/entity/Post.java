@@ -40,4 +40,8 @@ public class Post {
     @Column(name = "post_date")
     @NotNull
     private LocalDateTime postDate;
+
+    @Column(name = "translation_id")
+    @NotNull
+    private Long translationId;
 }
