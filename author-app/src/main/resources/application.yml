@@ -2,7 +2,8 @@ doomerhub:
   services:
     search:
       uri: http://localhost:8083
-      registration-id: keycloak
+    ai:
+      uri: http://localhost:8085
 server:
   port: 8082
 spring:

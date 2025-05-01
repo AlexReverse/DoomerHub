@@ -12,4 +12,4 @@ public record NewPostPayload(
     @NotNull(message = "{feedback.posts.create.errors.userid_is_null}")
     String userId,
     @NotNull
-    Long translationId) {}
+    String englishTranslation) {}

@@ -27,7 +27,7 @@ public class PostsRestController {
                                                  UriComponentsBuilder uriComponentsBuilder) {
         return newPostPayloadMono
                 .flatMap(newPostPayload -> this.postService.createPost(newPostPayload.title(),
-                        newPostPayload.description(), newPostPayload.userId(), newPostPayload.translationId()))
+                        newPostPayload.description(), newPostPayload.userId(), newPostPayload.englishTranslation()))
                 .map(postService -> ResponseEntity
                         .created(uriComponentsBuilder.replacePath("/search-api/posts/{postId}")
                                 .build(postService.getId()))

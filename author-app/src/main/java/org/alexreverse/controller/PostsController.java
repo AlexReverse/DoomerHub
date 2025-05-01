@@ -1,25 +1,19 @@
 package org.alexreverse.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.alexreverse.client.FavouritePostsClient;
-import org.alexreverse.client.PostsClient;
+import org.alexreverse.client.*;
 import org.alexreverse.controller.payload.NewPostPayload;
 import org.alexreverse.entity.FavouritePost;
-import org.springframework.aot.generate.GeneratedFiles;
-import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,6 +23,8 @@ public class PostsController {
     private final PostsClient postsClient;
 
     private final FavouritePostsClient favouritePostsService;
+
+    private final TranslationPosts translationPosts;
 
     @GetMapping("list")
     public Mono<String> getPostsListPage(Model model, @RequestParam(name = "filter", required = false) String filter) {
@@ -46,17 +42,12 @@ public class PostsController {
 
     @PostMapping("create")
     public Mono<String> createPost(NewPostPayload payload, Model model, OAuth2AuthenticationToken token) {
-        // поставщик для получения ID-ника перевода поста
-        Supplier<Long> id = () -> RestClient.create()
-                .post()
-                .uri("/translate-to-english", payload.description())
-                .retrieve()
-                .toEntity(Long.class).getBody();
-
+        Mono<String> stringMono = this.translationPosts.createTranslation(payload.description());
         try {
             return this.postsClient.createPost(payload.title(), payload.description(),
                             token.getPrincipal().getAttribute("sub"),
-                            (Optional.ofNullable(payload.translationId()).isPresent() ? id.get() : -1))
+                            payload.englishTranslation().isEmpty() ? "-1" :
+                                    payload.englishTranslation())
                     .thenReturn("redirect:/search/posts/list");
         } catch (Exception exception) {
             model.addAttribute("payload", payload);

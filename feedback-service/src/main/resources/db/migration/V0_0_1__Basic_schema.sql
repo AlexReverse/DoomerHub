@@ -6,7 +6,7 @@ CREATE TABLE doomerhub.author_post (
 	description varchar(5000) NOT NULL,
 	user_id varchar NOT NULL,
 	post_date timestamp(6) NOT NULL,
-	translation_id bigserial NOT NULL,
+	english_translation varchar(5000) NOT NULL,
 	CONSTRAINT author_post_pk PRIMARY KEY (id)
 );
 

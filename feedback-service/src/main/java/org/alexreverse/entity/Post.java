@@ -41,7 +41,7 @@ public class Post {
     @NotNull
     private LocalDateTime postDate;
 
-    @Column(name = "translation_id")
+    @Column(name = "english_translation")
     @NotNull
-    private Long translationId;
+    private String englishTranslation;
 }
