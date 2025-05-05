@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @RequestMapping("search-api/posts")
 public class PostsRestController {
+
     private final PostService postService;
 
     @GetMapping

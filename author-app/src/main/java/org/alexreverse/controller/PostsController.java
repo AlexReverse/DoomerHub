@@ -1,9 +1,11 @@
 package org.alexreverse.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.alexreverse.client.*;
 import org.alexreverse.controller.payload.NewPostPayload;
 import org.alexreverse.entity.FavouritePost;
+import org.alexreverse.service.AiService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
 import org.springframework.security.web.server.csrf.CsrfToken;
@@ -11,20 +13,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("search/posts")
+@Slf4j
 public class PostsController {
 
     private final PostsClient postsClient;
 
     private final FavouritePostsClient favouritePostsService;
 
-    private final TranslationPosts translationPosts;
+    private final AiService aiService;
 
     @GetMapping("list")
     public Mono<String> getPostsListPage(Model model, @RequestParam(name = "filter", required = false) String filter) {
@@ -42,14 +44,14 @@ public class PostsController {
 
     @PostMapping("create")
     public Mono<String> createPost(NewPostPayload payload, Model model, OAuth2AuthenticationToken token) {
-        Mono<String> stringMono = this.translationPosts.createTranslation(payload.description());
         try {
             return this.postsClient.createPost(payload.title(), payload.description(),
                             token.getPrincipal().getAttribute("sub"),
-                            payload.englishTranslation().isEmpty() ? "-1" :
-                                    payload.englishTranslation())
+                            payload.englishTranslation() == null ? "-1" :
+                                    aiService.getTranslateToEnglish(payload.description()))
                     .thenReturn("redirect:/search/posts/list");
         } catch (Exception exception) {
+            log.info(exception.getMessage());
             model.addAttribute("payload", payload);
             model.addAttribute("errors", exception.getMessage());
             return Mono.just("search/posts/new_post");

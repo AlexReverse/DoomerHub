@@ -3,7 +3,6 @@ package org.alexreverse.config;
 import org.alexreverse.client.WebClientFavouritePostsClient;
 import org.alexreverse.client.WebClientPostReviewsClient;
 import org.alexreverse.client.WebClientPostsClient;
-import org.alexreverse.client.WebClientTranslationPosts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,16 +54,6 @@ public class ClientConfig {
             WebClient.Builder doomerhubServicesWebClientBuilder
     ) {
         return new WebClientPostReviewsClient(doomerhubServicesWebClientBuilder
-                .baseUrl(feedbackBaseUrl)
-                .build());
-    }
-
-    @Bean
-    public WebClientTranslationPosts webClientTranslationPosts(
-            @Value("${doomerhub.services.ai.uri:http://localhost:8085}") String feedbackBaseUrl,
-            WebClient.Builder doomerhubServicesWebClientBuilder
-    ) {
-        return new WebClientTranslationPosts(doomerhubServicesWebClientBuilder
                 .baseUrl(feedbackBaseUrl)
                 .build());
     }
