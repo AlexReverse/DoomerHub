@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.alexreverse.client.*;
 import org.alexreverse.controller.payload.NewPostPayload;
 import org.alexreverse.entity.FavouritePost;
-import org.alexreverse.service.AiService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
 import org.springframework.security.web.server.csrf.CsrfToken;
@@ -25,8 +24,6 @@ public class PostsController {
     private final PostsClient postsClient;
 
     private final FavouritePostsClient favouritePostsService;
-
-    private final AiService aiService;
 
     @GetMapping("list")
     public Mono<String> getPostsListPage(Model model, @RequestParam(name = "filter", required = false) String filter) {
@@ -48,7 +45,7 @@ public class PostsController {
             return this.postsClient.createPost(payload.title(), payload.description(),
                             token.getPrincipal().getAttribute("sub"),
                             payload.englishTranslation() == null ? "-1" :
-                                    aiService.getTranslateToEnglish(payload.description()))
+                                    payload.englishTranslation())
                     .thenReturn("redirect:/search/posts/list");
         } catch (Exception exception) {
             log.info(exception.getMessage());
