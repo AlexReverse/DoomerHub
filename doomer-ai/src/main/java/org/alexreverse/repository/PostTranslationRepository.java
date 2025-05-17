@@ -1,11 +1,10 @@
 package org.alexreverse.repository;
 
 import org.alexreverse.entity.PostTranslation;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
-import reactor.core.publisher.Mono;
+import org.springframework.data.repository.CrudRepository;
 
-public interface PostTranslationRepository extends ReactiveCrudRepository<PostTranslation, Long> {
-    Mono<PostTranslation> findByPostId(Long postId);
+public interface PostTranslationRepository extends CrudRepository<PostTranslation, Long> {
+    PostTranslation findByPostId(Long postId);
 
-    Mono<Void> deleteByPostId(Long postId);
+    Void deleteByPostId(Long postId);
 }

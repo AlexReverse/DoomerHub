@@ -1,10 +1,6 @@
 package org.alexreverse.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.alexreverse.controller.payload.NewPostTranslation;
-import org.alexreverse.entity.PostTranslation;
 import org.alexreverse.service.PostTranslationService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
@@ -30,12 +25,14 @@ public class AiController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<PostTranslation>> getTranslateToEnglish(@Valid @RequestBody Mono<NewPostTranslation> newPostTranslationMono) {
-        return newPostTranslationMono.flatMap(newPostTranslation ->
-                this.postTranslationService.createPostTranslation(newPostTranslation.postId(),
-                        client.prompt().user("Переведи текст на Английский: " +
-                                newPostTranslation.description()).call().content()))
-                .map(postTranslation -> ResponseEntity.ok().body(postTranslation))
-                .defaultIfEmpty(ResponseEntity.badRequest().build());
+    public ResponseEntity<?> getTranslateToEnglish(@Valid @RequestBody NewPostTranslation newPostTranslationMono) {
+        try {
+            return ResponseEntity.ok()
+                    .body(this.postTranslationService.createPostTranslation(newPostTranslationMono.postId(),
+                            client.prompt().user("Переведи текст на Английский: " +
+                                    newPostTranslationMono.description()).call().content()));
+        } catch (Exception exception) {
+            return ResponseEntity.badRequest().body(exception.getCause());
+        }
     }
 }
