@@ -24,8 +24,9 @@
 	<modules>
         <module>author-app</module>
         <module>feedback-service</module>
-        <module>doomer-ai</module>
-    </modules>
+        <module>main-page</module>
+		<module>info-service</module>
+	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>

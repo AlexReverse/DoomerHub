@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 public interface PostService {
     Flux<Post> findAllPosts(String filter);
 
-    Mono<Post> createPost(String title, String description, String userId, String englishTranslation);
+    Mono<Post> createPost(String title, String description, String userId);
 
     Mono<Post> findPost(Long id);
 

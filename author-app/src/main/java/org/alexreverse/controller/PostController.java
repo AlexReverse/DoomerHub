@@ -10,7 +10,6 @@ import org.alexreverse.controller.payload.NewPostReviewPayload;
 import org.alexreverse.controller.payload.UpdatePostPayload;
 import org.alexreverse.entity.FavouritePost;
 import org.alexreverse.entity.Post;
-import org.alexreverse.entity.PostReview;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;

@@ -40,8 +40,4 @@ public class Post {
     @Column(name = "post_date")
     @NotNull
     private LocalDateTime postDate;
-
-    @Column(name = "english_translation")
-    @NotNull
-    private String englishTranslation;
 }

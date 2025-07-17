@@ -3,12 +3,10 @@ package org.alexreverse.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.controller.payload.NewPostPayload;
-import org.alexreverse.controller.payload.NewPostTranslation;
 import org.alexreverse.entity.Post;
 import org.alexreverse.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,18 +28,11 @@ public class PostsRestController {
                                                  UriComponentsBuilder uriComponentsBuilder) {
         return newPostPayloadMono
                 .flatMap(newPostPayload -> this.postService.createPost(newPostPayload.title(),
-                        newPostPayload.description(), newPostPayload.userId(), newPostPayload.englishTranslation()))
-                .map(postService -> {
-                    if (postService.getEnglishTranslation().equals("on")) {
-                        WebClient.create().post().uri("http://localhost:8085/translate/to-english")
-                                .bodyValue(new NewPostTranslation(postService.getId(), postService.getDescription()))
-                                .retrieve().toBodilessEntity().subscribe();
-                    }
-                    return ResponseEntity
+                        newPostPayload.description(), newPostPayload.userId()))
+                .map(postService -> ResponseEntity
                             .created(uriComponentsBuilder.replacePath("/search-api/posts/{postId}")
                                     .build(postService.getId()))
-                            .body(postService);
-                })
+                            .body(postService))
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 }

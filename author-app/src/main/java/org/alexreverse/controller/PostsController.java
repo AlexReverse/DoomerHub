@@ -43,9 +43,7 @@ public class PostsController {
     public Mono<String> createPost(NewPostPayload payload, Model model, OAuth2AuthenticationToken token) {
         try {
             return this.postsClient.createPost(payload.title(), payload.description(),
-                            token.getPrincipal().getAttribute("sub"),
-                            payload.englishTranslation() == null ? "-1" :
-                                    payload.englishTranslation())
+                            token.getPrincipal().getAttribute("sub"))
                     .thenReturn("redirect:/search/posts/list");
         } catch (Exception exception) {
             log.info(exception.getMessage());

@@ -39,12 +39,12 @@ public class WebClientPostsClient implements PostsClient {
     }
 
     @Override
-    public Mono<Post> createPost(String title, String description, String userId, String englishTranslation) {
+    public Mono<Post> createPost(String title, String description, String userId) {
         return this.webClient
                 .post()
                 .uri("/search-api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new NewPostPayload(title, description, userId, englishTranslation))
+                .bodyValue(new NewPostPayload(title, description, userId))
                 .retrieve()
                 .bodyToMono(Post.class)
                 .onErrorMap(WebClientResponseException.BadRequest.class,
