@@ -1,0 +1,4 @@
+server:
+  port: 8085
+
+# docker run --name info-service-db -p 5433:5432 -e POSTGRES_DB=infoservice -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD="***" postgres:16.1
