@@ -53,7 +53,7 @@ public class MainPage {
     @Size(max = 100)
     private String description;
 
-    @Column(name = "post_date")
+    @Column(name = "registration_date")
     @NotNull
-    private LocalDateTime postDate;
+    private LocalDateTime registrationDate;
 }
