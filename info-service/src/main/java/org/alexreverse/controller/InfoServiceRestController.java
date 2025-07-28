@@ -17,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("main-page")
-public class MainPageRestController {
+public class InfoServiceRestController {
 
     private final PageService pageService;
 

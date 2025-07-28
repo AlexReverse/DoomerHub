@@ -26,7 +26,7 @@ public class PageServiceImpl implements PageService {
     @Override
     public Flux<MainPage> findAllMainPageByNameOrSurNameOrNickname(String filter) {
         if (filter != null && !filter.isBlank()) {
-            return this.pageRepository.findAllMainPageByNameOrSurNameOrNickname("%" + filter + "%");
+            return this.pageRepository.findAllByName("%" + filter + "%");
         } else {
             return this.pageRepository.findAll();
         }

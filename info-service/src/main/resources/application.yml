@@ -1,4 +1,32 @@
 server:
   port: 8085
-
+spring:
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:8084/realms/doomerhub
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5433/infoservice
+    username: postgres
+    password: "***"
+  flyway:
+    baselineOnMigrate: true
+    schema:
+      - public
+      - search
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        ddl-auto: update
+        use-new-id-generator-mappings: false
+logging:
+  level:
+    org.springframework.web: DEBUG
+#    org.springframework.security: DEBUG
+    io.r2dbc.spi: DEBUG
 # docker run --name info-service-db -p 5433:5432 -e POSTGRES_DB=infoservice -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD="***" postgres:16.1
