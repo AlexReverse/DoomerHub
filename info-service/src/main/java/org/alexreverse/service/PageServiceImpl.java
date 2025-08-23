@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -33,19 +34,19 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Mono<MainPage> createMainPage(UUID userId, String nickname, String name, String surName, String city, Byte age, String description) {
-        return this.pageRepository.save(new MainPage(userId, nickname, name, surName, city, age, description, LocalDateTime.now()));
+    public Mono<MainPage> createMainPage(UUID userId, String nickname, String name, String surName, String city, Date birthDay, String description) {
+        return this.pageRepository.save(new MainPage(userId, nickname, name, surName, city, birthDay, description, LocalDateTime.now()));
     }
 
     @Override
-    public Mono<Void> updateMainPage(UUID userId, String nickname, String name, String surName, String city, Byte age, String description) {
+    public Mono<Void> updateMainPage(UUID userId, String nickname, String name, String surName, String city, Date birthDay, String description) {
         return this.pageRepository.findById(userId)
                 .flatMap(mainPage -> {
                     mainPage.setNickname(nickname);
                     mainPage.setName(name);
                     mainPage.setSurName(surName);
                     mainPage.setCity(city);
-                    mainPage.setAge(age);
+                    mainPage.setBirthDay(birthDay);
                     mainPage.setDescription(description);
                     return pageRepository.save(mainPage);
                 })

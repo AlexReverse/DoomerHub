@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -47,7 +48,7 @@ public class MainPage {
     @Column(name = "age")
     @NotNull
     @Size(min = 14, max = 100)
-    private Byte age;
+    private Date birthDay; //year, month, day
 
     @Column(name = "description")
     @Size(max = 100)

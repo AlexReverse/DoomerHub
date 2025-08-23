@@ -2,8 +2,6 @@ doomerhub:
   services:
     search:
       uri: http://localhost:8083
-    ai:
-      uri: http://localhost:8085
 server:
   port: 8082
 spring:
@@ -18,7 +16,7 @@ spring:
         registration:
           keycloak:
             client-id: author-app
-            client-secret: ***
+            client-secret: bqavX43wwTzAPO8bCfCgs9hLkyHb0kDl
             authorization-grant-type: authorization_code
             scope:
               - openid
@@ -30,4 +28,4 @@ logging:
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
 
-# docker run --name doomerhub-keycloak -p 8084:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=*** -v /config/keycloak/import:/opt/keycloak/data/import quay.io/keycloak/keycloak:23.0.4 start-dev --import-realm
+# docker run --name doomerhub-keycloak -p 8084:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=joSLxNngsb -v /config/keycloak/import:/opt/keycloak/data/import quay.io/keycloak/keycloak:23.0.4 start-dev --import-realm

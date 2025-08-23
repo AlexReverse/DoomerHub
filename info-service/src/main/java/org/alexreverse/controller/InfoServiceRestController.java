@@ -32,7 +32,7 @@ public class InfoServiceRestController {
         return mainPagePayloadMono
                 .flatMap(mainPagePayload -> this.pageService.createMainPage(mainPagePayload.userId(),
                         mainPagePayload.nickname(), mainPagePayload.name(), mainPagePayload.surName(),
-                        mainPagePayload.city(), mainPagePayload.age(), mainPagePayload.description()))
+                        mainPagePayload.city(), mainPagePayload.birthDay(), mainPagePayload.description()))
                 .map(mainPage -> ResponseEntity.created(uriComponentsBuilder.replacePath("/main-page")
                         .build(mainPage.getUserId())).body(mainPage))
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
@@ -49,7 +49,7 @@ public class InfoServiceRestController {
                                                      @Valid @RequestBody UpdatePagePayload payload) {
         return this.pageService.findMainPage(uuid).flatMap(unused ->
                 pageService.updateMainPage(uuid, payload.nickname(), payload.name(), payload.surName(),
-                        payload.city(), payload.age(), payload.description())
+                        payload.city(), payload.birthDay(), payload.description())
                         .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK))))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

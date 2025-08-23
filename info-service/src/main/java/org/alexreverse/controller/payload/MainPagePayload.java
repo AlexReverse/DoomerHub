@@ -3,6 +3,7 @@ package org.alexreverse.controller.payload;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.sql.Date;
 import java.util.UUID;
 
 public record MainPagePayload(
@@ -22,6 +23,6 @@ public record MainPagePayload(
         String city,
         @NotNull
         @Size(min = 14, max = 100)
-        Byte age,
+        Date birthDay,
         @Size(max = 100)
         String description) {}
