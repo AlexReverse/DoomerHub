@@ -16,24 +16,25 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("main-page")
+@RequestMapping("main-page/{userId}")
 public class InfoServiceRestController {
 
     private final PageService pageService;
 
     @GetMapping
-    public Mono<MainPage> findMainPage(@RequestParam(name = "uuid", required = true) UUID uuid) {
+    public Mono<MainPage> findMainPage(@PathVariable("userId") UUID uuid) {
         return pageService.findMainPage(uuid);
     }
 
     @PostMapping
-    public Mono<ResponseEntity<MainPage>> createMainPage(@Valid @RequestBody Mono<MainPagePayload> mainPagePayloadMono,
+    public Mono<ResponseEntity<MainPage>> createMainPage(@PathVariable("userId") UUID uuid,
+                                                         @Valid @RequestBody Mono<MainPagePayload> mainPagePayloadMono,
                                                          UriComponentsBuilder uriComponentsBuilder) {
         return mainPagePayloadMono
-                .flatMap(mainPagePayload -> this.pageService.createMainPage(mainPagePayload.userId(),
+                .flatMap(mainPagePayload -> this.pageService.createMainPage(uuid,
                         mainPagePayload.nickname(), mainPagePayload.name(), mainPagePayload.surName(),
                         mainPagePayload.city(), mainPagePayload.birthDay(), mainPagePayload.description()))
-                .map(mainPage -> ResponseEntity.created(uriComponentsBuilder.replacePath("/main-page")
+                .map(mainPage -> ResponseEntity.created(uriComponentsBuilder.replacePath("/main-page/{userId}")
                         .build(mainPage.getUserId())).body(mainPage))
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }

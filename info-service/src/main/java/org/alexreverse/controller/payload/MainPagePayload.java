@@ -22,7 +22,6 @@ public record MainPagePayload(
         @Size(min = 3, max = 50)
         String city,
         @NotNull
-        @Size(min = 14, max = 100)
         Date birthDay,
         @Size(max = 100)
         String description) {}
