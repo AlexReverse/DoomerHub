@@ -21,7 +21,7 @@ CREATE TABLE doomerhub.post_review (
 	id serial8 NOT NULL,
 	post_id serial8 NOT NULL,
 	review varchar(100) NOT NULL,
-	user_name varchar() NOT NULL,
+	user_name varchar NOT NULL,
 	post_review_date timestamp(6) NOT NULL,
 	CONSTRAINT post_review_pk PRIMARY KEY (id)
 );
