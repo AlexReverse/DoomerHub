@@ -21,6 +21,7 @@ public class InfoServiceRestController {
 
     private final PageService pageService;
 
+    // Поставить сюда из keycloak'а айдишник, чтобы не передавать его в URL
     @GetMapping
     public Mono<MainPage> findMainPage(@PathVariable("userId") UUID uuid) {
         return pageService.findMainPage(uuid);
