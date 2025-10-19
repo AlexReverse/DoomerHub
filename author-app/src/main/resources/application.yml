@@ -16,7 +16,7 @@ spring:
         registration:
           keycloak:
             client-id: author-app
-            client-secret: bqavX43wwTzAPO8bCfCgs9hLkyHb0kDl
+            client-secret: C4Pl792ZD9S1ke3rGjaavxede7SECRCV
             authorization-grant-type: authorization_code
             scope:
               - openid

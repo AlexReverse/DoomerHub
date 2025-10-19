@@ -29,3 +29,5 @@ logging:
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
     io.r2dbc.spi: DEBUG
+
+# docker run --name doomerhub-db -p 5432:5432 -e POSTGRES_DB=doomerhub -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD="@ncHocl&ffkfp)h" postgres:16.1

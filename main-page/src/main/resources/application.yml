@@ -1,2 +1,21 @@
 server:
   port: 8086
+spring:
+  main.web-application-type: reactive
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8084/realms/doomerhub
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: main-page
+            client-secret: RRPz602b3FlAC7OHCWC4YwhSuz8803ts
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - microprofile-jwt
+              - edit_author
+              - view_author

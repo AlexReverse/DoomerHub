@@ -10,13 +10,13 @@ public interface MainPageClient {
 
     Flux<MainPage> findAllMainPage(String filter);
 
-    Mono<MainPage> findMainPage(UUID userId);
+    Mono<MainPage> findMainPage();
 
-    Mono<MainPage> createMainPage(UUID userId, String nickname, String name, String surName, String city, Byte age,
+    Mono<MainPage> createMainPage(String nickname, String name, String surName, String city, Byte age,
                                   String description);
 
-    Mono<Void> updateMainPage(UUID userId, String nickname, String name, String surName, String city, Byte age,
+    Mono<Void> updateMainPage(String nickname, String name, String surName, String city, Byte age,
                               String description);
 
-    Mono<Void> deleteMainPage(UUID userId);
+    Mono<Void> deleteMainPage();
 }
