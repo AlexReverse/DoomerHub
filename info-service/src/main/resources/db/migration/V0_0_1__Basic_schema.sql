@@ -1,4 +1,4 @@
-create schema if not exists infoservice;
+create schema if not exists doomerhub;
 
 CREATE TABLE main_page (
 	user_id uuid NOT NULL,

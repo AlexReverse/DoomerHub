@@ -2,7 +2,7 @@ package org.alexreverse.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "infoservice", name = "main_page")
+@Table(schema = "doomerhub", name = "main_page")
 public class MainPage {
 
     @Id

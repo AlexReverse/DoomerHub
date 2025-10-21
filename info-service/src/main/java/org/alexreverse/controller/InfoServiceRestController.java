@@ -6,7 +6,9 @@ import org.alexreverse.controller.payload.MainPagePayload;
 import org.alexreverse.controller.payload.UpdatePagePayload;
 import org.alexreverse.entity.MainPage;
 import org.alexreverse.service.PageService;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
+import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -22,11 +26,17 @@ import java.util.UUID;
 public class InfoServiceRestController {
 
     private final PageService pageService;
+    private final MessageSource messageSource;
+
+    @ModelAttribute(name = "page", binding = false)
+    public Mono<MainPage> getMainPage(JwtAuthenticationToken auth) {
+        return this.pageService.findMainPage(UUID.fromString(auth.getName()))
+                .switchIfEmpty(Mono.error(new NoSuchElementException("infoservice.mainpage.errors.page_not_found")));
+    }
 
     @GetMapping
-    public Mono<MainPage> findMainPage(JwtAuthenticationToken auth) {
-        UUID test = UUID.fromString(auth.getName());
-        return pageService.findMainPage(UUID.fromString(auth.getName()));
+    public Mono<MainPage> findMainPage(@ModelAttribute("page") MainPage mainPage) {
+        return pageService.findMainPage(mainPage.getUserId());
     }
 
     @PostMapping
@@ -60,5 +70,13 @@ public class InfoServiceRestController {
                         payload.city(), payload.birthDay(), payload.description())
                         .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK))))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ProblemDetail> handleNoSuchElementException(NoSuchElementException exception, Locale locale) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+                        this.messageSource.getMessage(exception.getMessage(), new Object[0],
+                                exception.getMessage(), locale)));
     }
 }
