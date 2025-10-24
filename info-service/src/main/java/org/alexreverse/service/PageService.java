@@ -4,7 +4,7 @@ import org.alexreverse.entity.MainPage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public interface PageService {
@@ -12,9 +12,9 @@ public interface PageService {
 
     Flux<MainPage> findAllMainPageByNameOrSurNameOrNickname(String filter);
 
-    Mono<MainPage> createMainPage(UUID userId, String nickname, String name, String surName, String city, Date birthDay, String description);
+    Mono<MainPage> createMainPage(UUID userId, String nickname, String name, String surName, String city, LocalDate birthDay, String description);
 
-    Mono<Void> updateMainPage(UUID userId, String nickname, String name, String surName, String city, Date birthDay, String description);
+    Mono<Void> updateMainPage(UUID userId, String nickname, String name, String surName, String city, LocalDate birthDay, String description);
 
     Mono<Void> deleteMainPage(UUID userId);
 }

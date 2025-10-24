@@ -27,6 +27,5 @@ spring:
 logging:
   level:
     org.springframework.web: DEBUG
-#    org.springframework.security: DEBUG
+    org.springframework.security: DEBUG
     io.r2dbc.spi: DEBUG
-# docker run --name info-service-db -p 5433:5432 -e POSTGRES_DB=infoservice -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD="@ncHocl&ffkfp)h" postgres:16.1
