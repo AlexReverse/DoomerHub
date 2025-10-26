@@ -4,7 +4,7 @@ import org.alexreverse.entity.MainPage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
+import java.time.LocalDate;
 
 public interface MainPageClient {
 
@@ -12,10 +12,10 @@ public interface MainPageClient {
 
     Mono<MainPage> findMainPage();
 
-    Mono<MainPage> createMainPage(String nickname, String name, String surName, String city, Byte age,
+    Mono<MainPage> createMainPage(String nickname, String name, String surName, String city, LocalDate birthDay,
                                   String description);
 
-    Mono<Void> updateMainPage(String nickname, String name, String surName, String city, Byte age,
+    Mono<Void> updateMainPage(String nickname, String name, String surName, String city, LocalDate birthDay,
                               String description);
 
     Mono<Void> deleteMainPage();

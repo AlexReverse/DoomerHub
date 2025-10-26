@@ -41,7 +41,7 @@ public class PostController {
     }
 
     @GetMapping
-    public String getPost(Post post, Model model, OAuth2AuthenticationToken token) {
+    public Mono<String> getPost(Post post, Model model, OAuth2AuthenticationToken token) {
         Mono<FavouritePost> result = favouritePostsClient.findFavouritePostByPostIdAndUser(post.id(),
                 token.getPrincipal().getAttribute("preferred_username"));
         model.addAttribute("isCurrentAuthor",
@@ -49,7 +49,7 @@ public class PostController {
         model.addAttribute("inFavourite", result.hasElement());
         model.addAttribute("comments", this.postReviewsClient.findPostReviewsByPostId(post.id()));
         model.addAttribute("username", token.getPrincipal().getAttribute("preferred_username"));
-        return "search/posts/post";
+        return Mono.just("search/posts/post");
     }
 
     @GetMapping("edit")

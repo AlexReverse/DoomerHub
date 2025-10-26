@@ -1,19 +1,26 @@
 package org.alexreverse.client;
 
 import lombok.RequiredArgsConstructor;
+import org.alexreverse.client.exception.ClientBadRequestException;
+import org.alexreverse.controller.payload.NewMainPagePayload;
 import org.alexreverse.entity.MainPage;
+import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 public class WebClientMainPage implements MainPageClient {
 
     private final WebClient webClient;
-    // Необходимо будет избавиться от передачи userId в конструкторе
+
     @Override
     public Flux<MainPage> findAllMainPage(String filter) {
         return this.webClient.get()
@@ -24,17 +31,41 @@ public class WebClientMainPage implements MainPageClient {
 
     @Override
     public Mono<MainPage> findMainPage() {
-        return null;
+        return this.webClient.get()
+                .uri("/main-page")
+                .retrieve()
+                .bodyToMono(MainPage.class);
     }
 
     @Override
-    public Mono<MainPage> createMainPage(String nickname, String name, String surName, String city, Byte age, String description) {
-        return null;
+    public Mono<MainPage> createMainPage(String nickname, String name, String surName, String city, LocalDate birthDay, String description) {
+        return this.webClient
+                .post()
+                .uri("/main-page")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new NewMainPagePayload(nickname, name, surName, city, birthDay, description))
+                .retrieve()
+                .bodyToMono(MainPage.class)
+                .onErrorMap(WebClientResponseException.BadRequest.class,
+                        exception -> new ClientBadRequestException(exception,
+                                ((List<String>) exception.getResponseBodyAs(ProblemDetail.class)
+                                        .getProperties().get("errors"))));
     }
 
     @Override
-    public Mono<Void> updateMainPage(String nickname, String name, String surName, String city, Byte age, String description) {
-        return null;
+    public Mono<Void> updateMainPage(String nickname, String name, String surName, String city, LocalDate birthDay, String description) {
+        return this.webClient
+                .patch()
+                .uri("/main-page")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new NewMainPagePayload(nickname, name, surName, city, birthDay, description))
+                .retrieve()
+                .toBodilessEntity()
+                .then()
+                .onErrorMap(WebClientResponseException.BadRequest.class,
+                        exception -> new ClientBadRequestException(exception,
+                                ((List<String>) exception.getResponseBodyAs(ProblemDetail.class)
+                                        .getProperties().get("errors"))));
     }
 
     @Override
