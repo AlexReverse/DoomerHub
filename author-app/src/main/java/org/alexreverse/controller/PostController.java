@@ -68,9 +68,10 @@ public class PostController {
             return this.postsClient.updatePost(post.id(), payload.title(), payload.description())
                     .thenReturn("redirect:/search/posts/%d".formatted(post.id()));
         } catch (AccessDeniedException exception) {
-            log.info(exception.getMessage());
+            log.warn(exception.getMessage());
             return Mono.just("redirect:/search/posts/list");
         } catch (Exception exception) {
+            log.info(exception.getMessage());
             model.addAttribute("payload", payload);
             model.addAttribute("errors", exception.getMessage());
             return Mono.just("search/posts/edit");

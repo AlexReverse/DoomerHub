@@ -2,7 +2,7 @@ package org.alexreverse.client;
 
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.client.exception.ClientBadRequestException;
-import org.alexreverse.controller.payload.NewMainPagePayload;
+import org.alexreverse.client.payload.MainPagePayload;
 import org.alexreverse.entity.MainPage;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -43,7 +43,7 @@ public class WebClientMainPage implements MainPageClient {
                 .post()
                 .uri("/main-page")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new NewMainPagePayload(nickname, name, surName, city, birthDay, description))
+                .bodyValue(new MainPagePayload(nickname, name, surName, city, birthDay, description))
                 .retrieve()
                 .bodyToMono(MainPage.class)
                 .onErrorMap(WebClientResponseException.BadRequest.class,
@@ -58,7 +58,7 @@ public class WebClientMainPage implements MainPageClient {
                 .patch()
                 .uri("/main-page")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new NewMainPagePayload(nickname, name, surName, city, birthDay, description))
+                .bodyValue(new MainPagePayload(nickname, name, surName, city, birthDay, description))
                 .retrieve()
                 .toBodilessEntity()
                 .then()
