@@ -59,6 +59,6 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public Mono<Void> deleteMainPage(UUID userId) {
-        return this.pageRepository.deleteById(userId);
+        return this.pageRepository.deleteByUserId(userId);
     }
 }

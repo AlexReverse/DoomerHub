@@ -11,6 +11,7 @@ import org.springframework.security.web.reactive.result.view.CsrfRequestDataValu
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import org.springframework.ui.Model;
@@ -25,11 +26,6 @@ public class MainPageController {
 
     private final MainPageClient mainPageClient;
 
-    @ModelAttribute(name = "mainPage")
-    public Mono<MainPage> loadMainPage() {
-        return this.mainPageClient.findMainPage().switchIfEmpty(Mono.error(new NoSuchElementException()));
-    }
-
     @GetMapping("search")
     public Mono<String> getMainPages(Model model, @RequestParam(name = "filter", required = false) String filter) {
         model.addAttribute("filte", filter);
@@ -40,16 +36,23 @@ public class MainPageController {
     }
 
     @GetMapping
-    public Mono<String> getMainPage() {
-        return Mono.just("main-page");
+    @ModelAttribute(name = "mainPage")
+    public Mono<MainPage> getMainPage() {
+        return this.mainPageClient.findMainPage();
     }
 
     @GetMapping("create")
-    public Mono<String> getPostEditPage() {
+    public Mono<String> getMainPageCreate() {
         return Mono.just("main-page/create");
     }
 
-    @PostMapping
+    @GetMapping("edit")
+    @ModelAttribute(name = "mainPage", binding = false)
+    public Mono<MainPage> getMainPageEdit() {
+        return this.mainPageClient.findMainPage();
+    }
+
+    @PostMapping("create")
     public Mono<String> createMainPage(MainPagePayload pagePayload) {
         try {
             return this.mainPageClient.createMainPage(pagePayload.nickname(), pagePayload.name(), pagePayload.surName(),
@@ -60,33 +63,30 @@ public class MainPageController {
         }
     }
 
-    @PatchMapping("edit")
-    public Mono<String> updateMainPage(@ModelAttribute(name = "mainPage", binding = false) MainPage mainPage,
-                                       MainPagePayload pagePayload, OAuth2AuthenticationToken token) {
+    @PostMapping("edit")
+    public Mono<String> updateMainPage(MainPagePayload pagePayload, OAuth2AuthenticationToken token) {
         try {
-            if (!mainPage.userId().equals(token.getPrincipal().getAttribute("sub"))) {
-                throw new AccessDeniedException("The user %s is not authorized or has no rights for %s"
-                        .formatted(token.getPrincipal().getAttribute("sub"), mainPage.userId()));
-            }
+            if (token.getPrincipal().getAttribute("sub") == null) throw new AccessDeniedException("User not authorized");
             return this.mainPageClient.updateMainPage(pagePayload.nickname(), pagePayload.name(), pagePayload.surName(),
                     pagePayload.city(), pagePayload.birthDay(), pagePayload.description()).thenReturn("redirect:/main-page");
         } catch (AccessDeniedException exception) {
             log.warn(exception.getMessage());
-            return Mono.just("redirect:/main-page");
+            return Mono.just("redirect:/main-page/create");
         } catch (Exception exception) {
             log.info(exception.getMessage());
             return Mono.just("redirect:/main-page/edit");
         }
     }
 
+    @PostMapping("delete")
     public Mono<String> deleteMainPage() {
-        try {
-            this.mainPageClient.deleteMainPage();
-            return Mono.just("");
-        } catch (NoSuchElementException e) {
-            log.info(e.getMessage());
-            return Mono.just("");
-        }
+        return this.mainPageClient.deleteMainPage().thenReturn("redirect:/");
+    }
+
+    @ExceptionHandler({NoSuchElementException.class, WebClientResponseException.NotFound.class})
+    public Mono<String> handleNoSuchElementException(Exception exception, Model model) {
+        model.addAttribute("error", exception.getMessage());
+        return Mono.just("redirect:/main-page/create");
     }
 
     @ModelAttribute

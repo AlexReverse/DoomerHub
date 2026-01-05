@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание информации о пользователе &ndash; DoomerHub</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+    <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a th:href="@{/images/favicon.png}">Логотип</a>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="http://localhost:8082/search/posts/list">Поиск постов</a></li>
+            <li><a href="/main-page">Вернуться обратно</a></li>
+        </ul>
+    </nav>
+</header>
+<h1>Добро пожаловать в Doomer Hub</h1>
+<form method="post" data-th-action="@{/main-page/edit}">
+    <label>
+        Псевдоним:<br>
+        <input type="text" name="nickname" data-th-value="${mainPage.nickname}">
+    </label><br>
+    <label>
+        Имя:<br>
+        <input type="text" name="name" data-th-value="${mainPage.name}">
+    </label><br>
+    <label>
+        Фамилия:<br>
+        <input type="text" name="surName" data-th-value="${mainPage.surName}">
+    </label><br>
+    <label>
+        Город:<br>
+        <select id="city" name="city" data-th-value="${mainPage.city}">
+            <option value="moscow">Москва</option>
+            <option value="spb">Санкт-Петербург</option>
+            <option value="kazan">Казань</option>
+        </select>
+    </label><br>
+    <label>
+        Дата рождения:<br>
+        <input type="date" name="birthDay" data-th-value="${mainPage.birthDay}">
+    </label><br>
+    <label>
+        Описание:<br>
+        <textarea name="description" data-th-text="${payload != null ? payload.description : mainPage.description}"></textarea>
+    </label><br>
+    <button type="submit">Сохранить</button>
+</form>
+</body>
+</html>

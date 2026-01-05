@@ -61,7 +61,8 @@ public class WebClientPostsClient implements PostsClient {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UpdatePostPayload(title, description))
                 .retrieve()
-                .toBodilessEntity().then()
+                .toBodilessEntity()
+                .then()
                 .onErrorMap(WebClientResponseException.BadRequest.class,
                         exception -> new ClientBadRequestException(exception,
                                 ((List<String>) exception.getResponseBodyAs(ProblemDetail.class)
@@ -75,7 +76,8 @@ public class WebClientPostsClient implements PostsClient {
                     .delete()
                     .uri("/search-api/posts/{postId}", postId)
                     .retrieve()
-                    .toBodilessEntity().then();
+                    .toBodilessEntity()
+                    .then();
         } catch (HttpClientErrorException.NotFound exception) {
             throw new NoSuchElementException(exception);
         }

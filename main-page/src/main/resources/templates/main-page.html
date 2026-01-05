@@ -7,6 +7,27 @@
     <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
 </head>
 <body>
-<h1>Добро пожаловать в Doomer Hub</h1>
+<header>
+    <div class="logo">
+        <a type="images/png" th:href="@{/images/favicon.png}">Логотип</a>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="http://localhost:8082/search/posts/list">Поиск постов</a></li>
+            <li><a href="/main-page/edit">Редактирование</a></li>
+        </ul>
+    </nav>
+</header>
+<h1 data-th-text="${mainPage.nickname}"></h1>
+<ul>
+    <li><strong>Имя</strong>: <span data-th-text="${mainPage.name}"></span></li>
+    <li><strong>Фамилия</strong>: <span data-th-text="${mainPage.surName}"></span></li>
+    <li><strong>Город</strong>: <span data-th-text="${mainPage.city}"></span></li>
+    <li><strong>Дата рождения</strong>: <span data-th-text="${mainPage.birthDay}"></span></li>
+    <li><strong>Описание</strong>: <span data-th-text="${mainPage.description}"></span></li>
+</ul>
+<form method="post" data-th-action="@{/main-page/delete}">
+    <button type="submit">Удалить информацию</button>
+</form>
 </body>
 </html>
