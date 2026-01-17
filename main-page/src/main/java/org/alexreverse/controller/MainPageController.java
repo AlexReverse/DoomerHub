@@ -38,7 +38,7 @@ public class MainPageController {
     @GetMapping
     @ModelAttribute(name = "mainPage")
     public Mono<MainPage> getMainPage() {
-        return this.mainPageClient.findMainPage();
+        return this.mainPageClient.findMainPage().switchIfEmpty(Mono.error(new NoSuchElementException()));
     }
 
     @GetMapping("create")
