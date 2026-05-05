@@ -3,6 +3,7 @@ package org.alexreverse.service;
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.entity.Post;
 import org.alexreverse.repository.PostRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,12 @@ public class DefaultPostService implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public Flux<Post> findAllPosts(String filter) {
+    public Flux<Post> findAllPosts(String filter, Pageable pageable) {
         if (filter != null && !filter.isBlank()) {
-            return this.postRepository.findAllByTitleLikeIgnoreCase("%" + filter + "%");
+            return this.postRepository.findAllByTitleOrDescriptionLikeIgnoreCase("%" + filter + "%",
+                    "%" + filter + "%", pageable);
         } else {
-            return this.postRepository.findAll();
+            return this.postRepository.findAllBy(pageable);
         }
     }
 

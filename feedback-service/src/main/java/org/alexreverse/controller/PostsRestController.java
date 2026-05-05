@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.alexreverse.controller.payload.NewPostPayload;
 import org.alexreverse.entity.Post;
 import org.alexreverse.service.PostService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,8 +22,11 @@ public class PostsRestController {
     private final PostService postService;
 
     @GetMapping
-    public Flux<Post> findPosts(@RequestParam(name = "filter", required = false) String filter) {
-        return this.postService.findAllPosts(filter);
+    public Flux<Post> findPosts(@RequestParam(name = "filter", required = false) String filter,
+                                @RequestParam(defaultValue = "0") Integer page,
+                                @RequestParam(defaultValue = "10") Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("postDate"));
+        return this.postService.findAllPosts(filter, pageable);
     }
 
     @PostMapping
