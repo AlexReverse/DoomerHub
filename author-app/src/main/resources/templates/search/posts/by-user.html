@@ -2,35 +2,29 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Список постов &ndash; DoomerHub</title>
+    <title>Мои посты &ndash; DoomerHub</title>
     <link rel="stylesheet" th:href="@{/style.css}"/>
     <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
 </head>
-<body>
 <header>
     <div class="logo">
         <a type="images/png" th:href="@{/images/favicon.png}"></a>
     </div>
     <nav>
         <ul>
-            <li><a data-th-href="@{/search/posts/by-user}">Мои посты</a></li>
+            <li><a data-th-href="@{/search/posts/list}">&larr; Поиск постов</a></li>
             <li><a data-th-href="@{/search/posts/favourites}">Избранные посты</a></li>
             <li><a data-th-href="@{/search/posts/create}">Создать пост</a></li>
             <li><a href="http://localhost:8086/main-page">Информация обо мне</a></li>
         </ul>
     </nav>
 </header>
-<h1>Список постов</h1>
-<form method="get" data-th-action="@{/search/posts/list}">
-    <label>Фильтр:<input type="text" name="filter" data-th-value="${filter}">
-        <button type="submit">Поиск</button>
-    </label>
-</form>
+<body>
 <table>
     <thead>
     <tr>
         <th>&#8470</th>
-        <th>Посты</th>
+        <th>Мои Посты</th>
     </tr>
     </thead>
     <tbody>

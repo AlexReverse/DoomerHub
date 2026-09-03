@@ -18,16 +18,256 @@
         </ul>
     </nav>
 </header>
-<h1 data-th-text="${mainPage.nickname}"></h1>
-<ul>
-    <li><strong>Имя</strong>: <span data-th-text="${mainPage.name}"></span></li>
-    <li><strong>Фамилия</strong>: <span data-th-text="${mainPage.surName}"></span></li>
-    <li><strong>Город</strong>: <span data-th-text="${mainPage.city}"></span></li>
-    <li><strong>Дата рождения</strong>: <span data-th-text="${mainPage.birthDay}"></span></li>
-    <li><strong>Описание</strong>: <span data-th-text="${mainPage.description}"></span></li>
-</ul>
-<form method="post" data-th-action="@{/main-page/delete}">
-    <button type="submit">Удалить информацию</button>
-</form>
+<div class="profile-container">
+    <h1 data-th-text="${mainPage.nickname}" class="profile-nickname"></h1>
+    <div class="profile-cards-grid">
+        <div class="profile-card">
+            <h2 class="profile-card-title">Личные данные</h2>
+            <form method="post" data-th-action="@{/main-page/update-personal}" class="profile-form">
+                <ul class="profile-data-list">
+                    <li><strong>Имя</strong> <span data-th-text="${mainPage.name}"></span></li>
+                    <li><strong>Фамилия</strong> <span data-th-text="${mainPage.surName}"></span></li>
+                    <li><strong>Город</strong> <span data-th-text="${mainPage.city}"></span></li>
+                    <li><strong>Дата рождения</strong> <span data-th-text="${mainPage.birthDay}"></span></li>
+                    <li><strong>Описание</strong> <span data-th-text="${mainPage.description}"></span></li>
+                </ul>
+                <button type="submit" class="btn-edit-profile">Редактировать</button>
+            </form>
+        </div>
+        <div class="profile-card">
+            <h2 class="profile-card-title">🎓 Образование</h2>
+            <form method="post" data-th-action="@{/main-page/update-education}" class="profile-form">
+                <ul class="profile-data-list">
+                    <li><strong>Учебное заведение</strong> <span class="placeholder-text">не указано</span></li>
+                    <li><strong>Специальность</strong> <span class="placeholder-text">не указано</span></li>
+                    <li><strong>Год окончания</strong> <span class="placeholder-text">не указано</span></li>
+                </ul>
+                <button type="submit" class="btn-edit-profile">Редактировать</button>
+            </form>
+        </div>
+        <div class="profile-card">
+            <h2 class="profile-card-title">Опыт работы</h2>
+            <form method="post" data-th-action="@{/main-page/update-work}" class="profile-form">
+                <ul class="profile-data-list">
+                    <li><strong>Место работы</strong> <span class="placeholder-text">не указано</span></li>
+                    <li><strong>Должность</strong> <span class="placeholder-text">не указано</span></li>
+                    <li><strong>Стаж (лет)</strong> <span class="placeholder-text">не указано</span></li>
+                </ul>
+                <button type="submit" class="btn-edit-profile">Редактировать</button>
+            </form>
+        </div>
+    </div>
+    <form method="post" data-th-action="@{/main-page/delete}" class="profile-delete-form">
+        <button type="submit" class="btn-danger">Удалить страницу</button>
+    </form>
+</div>
 </body>
 </html>
+<style>
+    /* ===== 19. СТРАНИЦА ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ (обновлённая) ===== */
+.profile-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 15px;
+}
+
+/* Никнейм */
+.profile-nickname {
+    font-size: 2.8rem;
+    font-weight: 300;
+    text-align: center;
+    color: var(--accent);
+    letter-spacing: 2px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 35px;
+    text-shadow: 0 0 20px rgba(74, 158, 255, 0.2);
+}
+
+/* Сетка карточек (3 колонки на больших экранах) */
+.profile-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+/* Каждая карточка */
+.profile-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 20px 25px 25px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+}
+
+/* Заголовок карточки */
+.profile-card-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-light);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+/* Форма внутри карточки (занимает всё пространство) */
+.profile-form {
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 16px;
+    margin: 0;
+}
+
+/* Список данных */
+.profile-data-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+
+.profile-data-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.profile-data-list li:last-child {
+    border-bottom: none;
+}
+
+.profile-data-list li strong {
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-right: 15px;
+}
+
+.profile-data-list li span {
+    color: var(--text-light);
+    text-align: right;
+    word-break: break-word;
+}
+
+/* Заглушка для незаполненных полей */
+.placeholder-text {
+    color: var(--text-muted) !important;
+    font-style: italic;
+    opacity: 0.6;
+}
+
+/* Кнопка редактирования внутри карточки */
+.btn-edit-profile {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: auto;
+    align-self: center;
+    width: 100%;
+    max-width: 200px;
+}
+
+.btn-edit-profile:hover {
+    background: var(--accent-hover);
+    transform: scale(1.02);
+}
+
+.btn-edit-profile:active {
+    transform: scale(0.97);
+}
+
+/* Форма удаления страницы (внизу) */
+.profile-delete-form {
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0;
+}
+
+.profile-delete-form .btn-danger {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-delete-form .btn-danger:hover {
+    background: var(--danger-hover);
+    transform: scale(1.03);
+}
+
+.profile-delete-form .btn-danger:active {
+    transform: scale(0.97);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 700px) {
+    .profile-nickname {
+        font-size: 2rem;
+    }
+    .profile-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .profile-card {
+        padding: 15px 18px;
+    }
+    .profile-data-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 8px 0;
+    }
+    .profile-data-list li span {
+        text-align: left;
+        width: 100%;
+    }
+    .btn-edit-profile {
+        max-width: 100%;
+    }
+    .profile-delete-form .btn-danger {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>

@@ -5,43 +5,133 @@
     <title>[[${post.title}]] &ndash; DoomerHub</title>
     <link rel="stylesheet" th:href="@{/style.css}"/>
     <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
+    <meta name="_csrf" data-th-content="${_csrf.token}"/>
 </head>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+    const favButtons = document.querySelectorAll('.btn-fav');
+    const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+
+    favButtons.forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const postId = [[${post.id}]];
+            const isActive = button.classList.contains('active');
+            const url = isActive
+                ? `/search/posts/${postId}/remove-from-favourites`
+                : `/search/posts/${postId}/add-to-favourites`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN' : csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (response.ok) {
+                    button.classList.toggle('active');
+                } else {
+                    console.error('Ошибка при обновлении избранного');
+                }
+            } catch (error) {
+                console.error('Сетевая ошибка:', error);
+            }
+        });
+    });
+
+    const textarea = document.querySelector('.comment-form textarea');
+    if (textarea) {
+        // Автоматическая высота при вводе
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+
+        // Сброс высоты, если форма будет сброшена (опционально)
+        // При загрузке страницы тоже можно подогнать, если есть текст
+        window.addEventListener('load', function() {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        });
+    }
+});
+</script>
 <body>
-<a data-th-href="@{/search/posts/list}">&larr; Поиск постов</a>
-<form method="post" data-th-action="@{/search/posts/{postId}/add-to-favourites(postId=${post.id})}"
-      data-th-if="${!inFavourite}">
-    <button type="submit">Добавить в избранное</button>
-</form>
-<form method="post" data-th-action="@{/search/posts/{postId}/remove-from-favourites(postId=${post.id})}"
-      data-th-if="${inFavourite}">
-    <button type="submit">Удалить из избранного</button>
-</form>
-<h1 data-th-text="${post.title}"></h1>
-<ul>
-    <li><strong>ID</strong>: <span data-th-text="${post.id}"></span></li>
-    <li><strong>Название</strong>: <span data-th-text="${post.title}"></span></li>
-    <li><strong>Описание</strong>: <span data-th-text="${post.description}"></span></li>
-</ul>
-<a data-th-href="@{/search/posts/{postId}/edit(postId=${post.id})}" data-th-if="${isCurrentAuthor}">Изменить пост</a>
-<form method="post" data-th-action="@{/search/posts/{postId}/delete(postId=${post.id})}" data-th-if="${isCurrentAuthor}">
-    <button type="submit">Удалить пост</button>
-</form>
-<h2>Комментарии: </h2>
-<div data-th-each="comment : ${comments}">
-    <h3>[[${comment.review}]]
-        <form method="post" data-th-action="@{/search/posts/{postId}/delete-review/{commentId}(postId=${post.id},
-            commentId=${comment.id})}" data-th-if="${comment.userName} == ${username}">
-            <button type="submit">Удалить</button>
-        </form>
-    </h3>
-    <p data-th-text="${comment.userName}"></p>
+<header>
+    <div class="logo">
+        <a type="images/png" th:href="@{/images/favicon.png}"></a>
+    </div>
+    <nav>
+        <ul>
+            <li><a data-th-href="@{/search/posts/list}">&larr; Поиск постов</a></li>
+            <li><a data-th-href="@{/search/posts/by-user}">Мои посты</a></li>
+            <li><a data-th-href="@{/search/posts/favourites}">Избранные посты</a></li>
+            <li><a data-th-href="@{/search/posts/create}">Создать пост</a></li>
+            <li><a href="http://localhost:8086/main-page">Информация обо мне</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="post-header">
+    <h1 data-th-text="${post.title}">Заголовок</h1>
+    <div class="dropdown-container">
+        <button type="button" class="dropdown-trigger" style="font-size: x-large;">
+            &ctdot; <span class="arrow">▼</span>
+        </button>
+
+        <div class="dropdown-menu">
+            <h4 class="dropdown-title">Действия:</h4>
+
+            <form data-th-action="@{/search/posts/{postId}/edit(postId=${post.id})}" data-th-if="${isCurrentAuthor}">
+                <button type="submit" class="btn-edit">Изменить пост</button>
+            </form>
+
+            <form method="post" data-th-action="@{/search/posts/{postId}/delete(postId=${post.id})}" data-th-if="${isCurrentAuthor}">
+                <button type="submit" class="btn-delete" onclick="return confirm('Вы уверены, что хотите удалить этот пост?')">Удалить пост</button>
+            </form>
+        </div>
+    </div>
+    <button type="button"
+            class="btn-fav"
+            data-th-classappend="${inFavourite} ? 'active' : ''"
+            data-post-id="${post.id}">
+        <svg class="heart-icon" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+    </button>
 </div>
-<form method="post" data-th-action="@{/search/posts/{postId}/create-review(postId=${post.id})}">
-    <br>
-    <label>Комментарий:<br>
-        <textarea name="review" data-th-text="${payload?.review}"></textarea>
-    </label><br>
-    <button type="submit">Отправить комментарий</button>
-</form>
+<div class="post-content">
+    <span data-th-text="${post.description}"></span>
+</div>
+<div class="comments-container">
+    <h2>Комментарии: <span data-th-text="${#lists.size(comments)}" class="comments-count"></span></h2>
+    <div data-th-each="comment : ${comments}" class="comment-wrapper">
+        <div class="comment-card">
+            <div class="comment-header">
+                <div class="comment-username" data-th-text="${comment.userName}">
+                    <i class="user-icon">👤</i>
+                    <span data-th-text="${comment.userName}"></span>
+                </div>
+                <div class="comment-date" data-th-text="${comment.dateTime}"></div>
+            </div>
+            <form method="post"
+                  data-th-action="@{/search/posts/{postId}/delete-review/{commentId}(postId=${post.id}, commentId=${comment.id})}"
+                  class="comment-form-item">
+                <div class="comment-text" data-th-text="${comment.review}"></div>
+                <button type="submit" data-th-if="${comment.userName} == ${username}" class="delete-button">
+                    Удалить
+                </button>
+            </form>
+        </div>
+    </div>
+    <form method="post" class="comment-form" data-th-action="@{/search/posts/{postId}/create-review(postId=${post.id})}">
+        <div class="comment-input-wrapper">
+            <textarea name="review" placeholder="Напишите ваш комментарий…" rows="2" data-th-text="${payload?.review}"></textarea>
+            <button type="submit">Отправить</button>
+        </div>
+    </form>
+</div>
 </body>
 </html>

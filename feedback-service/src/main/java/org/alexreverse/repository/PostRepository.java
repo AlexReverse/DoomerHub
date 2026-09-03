@@ -15,4 +15,6 @@ public interface PostRepository extends ReactiveCrudRepository<Post, Long> {
                                                          Pageable pageable);
 
     Flux<Post> findAllBy(Pageable pageable);
+
+    Flux<Post> findAllByUserIdOrderByPostDate(String userId, Pageable pageable);
 }

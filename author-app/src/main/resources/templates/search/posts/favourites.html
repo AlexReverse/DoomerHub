@@ -7,19 +7,40 @@
     <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
 </head>
 <body>
-<a data-th-href="@{/search/posts/list}">Все посты</a>
-<h1>Избранные посты</h1>
-<form>
-    <label>Фильтр: <input type="text" name="filter" data-th-value="${filter}"> <button type="submit">Поиск</button></label>
-</form>
-<ul>
-    <li data-th-each="post : ${posts}">
-        <strong>
-            <a data-th-text="${post.title}"
-               data-th-href="@{/search/posts/{postId}(postId=${post.id})}"></a>
-        </strong>
-        <p data-th-text="${post.description}"></p>
-    </li>
-</ul>
+<header>
+    <div class="logo">
+        <a type="images/png" th:href="@{/images/favicon.png}"></a>
+    </div>
+    <nav>
+        <ul>
+            <li><a data-th-href="@{/search/posts/list}">&larr; Поиск постов</a></li>
+            <li><a data-th-href="@{/search/posts/by-user}">Мои посты</a></li>
+            <li><a data-th-href="@{/search/posts/create}">Создать пост</a></li>
+            <li><a href="http://localhost:8086/main-page">Информация обо мне</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="favorites-container">
+    <h1>Избранные посты</h1>
+    <form method="get" action="/search/favorites" class="filter-form">
+        <label>
+            Фильтр:
+            <input type="text" name="filter" data-th-value="${filter}" placeholder="Введите ключевое слово…">
+        </label>
+        <button type="submit">Найти</button>
+    </form>
+    <ul class="post-list">
+        <li data-th-each="post : ${posts}">
+            <a data-th-href="@{/search/posts/{postId}(postId=${post.id})}"
+               class="post-block-link">
+                <strong data-th-text="${post.title}"></strong>
+                <p class="post-description" data-th-text="${post.description}"></p>
+            </a>
+        </li>
+    </ul>
+    <div data-th-if="${#lists.isEmpty(posts)}" class="empty-state">
+        <p>В избранном пока ничего нет. Добавьте посты, нажимая на сердечко</p>
+    </div>
+</div>
 </body>
 </html>

@@ -39,6 +39,14 @@ public class PostsController {
         return Mono.just("search/posts/new_post");
     }
 
+    @GetMapping("by-user")
+    public Mono<String> getPostsListByUserId(Model model, OAuth2AuthenticationToken token) {
+        return this.postsClient.findAllPostsByUser(token.getPrincipal().getAttribute("sub"))
+                .collectList()
+                .doOnNext(posts -> model.addAttribute("posts", posts))
+                .thenReturn("search/posts/by-user");
+    }
+
     @PostMapping("create")
     public Mono<String> createPost(NewPostPayload payload, Model model, OAuth2AuthenticationToken token) {
         try {

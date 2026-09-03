@@ -105,3 +105,348 @@
     font-style: normal;
     font-display: swap;
 }
+/* ===== Переменные (цветовая схема) ===== */
+:root {
+    --bg-dark: #0b1a2e;
+    --bg-card: #12263a;
+    --bg-hover: #1a3a5c;
+    --text-light: #e0e8f0;
+    --text-muted: #8aa4c0;
+    --accent: #4a9eff;
+    --accent-hover: #6db3ff;
+    --border-color: #2a4a6a;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* ===== Глобальные сбросы и база ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ===== Шапка ===== */
+header {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+
+.logo a {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background: var(--accent);
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+.logo a:hover {
+    transform: scale(1.1);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+nav ul li a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
+nav ul li a:hover {
+    background: var(--bg-hover);
+    color: var(--accent);
+}
+
+/* ===== Ссылки-действия (например, "Все посты" / "Избранные") ===== */
+/* Обратите внимание: на первой странице это .action-links, на второй – просто одиночная ссылка.
+   Чтобы унифицировать, стилизуем обе через общий класс или через селектор a[data-th-href*="posts"]?
+   Но проще добавить класс .action-link к таким ссылкам. Если класс не добавлен, можно стилизовать
+   ссылки, которые являются прямыми потомками body (кроме тех, что внутри header/nav).
+   Однако надёжнее предложить добавить класс .action-link в разметку. В примере ниже я покажу
+   стили для класса .action-link, а также для одиночной ссылки "Все посты" – можно стилизовать
+   её через селектор body > a[data-th-href]. Для единообразия лучше использовать класс. */
+.action-link,
+body > a[data-th-href*="/search/posts/"] {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: background 0.2s, border-color 0.2s, transform 0.1s;
+    display: inline-block;
+    margin-right: 15px;
+}
+.action-link:hover,
+body > a[data-th-href*="/search/posts/"]:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+/* Контейнер для группы таких ссылок (как на первой странице) */
+.action-links {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    gap: 25px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* ===== Заголовки ===== */
+h1 {
+    font-size: 2.2rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin: 15px 0 25px;
+    color: var(--text-light);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    width: 100%;
+    max-width: 1100px;
+}
+
+/* ===== Формы фильтра ===== */
+form {
+    width: 100%;
+    max-width: 1100px;
+    background: var(--bg-card);
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+form label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1 1 300px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+form input[type="text"] {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+form input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.3);
+}
+form button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+form button:hover {
+    background: var(--accent-hover);
+    transform: scale(1.02);
+}
+form button:active {
+    transform: scale(0.97);
+}
+
+/* ===== Таблица (для страницы со списком постов) ===== */
+table {
+    width: 100%;
+    max-width: 1100px;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+thead {
+    background: var(--bg-hover);
+    border-bottom: 2px solid var(--border-color);
+}
+thead th {
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.15s;
+}
+tbody tr:last-child {
+    border-bottom: none;
+}
+tbody tr:hover {
+    background: var(--bg-hover);
+}
+tbody td {
+    padding: 14px 20px;
+    vertical-align: middle;
+}
+tbody td:first-child {
+    font-weight: 600;
+    color: var(--text-muted);
+    width: 60px;
+    text-align: center;
+}
+tbody td a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+tbody td a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* ===== Список (для страницы избранных постов) ===== */
+ul.post-list {  /* рекомендуем добавить класс .post-list к <ul> на второй странице */
+    width: 100%;
+    max-width: 1100px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: var(--bg-card);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+ul.post-list li {
+    padding: 16px 25px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.15s;
+}
+ul.post-list li:last-child {
+    border-bottom: none;
+}
+ul.post-list li:hover {
+    background: var(--bg-hover);
+}
+ul.post-list li strong {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+}
+ul.post-list li strong a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+ul.post-list li strong a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+ul.post-list li p {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* Если вы не хотите добавлять класс, можно стилизовать ul, который идёт после формы,
+   но это менее надёжно. Рекомендую использовать класс .post-list */
+
+/* ===== Адаптивность ===== */
+@media (max-width: 700px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    nav ul {
+        flex-wrap: wrap;
+    }
+    form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    form label {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .action-links {
+        flex-wrap: wrap;
+    }
+    ul.post-list li {
+        padding: 14px 18px;
+    }
+    table {
+        font-size: 0.9rem;
+    }
+    thead th, tbody td {
+        padding: 10px 12px;
+    }
+}
+/* ===== Стили для страницы 404 ===== */
+body.error-page {
+    justify-content: center;      /* центрируем по вертикали */
+    min-height: 100vh;
+    text-align: center;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    text-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+}
+
+.error-message {
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.error-link {
+    margin-top: 1rem;
+}
+

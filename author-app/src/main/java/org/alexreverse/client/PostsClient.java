@@ -8,6 +8,8 @@ public interface PostsClient {
 
     Flux<Post> findAllPosts(String filter);
 
+    Flux<Post> findAllPostsByUser(String userId);
+
     Mono<Post> findPost(Long Id);
 
     Mono<Post> createPost(String title, String description, String userId);

@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Ничего не найдено</title>
+    <title>Ничего не найдено – DoomerHub</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+    <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
 </head>
-<body>
-<h1>Ошибка 404</h1>
-<i data-th-text="#{${error}}"></i>
+<header>
+    <div class="logo">
+        <a type="images/png" th:href="@{/images/favicon.png}"></a>
+    </div>
+    <nav>
+        <ul>
+            <li><a data-th-href="@{/search/posts/list}">&larr; Поиск постов</a></li>
+            <li><a href="http://localhost:8086/main-page">Информация обо мне</a></li>
+        </ul>
+    </nav>
+</header>
+<body class="error-page">
+<div>
+    <div class="error-code">404</div>
+    <h1 class="error-message" th:text="#{${error} ?: 'Страница не найдена'}">Страница не найдена</h1>
+    <p style="color: var(--text-muted); margin-bottom: 1.8rem;">
+        Возможно, вы перешли по неверной ссылке или страница была удалена.
+    </p>
+</div>
 </body>
 </html>

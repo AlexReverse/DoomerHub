@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Список постов &ndash; DoomerHub</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+    <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a type="images/png" th:href="@{/images/favicon.png}"></a>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="/main-page">Информация обо мне</a></li>
+        </ul>
+    </nav>
+</header>
+<h1>Список страниц</h1>
+<form method="get" data-th-action="@{/search/posts/list}">
+    <label>Фильтр:<input type="text" name="filter" data-th-value="${filter}">
+        <button type="submit">Поиск</button>
+    </label>
+</form>
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Post</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-th-each="post : ${posts}">
+        <td data-th-text="${post.id}"></td>
+        <td>
+            <a data-th-href="@{/search/posts/{postId}(postId=${post.id})}"
+               data-th-text="${post.title}"></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+<style>
+.profile-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* Имя пользователя (никнейм) */
+.profile-nickname {
+    font-size: 2.8rem;
+    font-weight: 300;
+    text-align: center;
+    color: var(--accent);
+    letter-spacing: 2px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px rgba(74, 158, 255, 0.2);
+}
+
+/* Карточка с деталями */
+.profile-details {
+    list-style: none;
+    padding: 30px 35px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.profile-details li {
+    display: flex;
+    align-items: baseline;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+.profile-details li:last-child {
+    border-bottom: none;
+}
+
+.profile-details li strong {
+    min-width: 130px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.profile-details li span {
+    color: var(--text-light);
+    word-wrap: break-word;
+    flex: 1;
+}
+
+/* Описание можно сделать курсивом или с особым фоном */
+.profile-details li:last-child span {
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+/* Форма удаления — выравнивание по центру */
+.profile-delete-form {
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.profile-delete-form .btn-danger {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    padding: 12px 36px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-delete-form .btn-danger:hover {
+    background: var(--danger-hover);
+    transform: scale(1.03);
+}
+
+.profile-delete-form .btn-danger:active {
+    transform: scale(0.97);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 700px) {
+    .profile-container {
+        padding: 10px;
+    }
+    .profile-nickname {
+        font-size: 2rem;
+    }
+    .profile-details {
+        padding: 20px;
+    }
+    .profile-details li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 10px 0;
+    }
+    .profile-details li strong {
+        min-width: auto;
+    }
+    .profile-delete-form {
+        width: 100%;
+    }
+    .profile-delete-form .btn-danger {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>

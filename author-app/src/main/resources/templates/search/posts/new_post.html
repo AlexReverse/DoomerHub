@@ -4,27 +4,65 @@
     <meta charset="UTF-8">
     <title>Создать пост &ndash; DoomerHub</title>
     <link rel="stylesheet" th:href="@{/style.css}"/>
+    <script type="text/javascript" th:src="@{/js/description_counter.js}"></script>
     <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
 </head>
 <body>
-<a data-th-href="@{/search/posts/list}">&larr; Поиск постов</a>
-<h1>Новый пост</h1>
-<div data-th-if="${errors}">
-    <h2>Допущены ошибки</h2>
-    <ul>
-        <li data-th-each="error: ${error}" data-th-text="${error}"></li>
-    </ul>
+<header>
+    <div class="logo">
+        <a type="images/png" th:href="@{/images/favicon.png}"></a>
+    </div>
+    <nav>
+        <ul>
+            <li><a data-th-href="@{/search/posts/list}">&larr; Поиск постов</a></li>
+            <li><a data-th-href="@{/search/posts/by-user}">Мои посты</a></li>
+            <li><a data-th-href="@{/search/posts/favourites}">Избранные посты</a></li>
+            <li><a data-th-href="@{/search/posts/create}">Создать пост</a></li>
+            <li><a href="http://localhost:8086/main-page">Информация обо мне</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="create-post-container">
+    <h1>Новый пост</h1>
+    <div data-th-if="${errors}" class="error-container">
+        <div class="error-header">
+            <span class="error-icon">⚠️</span>
+            <h2>Допущены ошибки</h2>
+        </div>
+        <ul class="error-list">
+            <li data-th-each="error : ${errors}" data-th-text="${error}" class="error-item"></li>
+        </ul>
+    </div>
+    <form method="post"
+          data-th-action="@{/search/posts/create}"
+          class="create-post-form">
+        <div class="form-group">
+            <label for="postTitle" class="form-label">Название поста</label>
+            <input type="text"
+                   id="postTitle"
+                   name="title"
+                   data-th-value="${payload?.title}"
+                   placeholder="Введите заголовок…"
+                   class="form-input"
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="postDescription" class="form-label">Описание</label>
+            <textarea id="postDescription"
+                      name="description"
+                      data-th-text="${payload?.description}"
+                      placeholder="Опишите ваш пост подробнее…"
+                      class="form-textarea"
+                      rows="6"
+                      maxlength="10000"
+                      required></textarea>
+            <div class="char-counter" id="charCounter">0 / 10000</div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Опубликовать</button>
+            <a data-th-href="@{/search/posts/list}" class="btn-secondary">Отмена</a>
+        </div>
+    </form>
 </div>
-<form method="post" data-th-action="@{/search/posts/create}">
-    <label>
-        Название:<br>
-        <input type="text" name="title" data-th-value="${payload?.title}">
-    </label><br>
-    <label>
-        Описание:<br>
-        <textarea name="description" data-th-text="${payload?.description}"></textarea>
-    </label><br>
-    <button type="submit">Создать</button>
-</form>
 </body>
 </html>

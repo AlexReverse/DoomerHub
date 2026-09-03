@@ -30,6 +30,21 @@ public class WebClientPostsClient implements PostsClient {
     }
 
     @Override
+    public Flux<Post> findAllPostsByUser(String userId) {
+        return this.webClient.get()
+                .uri("/search-api/posts/by-user")
+                .retrieve()
+                .bodyToFlux(Post.class)
+                .handle((dto, sink) -> {
+                    if (dto.userId().equals(userId)) {
+                        sink.next(dto);
+                    } else {
+                        sink.error(new IllegalArgumentException("UserId mismatch!"));
+                    }
+                });
+    }
+
+    @Override
     public Mono<Post> findPost(Long id) {
         return this.webClient.get()
                 .uri("/search-api/posts/{postId}", id)

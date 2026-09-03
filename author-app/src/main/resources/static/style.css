@@ -1,31 +1,6 @@
-* {
-    font-family: 'Comfortaa';
-}
-
-@font-face {
-    font-family: 'Comfortaa';
-    src: url('./fonts/Comfortaa-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Comfortaa';
-    src: url('./fonts/Comfortaa-Medium.woff2') format('woff2');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Comfortaa';
-    src: url('./fonts/Comfortaa-Bold.woff2') format('woff2');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-}
-
+/* ============================================================
+   1.  ПОДКЛЮЧЕНИЕ ШРИФТОВ
+   ============================================================ */
 @font-face {
     font-family: 'Comfortaa';
     src: url('./fonts/Comfortaa-Light.woff2') format('woff2');
@@ -33,15 +8,20 @@
     font-style: normal;
     font-display: swap;
 }
-
 @font-face {
     font-family: 'Comfortaa';
     src: url('./fonts/Comfortaa-Regular.woff2') format('woff2');
-    font-weight: normal;
+    font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
-
+@font-face {
+    font-family: 'Comfortaa';
+    src: url('./fonts/Comfortaa-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
 @font-face {
     font-family: 'Comfortaa';
     src: url('./fonts/Comfortaa-SemiBold.woff2') format('woff2');
@@ -49,23 +29,57 @@
     font-style: normal;
     font-display: swap;
 }
-
 @font-face {
-    font-family: 'Rounded Mplus 1c';
-    src: url('./fonts/RoundedMplus1c-ExtraBold.woff2') format('woff2');
-    font-weight: bold;
+    font-family: 'Comfortaa';
+    src: url('./fonts/Comfortaa-Bold.woff2') format('woff2');
+    font-weight: 700;
     font-style: normal;
     font-display: swap;
 }
 
+/* Шрифт Rounded Mplus 1c (можно использовать для акцентов) */
+@font-face {
+    font-family: 'Rounded Mplus 1c';
+    src: url('./fonts/RoundedMplus1c-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Rounded Mplus 1c';
+    src: url('./fonts/RoundedMplus1c-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Rounded Mplus 1c';
+    src: url('./fonts/RoundedMplus1c-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Rounded Mplus 1c';
+    src: url('./fonts/RoundedMplus1c-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
 @font-face {
     font-family: 'Rounded Mplus 1c';
     src: url('./fonts/RoundedMplus1c-Bold.woff2') format('woff2');
-    font-weight: bold;
+    font-weight: 700;
     font-style: normal;
     font-display: swap;
 }
-
+@font-face {
+    font-family: 'Rounded Mplus 1c';
+    src: url('./fonts/RoundedMplus1c-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
 @font-face {
     font-family: 'Rounded Mplus 1c';
     src: url('./fonts/RoundedMplus1c-Black.woff2') format('woff2');
@@ -74,34 +88,1397 @@
     font-display: swap;
 }
 
-@font-face {
-    font-family: 'Rounded Mplus 1c';
-    src: url('./fonts/RoundedMplus1c-Light.woff2') format('woff2');
+/* ============================================================
+   2.  ПЕРЕМЕННЫЕ (цветовая схема)
+   ============================================================ */
+:root {
+    --bg-dark: #0b1a2e;
+    --bg-card: #12263a;
+    --bg-hover: #1a3a5c;
+    --text-light: #e0e8f0;
+    --text-muted: #8aa4c0;
+    --accent: #4a9eff;
+    --accent-hover: #6db3ff;
+    --border-color: #2a4a6a;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    --danger: #d9534f;
+    --danger-hover: #c9302c;
+    --heart-color: #ff3b30;
+}
+
+/* ============================================================
+   3.  БАЗОВЫЕ СБРОСЫ И ОБЩИЕ СТИЛИ
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Comfortaa', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Comfortaa', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Текстовые элементы */
+p {
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+span {
+    color: var(--text-light);
+}
+li {
+    color: var(--text-light);
+    line-height: 1.5;
+}
+.text-muted {
+    color: var(--text-muted);
+}
+strong, b {
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+/* Заголовки */
+h1 {
+    font-size: 2.2rem;
     font-weight: 300;
-    font-style: normal;
-    font-display: swap;
+    letter-spacing: 1px;
+    margin: 15px 0 25px;
+    color: var(--text-light);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    width: 100%;
+    max-width: 1200px;
 }
-
-@font-face {
-    font-family: 'Rounded Mplus 1c';
-    src: url('./fonts/RoundedMplus1c-Medium.woff2') format('woff2');
+h2 {
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin: 25px 0 15px;
+    color: var(--text-light);
+}
+h3 {
+    font-size: 1.2rem;
     font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+    margin: 15px 0 8px;
+    color: var(--text-light);
 }
 
-@font-face {
-    font-family: 'Rounded Mplus 1c';
-    src: url('./fonts/RoundedMplus1c-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+/* Ссылки */
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
 }
 
-@font-face {
-    font-family: 'Rounded Mplus 1c';
-    src: url('./fonts/RoundedMplus1c-Thin.woff2') format('woff2');
-    font-weight: 100;
-    font-style: normal;
-    font-display: swap;
+/* ============================================================
+   4.  ШАПКА И НАВИГАЦИЯ
+   ============================================================ */
+header {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+.logo a {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background: var(--accent);
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+.logo a:hover {
+    transform: scale(1.1);
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+nav ul li a {
+    color: var(--text-light);
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
+nav ul li a:hover {
+    background: var(--bg-hover);
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* ============================================================
+   5.  ССЫЛКИ-ДЕЙСТВИЯ (например, «Все посты»)
+   ============================================================ */
+.action-link {
+    color: var(--accent);
+    font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: background 0.2s, border-color 0.2s, transform 0.1s;
+    display: inline-block;
+}
+.action-link:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+.action-links {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+/* ============================================================
+   6.  ФОРМЫ, ПОЛЯ ВВОДА, КНОПКИ
+   ============================================================ */
+form {
+    width: 100%;
+    max-width: 1200px;
+    background: var(--bg-card);
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+form label {
+    display: contents;
+}
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form textarea {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+form input:focus,
+form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.3);
+}
+form textarea {
+    width: 100%;
+}
+form button,
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+form button:hover,
+.btn-primary:hover {
+    background: var(--accent-hover);
+    transform: scale(1.02);
+}
+form button:active {
+    transform: scale(0.97);
+}
+.btn-secondary {
+    background: var(--bg-card);
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-secondary:hover {
+    background: var(--bg-hover);
+}
+.btn-danger {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+.btn-danger:hover {
+    background: var(--danger-hover);
+    transform: scale(1.02);
+}
+
+/* ============================================================
+   7.  ТАБЛИЦА (для списка постов)
+   ============================================================ */
+table {
+    width: 100%;
+    max-width: 1200px;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+thead {
+    background: var(--bg-hover);
+    border-bottom: 2px solid var(--border-color);
+}
+thead th {
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.15s;
+}
+tbody tr:last-child {
+    border-bottom: none;
+}
+tbody tr:hover {
+    background: var(--bg-hover);
+}
+tbody td {
+    padding: 14px 20px;
+    vertical-align: middle;
+}
+tbody td:first-child {
+    font-weight: 600;
+    color: var(--text-muted);
+    width: 60px;
+    text-align: center;
+}
+tbody td a {
+    color: var(--accent);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+tbody td a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* ============================================================
+   8.  СПИСКИ ПОСТОВ (избранные, мои посты)
+   ============================================================ */
+ul.post-list {
+    width: 100%;
+    max-width: 1200px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+    background: var(--bg-card);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+ul.post-list li {
+    padding: 16px 25px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.15s;
+}
+ul.post-list li:last-child {
+    border-bottom: none;
+}
+ul.post-list li:hover {
+    background: var(--bg-hover);
+}
+ul.post-list li strong {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+}
+ul.post-list li strong a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+ul.post-list li strong a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+ul.post-list li p {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* ============================================================
+   9.  СТРАНИЦА ПРОСМОТРА ПОСТА
+   ============================================================ */
+/* Заголовок + сердечко */
+.post-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+    gap: 16px;
+}
+.post-header h1 {
+    flex: 1;
+    margin: 0;
+}
+
+.btn-fav {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heart-icon {
+    fill: none;
+    stroke: #ff3b30;
+    stroke-width: 2;
+    transition: fill 0.2s ease, transform 0.2s ease;
+}
+
+.btn-fav.active .heart-icon {
+    fill: #ff3b30;
+}
+
+.btn-fav:hover .heart-icon {
+    transform: scale(1.1);
+}
+/* Детали поста (ID, название, описание) */
+ul.post-details {
+    width: 100%;
+    max-width: 1200px;
+    list-style: none;
+    padding: 20px 30px;
+    margin: 0 0 25px 0;
+    background: var(--bg-card);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+ul.post-details li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    gap: 10px;
+}
+ul.post-details li:last-child {
+    border-bottom: none;
+}
+ul.post-details li strong {
+    color: var(--text-muted);
+    min-width: 100px;
+}
+ul.post-details li span {
+    color: var(--text-light);
+}
+
+/* Блок действий (изменить / удалить) */
+.post-actions {
+    width: 100%;
+    max-width: 1200px;
+    background: var(--bg-card);
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 20px 0 30px;
+}
+.post-actions form {
+    all: unset;          /* сбрасываем стили формы */
+    display: inline-block;
+}
+.post-actions button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+.post-actions button:hover {
+    transform: translateY(-2px);
+}
+.post-actions .btn-edit {
+    background: var(--accent);
+    color: #fff;
+}
+.post-actions .btn-edit:hover {
+    background: var(--accent-hover);
+}
+.post-actions .btn-delete {
+    background: var(--danger);
+    color: #fff;
+}
+.post-actions .btn-delete:hover {
+    background: var(--danger-hover);
+}
+
+/* ============================================================
+   10. КОММЕНТАРИИ
+   ============================================================ */
+.comment-item {
+    width: 100%;
+    max-width: 1200px;
+    background: var(--bg-card);
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    margin-bottom: 15px;
+}
+.comment-item h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 5px 0;
+}
+.comment-item .comment-delete-btn {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.comment-item .comment-delete-btn:hover {
+    background: var(--bg-hover);
+}
+.comment-item p {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* ============================================================
+   11. СТРАНИЦА 404
+   ============================================================ */
+body.error-page {
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+}
+.error-code {
+    font-size: 8rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    text-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+}
+.error-message {
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ============================================================
+   12. ВСПЛЫВАЮЩЕЕ МЕНЮ ПОСТА
+   ============================================================ */
+
+/* Главный контейнер-обертка */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Кнопка-триггер */
+.dropdown-trigger {
+    font-family: inherit;
+    color: var(--accent);
+    background: transparent;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dropdown-trigger .arrow {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+}
+
+/* Эффект при наведении на триггер */
+.dropdown-container:hover .dropdown-trigger {
+    background: var(--bg-hover);
+    border-color: var(--accent);
+}
+
+/* Поворот стрелочки при наведении */
+.dropdown-container:hover .arrow {
+    transform: rotate(180deg);
+}
+
+/* Всплывающее окно (dropdown-menu) */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;       /* Появляется ровно под кнопкой триггера */
+    right: 0;        /* Выравнивание по правому краю (чтобы не вылезало за экран) */
+    margin-top: 8px; /* Небольшой зазор от кнопки */
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    min-width: 200px;
+    box-shadow: var(--shadow);
+    z-index: 100;
+
+    /* Скрытие по умолчанию и плавная анимация появления */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+/* Окно становится видимым, когда курсор находится НАД контейнером */
+.dropdown-container:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Заголовок внутри окошка */
+.dropdown-title {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Сброс стилей форм внутри выпадающего окна */
+.dropdown-menu form {
+    width: 100%;
+    max-width: none;
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    margin-bottom: 8px; /* Отступ между кнопками */
+}
+
+.dropdown-menu form:last-child {
+    margin-bottom: 0; /* Убираем отступ у последней формы */
+}
+
+/* Кнопки действий внутри меню */
+.dropdown-menu button {
+    font-family: inherit;
+    font-size: 0.9rem;
+    width: 100%;          /* Кнопки растягиваются на всю ширину меню */
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-align: left;     /* Выравнивание текста по левому краю */
+    transition: background-color 0.2s;
+}
+
+/* Специфичные цвета кнопок в меню */
+.dropdown-menu .btn-edit {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+}
+.dropdown-menu .btn-edit:hover {
+    background-color: var(--bg-hover);
+    color: var(--accent);
+}
+
+.dropdown-menu .btn-delete {
+    background-color: rgba(220, 53, 69, 0.1); /* Прозрачный красный фон */
+    color: #ff4d5e;
+    border: 1px solid rgba(220, 53, 69, 0.2);
+}
+.dropdown-menu .btn-delete:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+/* ===== 13. Форма комментариев (фиксированная внизу) ===== */
+.comment-form {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background: var(--bg-card);
+    padding: 15px 20px;
+    border-top: 2px solid var(--border-color);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+    align-items: center;
+    position: -webkit-sticky;
+    /* Ограничиваем максимальную высоту, чтобы форма не вылезала за экран */
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.comment-form-item {
+    display: flex;
+    flex-direction: column;
+    position: relative; /* для абсолютного позиционирования даты */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.comment-text {
+    margin-bottom: 10px;
+}
+
+.comment-date {
+    align-self: flex-end;      /* прижимаем к правому краю */
+    font-size: 0.8em;
+    color: #888;
+    margin-top: auto;          /* сдвигаем вниз, если форма растягивается */
+}
+
+.delete-button {
+    align-self: flex-start;    /* или используйте абсолютное позиционирование */
+    margin-top: 5px;
+}
+
+/* Имя пользователя над формой */
+.comment-username {
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;            /* Позволяет тянуть мышкой, если нужно */
+    min-height: 60px;
+    max-height: 300px;           /* Ограничим, чтобы не расползалась бесконечно */
+    line-height: 1.5;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.3);
+}
+
+.comment-form button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+
+.comment-form button:hover {
+    background: var(--accent-hover);
+    transform: scale(1.02);
+}
+
+.comment-form button:active {
+    transform: scale(0.97);
+}
+
+/* Контейнер должен иметь относительное позиционирование */
+.comments-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Дополнительные стили для красивого отображения */
+
+.comments-container h2 {
+    color: var(--text-light);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.comments-count {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.comment-wrapper {
+    margin-bottom: 15px;
+}
+
+.comment-card {
+    background: var(--bg-dark);
+    border-radius: 12px;
+    padding: 15px 18px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.comment-card:hover {
+    border-color: var(--border-color);
+    background: var(--bg-card);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.comment-username {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: var(--accent);
+    font-size: 1rem;
+}
+
+.user-icon {
+    font-size: 1.2rem;
+}
+
+.comment-username span {
+    color: var(--text-light);
+}
+
+.comment-date {
+    font-size: 0.75rem;
+    color: #888;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3px 10px;
+    border-radius: 12px;
+}
+
+.comment-form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    border: none;
+    margin: 0;
+}
+
+.comment-text {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding: 5px 0;
+    word-wrap: break-word;
+}
+
+.delete-button {
+    align-self: flex-end;
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.delete-button:hover {
+    background: #c82333;
+    transform: scale(1.05);
+}
+
+.delete-button:active {
+    transform: scale(0.95);
+}
+
+.comment-input-wrapper {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.comment-input-wrapper textarea {
+    flex: 1;
+    min-height: 60px;
+    max-height: 120px;
+}
+
+.comment-input-wrapper button {
+    flex-shrink: 0;
+    height: auto;
+    padding: 10px 24px;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+}
+
+.comment-input-wrapper button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(74, 158, 255, 0.4);
+}
+
+/* Адаптив для мобильных устройств */
+@media (max-width: 768px) {
+    .comment-input-wrapper {
+        flex-direction: column;
+    }
+
+    .comment-input-wrapper button {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .comment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .comment-date {
+        align-self: flex-start;
+    }
+
+    .delete-button {
+        align-self: flex-start;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Пустое состояние */
+.comments-container:has(.comment-wrapper:empty) .comment-wrapper {
+    display: none;
+}
+
+.comments-container:has(.comment-wrapper:empty)::after {
+    content: "Пока нет комментариев. Будьте первым! 🎉";
+    display: block;
+    text-align: center;
+    color: #888;
+    padding: 30px 0;
+    font-style: italic;
+}
+
+/* ===== 14. Основной контент поста ===== */
+.post-content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 30px auto 20px auto; /* верхний отступ, снизу — запас под форму */
+    padding: 30px 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+
+/* Стилизация текста внутри (если нужно) */
+.post-content span {
+    display: block;
+    white-space: pre-wrap; /* сохраняет переносы строк, если они есть */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 700px) {
+    .post-content {
+        margin: 15px auto 100px auto;
+        padding: 20px 18px;
+        font-size: 1rem;
+    }
+}
+
+/* ============================================================
+   15. АДАПТИВНОСТЬ (мобильные устройства)
+   ============================================================ */
+@media (max-width: 700px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    nav ul {
+        flex-wrap: wrap;
+    }
+    form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    form label {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .action-links {
+        flex-wrap: wrap;
+    }
+    ul.post-list li {
+        padding: 14px 18px;
+    }
+    table {
+        font-size: 0.9rem;
+    }
+    thead th, tbody td {
+        padding: 10px 12px;
+    }
+    .post-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .post-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* ===== 16. СТРАНИЦА ИЗБРАННЫХ ПОСТОВ ===== */
+.favorites-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Стилизация формы фильтра (делаем компактнее) */
+.filter-form {
+    background: var(--bg-card);
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.filter-form label {
+    flex: 1 1 300px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+.filter-form input[type="text"] {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.filter-form input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.3);
+}
+.filter-form button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+.filter-form button:hover {
+    background: var(--accent-hover);
+    transform: scale(1.02);
+}
+.filter-form button:active {
+    transform: scale(0.97);
+}
+
+/* Обрезка описания поста до 2 строк с многоточием */
+ul.post-list li .post-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;          /* Количество строк */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 3.2em;              /* fallback для старых браузеров */
+    line-height: 1.6;
+    margin-top: 4px;
+}
+
+/* Пустое состояние */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+.empty-state p {
+    margin: 0;
+}
+
+/* Адаптив для формы фильтра */
+@media (max-width: 700px) {
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filter-form label {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filter-form button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.post-block-link {
+    display: block;
+    padding: 16px 25px;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+.post-block-link:hover {
+    background: var(--bg-hover);
+}
+.post-block-link strong {
+    color: var(--accent);
+}
+.post-block-link:hover strong {
+    color: var(--accent-hover);
+}
+
+/* ===== 17. СТРАНИЦА СОЗДАНИЯ ПОСТА ===== */
+.create-post-container {
+    max-width: 1200px;          /* увеличено с 800px */
+    width: 100%;
+    margin: 0 auto;
+}
+
+.create-post-container h1 {
+    text-align: center;         /* заголовок страницы по центру */
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.create-post-form {
+    background: var(--bg-card);
+    padding: 35px 40px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* Группа полей */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    text-align: center;              /* заголовок по центру */
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+}
+
+/* Поля ввода */
+#postTitle,
+#postDescription {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 1100px;
+}
+
+.form-input {
+    height: 48px;                /* фиксированная высота для заголовка */
+    resize: none;                /* запрещаем изменение размера */
+}
+
+.form-textarea {
+    resize: vertical;            /* разрешаем изменение по вертикали */
+    min-height: 350px;
+    max-height: 1000px;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.3);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+/* Счётчик символов (добавляется рядом с textarea) */
+.char-counter {
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    padding-right: 4px;
+}
+
+.char-counter.limit-reached {
+    color: var(--danger);
+}
+
+/* Блок с кнопками */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: center;      /* кнопки по центру */
+}
+
+.form-actions .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 12px 36px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-actions .btn-primary:hover {
+    background: var(--accent-hover);
+    transform: scale(1.03);
+}
+
+.form-actions .btn-primary:active {
+    transform: scale(0.97);
+}
+
+.form-actions .btn-secondary {
+    background: transparent;
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-actions .btn-secondary:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent);
+    text-decoration: none;
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 700px) {
+    .create-post-form {
+        padding: 20px;
+    }
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .form-actions .btn-primary,
+    .form-actions .btn-secondary {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* ===== 18. БЛОК ОШИБОК ===== */
+.error-container {
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid #dc3545;
+    border-radius: 10px;
+    padding: 20px 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 15px rgba(220, 53, 69, 0.2);
+    animation: shake 0.4s ease-in-out;
+}
+
+.error-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.error-icon {
+    font-size: 1.6rem;
+}
+
+.error-container h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ff6b7a;
+}
+
+.error-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.error-item {
+    color: #ff8a92;
+    padding: 6px 0 6px 28px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23ff4d5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>') left center no-repeat;
+    background-size: 18px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(220, 53, 69, 0.15);
+}
+
+.error-item:last-child {
+    border-bottom: none;
+}
+
+/* Анимация встряхивания */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 700px) {
+    .error-container {
+        padding: 15px;
+    }
+    .error-header h2 {
+        font-size: 1.1rem;
+    }
+    .error-item {
+        padding-left: 24px;
+        background-size: 16px;
+        font-size: 0.9rem;
+    }
 }

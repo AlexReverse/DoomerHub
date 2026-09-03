@@ -36,7 +36,7 @@ public class PostController {
 
     @ModelAttribute(name = "post")
     public Mono<Post> loadPost(@PathVariable("postId") Long id) {
-        return this.postsClient.findPost(id)
+        return postsClient.findPost(id)
                 .switchIfEmpty(Mono.error(new NoSuchElementException("search.posts.error.not_found")));
     }
 
@@ -47,7 +47,7 @@ public class PostController {
         model.addAttribute("isCurrentAuthor",
                 post.userId().equals(token.getPrincipal().getAttribute("sub")));
         model.addAttribute("inFavourite", result.hasElement());
-        model.addAttribute("comments", this.postReviewsClient.findPostReviewsByPostId(post.id()));
+        model.addAttribute("comments", postReviewsClient.findPostReviewsByPostId(post.id()));
         model.addAttribute("username", token.getPrincipal().getAttribute("preferred_username"));
         return Mono.just("search/posts/post");
     }
@@ -65,7 +65,7 @@ public class PostController {
                 throw new AccessDeniedException("The user %s is not authorized or has no rights for post id = %d"
                         .formatted(token.getPrincipal().getAttribute("sub"), post.id()));
             }
-            return this.postsClient.updatePost(post.id(), payload.title(), payload.description())
+            return postsClient.updatePost(post.id(), payload.title(), payload.description())
                     .thenReturn("redirect:/search/posts/%d".formatted(post.id()));
         } catch (AccessDeniedException exception) {
             log.warn(exception.getMessage());
@@ -85,9 +85,9 @@ public class PostController {
                 throw new AccessDeniedException("The user %s is not authorized or has no rights for post id = %d".formatted(
                         token.getPrincipal().getAttribute("sub"), post.id()));
             }
-            return this.postsClient.deletePost(post.id())
-                    .then(this.postReviewsClient.deletePostReviewByPostId(post.id()))
-                    .then(this.favouritePostsClient.deleteFavouritesFromPost(post.id()))
+            return postsClient.deletePost(post.id())
+                    .then(postReviewsClient.deletePostReviewByPostId(post.id()))
+                    .then(favouritePostsClient.deleteFavouritesFromPost(post.id()))
                     .thenReturn("redirect:/search/posts/list");
         } catch (AccessDeniedException exception) {
             log.info(exception.getMessage());
@@ -100,7 +100,7 @@ public class PostController {
                                             OAuth2AuthenticationToken token) {
         return postMono
                 .map(Post::id)
-                .flatMap(postId -> this.favouritePostsClient.addPostToFavourites(postId,
+                .flatMap(postId -> favouritePostsClient.addPostToFavourites(postId,
                                 token.getPrincipal().getAttribute("preferred_username"))
                         .thenReturn("redirect:/search/posts/%d".formatted(postId))
                         .onErrorResume(exception -> {
@@ -113,7 +113,7 @@ public class PostController {
     public Mono<String> removePostFromFavourites(@ModelAttribute("post") Mono<Post> post,
                                                  OAuth2AuthenticationToken token) {
         return post.map(Post::id)
-                .flatMap(postId -> this.favouritePostsClient.removePostFromFavourites(postId,
+                .flatMap(postId -> favouritePostsClient.removePostFromFavourites(postId,
                                 token.getPrincipal().getAttribute("preferred_username"))
                         .thenReturn("redirect:/search/posts/%d".formatted(postId)));
     }
@@ -122,14 +122,14 @@ public class PostController {
     public Mono<String> createReview(@PathVariable("postId") Long id,
                                      NewPostReviewPayload payload,
                                      Model model, OAuth2AuthenticationToken token) {
-        return this.postReviewsClient.createPostReview(id, payload.review(),
+        return postReviewsClient.createPostReview(id, payload.review(),
                         token.getPrincipal().getAttribute("preferred_username"))
                 .thenReturn("redirect:/search/posts/%d".formatted(id))
                 .onErrorResume(ClientBadRequestException.class, exception -> {
                     model.addAttribute("inFavourite", false);
                     model.addAttribute("payload", payload);
                     model.addAttribute("errors", exception.getErrors());
-                    return this.favouritePostsClient.findFavouritePostByPostIdAndUser(id,
+                    return favouritePostsClient.findFavouritePostByPostIdAndUser(id,
                                     token.getPrincipal().getAttribute("sub"))
                             .doOnNext(favouritePost -> model.addAttribute("inFavourite", true))
                             .thenReturn("search/posts/post");
@@ -139,7 +139,7 @@ public class PostController {
     @PostMapping("delete-review/{commentId:\\d+}")
     public Mono<String> deleteReview(@PathVariable("postId") Long id, @PathVariable("commentId") Long reviewId,
                                    OAuth2AuthenticationToken token) {
-        return this.postReviewsClient.deletePostReview(reviewId,
+        return postReviewsClient.deletePostReview(reviewId,
                 token.getPrincipal().getAttribute("preferred_username"))
                 .thenReturn("redirect:/search/posts/%d".formatted(id));
     }
