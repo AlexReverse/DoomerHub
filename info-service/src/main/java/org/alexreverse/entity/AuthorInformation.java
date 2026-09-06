@@ -20,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(schema = "doomerhub", name = "main_page")
-public class MainPage implements Persistable<UUID> {
+public class AuthorInformation implements Persistable<UUID> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

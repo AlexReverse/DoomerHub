@@ -2,10 +2,10 @@ package org.alexreverse.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.alexreverse.controller.payload.MainPagePayload;
-import org.alexreverse.controller.payload.UpdatePagePayload;
-import org.alexreverse.entity.MainPage;
-import org.alexreverse.service.PageService;
+import org.alexreverse.controller.payload.AuthorInformationPayload;
+import org.alexreverse.controller.payload.UpdateAuthorInformationPayload;
+import org.alexreverse.entity.AuthorInformation;
+import org.alexreverse.service.AuthorInformationService;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -25,29 +25,30 @@ import java.util.UUID;
 @RequestMapping("main-page")
 public class InfoServiceRestController {
 
-    private final PageService pageService;
+    private final AuthorInformationService authorInformationService;
+
     private final MessageSource messageSource;
 
     @ModelAttribute(name = "page", binding = false)
-    public Mono<MainPage> getMainPage(JwtAuthenticationToken auth) {
-        return this.pageService.findMainPage(UUID.fromString(auth.getName()))
+    public Mono<AuthorInformation> getMainPage(JwtAuthenticationToken auth) {
+        return this.authorInformationService.findAuthorInformation(UUID.fromString(auth.getName()))
                 .switchIfEmpty(Mono.error(new NoSuchElementException("infoservice.mainpage.errors.page_not_found")));
     }
 
     @GetMapping
-    public Mono<MainPage> findMainPage(@ModelAttribute("page") MainPage mainPage) {
-        return pageService.findMainPage(mainPage.getUserId());
+    public Mono<AuthorInformation> findAuthorInformation(@ModelAttribute("page") AuthorInformation mainPage) {
+        return authorInformationService.findAuthorInformation(mainPage.getUserId());
     }
 
     @PostMapping
-    public Mono<ResponseEntity<MainPage>> createMainPage(JwtAuthenticationToken auth,
-                                                         @Valid @RequestBody Mono<MainPagePayload> mainPagePayloadMono,
+    public Mono<ResponseEntity<AuthorInformation>> createAuthorInformation(JwtAuthenticationToken auth,
+                                                         @Valid @RequestBody Mono<AuthorInformationPayload> mainPagePayloadMono,
                                                          UriComponentsBuilder uriComponentsBuilder) {
         return mainPagePayloadMono
-                .flatMap(mainPagePayload -> this.pageService.createMainPage(
+                .flatMap(authorInformationPayload -> this.authorInformationService.createAuthorInformation(
                         UUID.fromString(auth.getName()),
-                        mainPagePayload.nickname(), mainPagePayload.name(), mainPagePayload.surName(),
-                        mainPagePayload.city(), mainPagePayload.birthDay(), mainPagePayload.description()))
+                        authorInformationPayload.nickname(), authorInformationPayload.name(), authorInformationPayload.surName(),
+                        authorInformationPayload.city(), authorInformationPayload.birthDay(), authorInformationPayload.description()))
                 .map(mainPage -> ResponseEntity.created(uriComponentsBuilder.replacePath("/main-page")
                         .build(mainPage.getUserId())).body(mainPage))
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
@@ -55,17 +56,17 @@ public class InfoServiceRestController {
 
     @DeleteMapping
     public Mono<ResponseEntity<Void>> deleteMainPage(JwtAuthenticationToken auth) {
-        return this.pageService.deleteMainPage(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)))
+        return this.authorInformationService.deleteAuthorInformation(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)))
                 .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PatchMapping
-    public Mono<ResponseEntity<Void>> updateMainPage(JwtAuthenticationToken auth,
-                                                     @Valid @RequestBody UpdatePagePayload payload) {
-        return this.pageService.findMainPage(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)))
+    public Mono<ResponseEntity<Void>> updateAuthorInformation(JwtAuthenticationToken auth,
+                                                     @Valid @RequestBody UpdateAuthorInformationPayload payload) {
+        return this.authorInformationService.findAuthorInformation(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)))
                 .flatMap(unused ->
-                pageService.updateMainPage(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)),
+                authorInformationService.updateAuthorInformation(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)),
                                 payload.nickname(), payload.name(), payload.surName(),
                         payload.city(), payload.birthDay(), payload.description())
                         .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK))))

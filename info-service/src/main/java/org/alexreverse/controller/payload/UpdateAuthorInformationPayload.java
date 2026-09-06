@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record UpdatePagePayload(
+public record UpdateAuthorInformationPayload(
         @NotNull
         @Size(min = 3, max = 50)
         String nickname,

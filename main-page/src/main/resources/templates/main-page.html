@@ -23,7 +23,7 @@
     <div class="profile-cards-grid">
         <div class="profile-card">
             <h2 class="profile-card-title">Личные данные</h2>
-            <form method="post" data-th-action="@{/main-page/update-personal}" class="profile-form">
+            <form method="get" data-th-action="@{/main-page/edit}" class="profile-form">
                 <ul class="profile-data-list">
                     <li><strong>Имя</strong> <span data-th-text="${mainPage.name}"></span></li>
                     <li><strong>Фамилия</strong> <span data-th-text="${mainPage.surName}"></span></li>
@@ -36,7 +36,7 @@
         </div>
         <div class="profile-card">
             <h2 class="profile-card-title">🎓 Образование</h2>
-            <form method="post" data-th-action="@{/main-page/update-education}" class="profile-form">
+            <form method="get" data-th-action="@{/main-page/edit-education}" class="profile-form">
                 <ul class="profile-data-list">
                     <li><strong>Учебное заведение</strong> <span class="placeholder-text">не указано</span></li>
                     <li><strong>Специальность</strong> <span class="placeholder-text">не указано</span></li>
@@ -47,7 +47,7 @@
         </div>
         <div class="profile-card">
             <h2 class="profile-card-title">Опыт работы</h2>
-            <form method="post" data-th-action="@{/main-page/update-work}" class="profile-form">
+            <form method="get" data-th-action="@{/main-page/edit-work}" class="profile-form">
                 <ul class="profile-data-list">
                     <li><strong>Место работы</strong> <span class="placeholder-text">не указано</span></li>
                     <li><strong>Должность</strong> <span class="placeholder-text">не указано</span></li>
