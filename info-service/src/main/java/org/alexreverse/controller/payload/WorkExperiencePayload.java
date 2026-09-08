@@ -5,20 +5,16 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record UpdateAuthorInformationPayload(
+public record WorkExperiencePayload(
         @NotNull
         @Size(min = 3, max = 50)
-        String nickname,
+        String companyName,
+        @NotNull
+        LocalDate workStartDate,
+        @NotNull
+        LocalDate workEndDate,
         @NotNull
         @Size(min = 3, max = 50)
-        String name,
-        @NotNull
-        @Size(min = 3, max = 50)
-        String surName,
-        @NotNull
-        @Size(min = 3, max = 50)
-        String city,
-        @NotNull
-        LocalDate birthDay,
+        String companyPosition,
         @Size(max = 100)
-        String description) {}
+        String responsibilities) {}

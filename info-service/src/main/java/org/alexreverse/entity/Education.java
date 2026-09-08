@@ -53,7 +53,7 @@ public class Education {
     @NotNull
     private FORM_EDUCATION formEducation;
 
-    private enum FORM_EDUCATION {
+    public enum FORM_EDUCATION {
         FULL_TIME("очная"),
         PART_TIME("очно-заочная"),
         DISTANCE("заочная");

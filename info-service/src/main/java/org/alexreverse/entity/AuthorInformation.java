@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "doomerhub", name = "main_page")
+@Table(schema = "doomerhub", name = "author_information")
 public class AuthorInformation implements Persistable<UUID> {
 
     @Id

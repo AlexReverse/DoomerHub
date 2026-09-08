@@ -1,6 +1,6 @@
 create schema if not exists doomerhub;
 
-CREATE TABLE main_page (
+CREATE TABLE doomerhub.author_information (
 	user_id uuid NOT NULL,
 	nickname varchar(50) NOT NULL,
 	name varchar(50) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE main_page (
 	registration_date timestamp(6) NOT NULL
 );
 
-CREATE TABLE education (
+CREATE TABLE doomerhub.education (
     id bigserial NOT NULL,
     user_id uuid NOT NULL,
     hei_name varchar(50) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE education (
     form_education varchar(50) NOT NULL
 )
 
-CREATE TABLE work_experience (
+CREATE TABLE doomerhub.work_experience (
     id bigserial NOT NULL,
     user_id uuid NOT NULL,
     company_name varchar(50) NOT NULL,
