@@ -89,7 +89,23 @@ public class MainPageServiceRestController {
 
     @DeleteMapping
     public Mono<ResponseEntity<Void>> deleteMainPage(JwtAuthenticationToken auth) {
-        return this.mainPageService.deleteMainPageInformation(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)))
+        return mainPageService.deleteMainPageInformation(UUID.fromString(auth.getName()))
+                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("education/{id:\\d+}")
+    public Mono<ResponseEntity<Void>> deleteEducationInformation(@PathVariable("id") Long id,
+                                                                 JwtAuthenticationToken auth) {
+        return mainPageService.deleteEducationInformation(id, UUID.fromString(auth.getName()))
+                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("work-experience/{id:\\d+}")
+    public Mono<ResponseEntity<Void>> deleteWorkExperience(@PathVariable("id") Long id,
+                                                           JwtAuthenticationToken auth) {
+        return mainPageService.deleteWorkExperience(id, UUID.fromString(auth.getName()))
                 .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -97,7 +113,7 @@ public class MainPageServiceRestController {
     @PatchMapping
     public Mono<ResponseEntity<Void>> updateAuthorInformation(JwtAuthenticationToken auth,
                                                               @Valid @RequestBody AuthorInformationPayload payload) {
-        return this.mainPageService.findAuthorInformation(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)))
+        return mainPageService.findAuthorInformation(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)))
                 .flatMap(unused ->
                         mainPageService.updateAuthorInformation(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)),
                                         payload.nickname(), payload.name(), payload.surName(),
@@ -110,7 +126,7 @@ public class MainPageServiceRestController {
     public ResponseEntity<ProblemDetail> handleNoSuchElementException(NoSuchElementException exception, Locale locale) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
-                        this.messageSource.getMessage(exception.getMessage(), new Object[0],
+                        messageSource.getMessage(exception.getMessage(), new Object[0],
                                 exception.getMessage(), locale)));
     }
 }

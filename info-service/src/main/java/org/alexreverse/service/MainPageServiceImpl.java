@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -127,7 +128,19 @@ public class MainPageServiceImpl implements MainPageService {
     @Transactional
     public Mono<Void> deleteMainPageInformation(UUID userId) {
         return authorInformationRepository.deleteByUserId(userId)
-                .then(educationRepository.deleteByUserId(userId))
-                .then(workExperienceRepository.deleteByUserId(userId));
+                .then(educationRepository.deleteAllByUserId(userId))
+                .then(workExperienceRepository.deleteAllByUserId(userId));
+    }
+
+    @Override
+    public Mono<Void> deleteEducationInformation(Long id, UUID userId) {
+        educationRepository.findById(id).switchIfEmpty(Mono.error(new NoSuchElementException()));
+        return educationRepository.deleteByIdAndUserId(id, userId);
+    }
+
+    @Override
+    public Mono<Void> deleteWorkExperience(Long id, UUID userId) {
+        workExperienceRepository.findById(id).switchIfEmpty(Mono.error(new NoSuchElementException()));
+        return workExperienceRepository.deleteByIdAndUserId(id, userId);
     }
 }

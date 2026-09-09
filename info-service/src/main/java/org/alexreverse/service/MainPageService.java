@@ -27,4 +27,8 @@ public interface MainPageService {
     Mono<Void> updateAuthorInformation(UUID userId, String nickname, String name, String surName, String city, LocalDate birthDay, String description);
 
     Mono<Void> deleteMainPageInformation(UUID userId);
+
+    Mono<Void> deleteEducationInformation(Long id, UUID uuid);
+
+    Mono<Void> deleteWorkExperience(Long id, UUID uuid);
 }
