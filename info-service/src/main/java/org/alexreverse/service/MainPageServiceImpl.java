@@ -1,12 +1,14 @@
 package org.alexreverse.service;
 
 import lombok.RequiredArgsConstructor;
+import org.alexreverse.controller.payload.AuthorInformationPayload;
+import org.alexreverse.controller.payload.EducationPayload;
+import org.alexreverse.controller.payload.WorkExperiencePayload;
 import org.alexreverse.dto.AuthorInformationDto;
 import org.alexreverse.dto.EducationDto;
 import org.alexreverse.dto.MainPageResponse;
 import org.alexreverse.dto.WorkExperienceDto;
 import org.alexreverse.dto.mapper.InfoMapper;
-import org.alexreverse.entity.AuthorInformation;
 import org.alexreverse.repository.AuthorInformationRepository;
 import org.alexreverse.repository.EducationRepository;
 import org.alexreverse.repository.WorkExperienceRepository;
@@ -14,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -99,11 +100,27 @@ public class MainPageServiceImpl implements MainPageService {
 //    }
 
     @Override
-    public Mono<AuthorInformationDto> createAuthorInformation(UUID userId, String nickname, String name, String surName, String city, LocalDate birthDay, String description) {
+    public Mono<AuthorInformationDto> createAuthorInformation(UUID userId, AuthorInformationPayload payload) {
         return findAuthorInformation(userId)
-                .switchIfEmpty(authorInformationRepository.save(new AuthorInformation(userId, nickname, name, surName,
-                city, birthDay, description, LocalDateTime.now(), true))
+                .switchIfEmpty(authorInformationRepository
+                        .save(infoMapper.authorPayloadToEntity(userId, payload, LocalDateTime.now()))
                         .map(infoMapper::authorToDto));
+    }
+
+    @Override
+    public Flux<EducationDto> createEducationsInformation(UUID userId, List<EducationPayload> payloads) {
+        return Flux.fromIterable(payloads)
+                .map(payload -> infoMapper.payloadToEducation(userId, payload))
+                .flatMap(educationRepository::save)
+                .map(infoMapper::educationToDto);
+    }
+
+    @Override
+    public Flux<WorkExperienceDto> createWorkExperiences(UUID userId, List<WorkExperiencePayload> payloads) {
+        return Flux.fromIterable(payloads)
+                .map(payload -> infoMapper.payloadToWorkExperience(userId, payload))
+                .flatMap(workExperienceRepository::save)
+                .map(infoMapper::workToDto);
     }
 
     @Override
@@ -125,11 +142,11 @@ public class MainPageServiceImpl implements MainPageService {
     }
 
     @Override
-    @Transactional
     public Mono<Void> deleteMainPageInformation(UUID userId) {
-        return authorInformationRepository.deleteByUserId(userId)
-                .then(educationRepository.deleteAllByUserId(userId))
-                .then(workExperienceRepository.deleteAllByUserId(userId));
+        return Mono.when(authorInformationRepository.deleteByUserId(userId),
+                        educationRepository.deleteAllByUserId(userId),
+                        workExperienceRepository.deleteAllByUserId(userId)
+        );
     }
 
     @Override

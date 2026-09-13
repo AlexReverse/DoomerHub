@@ -3,6 +3,8 @@ package org.alexreverse.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.controller.payload.AuthorInformationPayload;
+import org.alexreverse.controller.payload.EducationPayload;
+import org.alexreverse.controller.payload.WorkExperiencePayload;
 import org.alexreverse.dto.AuthorInformationDto;
 import org.alexreverse.dto.EducationDto;
 import org.alexreverse.dto.MainPageResponse;
@@ -20,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -63,19 +66,11 @@ public class MainPageServiceRestController {
 
     @PostMapping
     public Mono<ResponseEntity<AuthorInformationDto>> createAuthorInformation(JwtAuthenticationToken auth,
-                                                                              @Valid @RequestBody Mono<AuthorInformationPayload> payload,
+                                                                              @Valid @RequestBody AuthorInformationPayload payload,
                                                                               UriComponentsBuilder uriComponentsBuilder) {
         UUID userId = UUID.fromString(auth.getName());
 
-        return payload
-                .flatMap(authorInformationPayload -> mainPageService.createAuthorInformation(
-                        userId,
-                        authorInformationPayload.nickname(),
-                        authorInformationPayload.name(),
-                        authorInformationPayload.surName(),
-                        authorInformationPayload.city(),
-                        authorInformationPayload.birthDay(),
-                        authorInformationPayload.description()))
+        return mainPageService.createAuthorInformation(userId, payload)
                 .map(mainPage -> {
                     URI location = uriComponentsBuilder
                             .replacePath("/main-page")
@@ -85,6 +80,34 @@ public class MainPageServiceRestController {
                             .created(location)
                             .body(mainPage);
                 });
+    }
+
+    @PostMapping("education")
+    public ResponseEntity<Flux<EducationDto>> createEducationsInformation(JwtAuthenticationToken auth,
+                                                                          @Valid @RequestBody List<EducationPayload> payload,
+                                                                          UriComponentsBuilder uriComponentsBuilder) {
+        UUID userId = UUID.fromString(auth.getName());
+
+        URI location = uriComponentsBuilder
+                .replacePath("/main-page")
+                .buildAndExpand()
+                .toUri();
+
+        return ResponseEntity.created(location).body(mainPageService.createEducationsInformation(userId, payload));
+    }
+
+    @PostMapping("work-experience")
+    public ResponseEntity<Flux<WorkExperienceDto>> createWorkExperiences(JwtAuthenticationToken auth,
+                                                                         @Valid @RequestBody List<WorkExperiencePayload> payload,
+                                                                         UriComponentsBuilder uriComponentsBuilder) {
+        UUID userId = UUID.fromString(auth.getName());
+
+        URI location = uriComponentsBuilder
+                .replacePath("/main-page")
+                .buildAndExpand()
+                .toUri();
+
+        return ResponseEntity.created(location).body(mainPageService.createWorkExperiences(userId, payload));
     }
 
     @DeleteMapping

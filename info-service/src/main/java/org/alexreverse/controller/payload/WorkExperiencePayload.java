@@ -11,7 +11,6 @@ public record WorkExperiencePayload(
         String companyName,
         @NotNull
         LocalDate workStartDate,
-        @NotNull
         LocalDate workEndDate,
         @NotNull
         @Size(min = 3, max = 50)

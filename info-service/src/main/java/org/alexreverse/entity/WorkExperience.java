@@ -40,7 +40,6 @@ public class WorkExperience {
     private LocalDate workStartDate;
 
     @Column(name = "work_end_date")
-    @NotNull
     private LocalDate workEndDate;
 
     @Column(name = "company_position")

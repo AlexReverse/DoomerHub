@@ -1,5 +1,9 @@
 package org.alexreverse.service;
 
+import jakarta.validation.Valid;
+import org.alexreverse.controller.payload.AuthorInformationPayload;
+import org.alexreverse.controller.payload.EducationPayload;
+import org.alexreverse.controller.payload.WorkExperiencePayload;
 import org.alexreverse.dto.AuthorInformationDto;
 import org.alexreverse.dto.EducationDto;
 import org.alexreverse.dto.MainPageResponse;
@@ -8,6 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public interface MainPageService {
@@ -22,7 +27,11 @@ public interface MainPageService {
 
     //Flux<AuthorInformationDto> findAllAuthorInformationByNameOrSurNameOrNickname(String filter); todo
 
-    Mono<AuthorInformationDto> createAuthorInformation(UUID userId, String nickname, String name, String surName, String city, LocalDate birthDay, String description);
+    Mono<AuthorInformationDto> createAuthorInformation(UUID userId, AuthorInformationPayload payload);
+
+    Flux<EducationDto> createEducationsInformation(UUID userId, List<EducationPayload> payload);
+
+    Flux<WorkExperienceDto> createWorkExperiences(UUID userId, List<WorkExperiencePayload> payload);
 
     Mono<Void> updateAuthorInformation(UUID userId, String nickname, String name, String surName, String city, LocalDate birthDay, String description);
 
