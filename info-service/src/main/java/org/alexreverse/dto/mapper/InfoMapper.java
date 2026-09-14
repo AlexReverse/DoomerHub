@@ -11,6 +11,7 @@ import org.alexreverse.entity.Education;
 import org.alexreverse.entity.WorkExperience;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,10 @@ public interface InfoMapper {
 
     AuthorInformation authorPayloadToEntity(UUID userId, AuthorInformationPayload payload,
                                             LocalDateTime registrationDate);
+
+    default void authorPayloadPatchEntity(AuthorInformationPayload payload, @MappingTarget AuthorInformation entity) {
+        entity.setNew(false);
+    }
 
     @AfterMapping
     default void handleIsNew(@MappingTarget AuthorInformation entity) {

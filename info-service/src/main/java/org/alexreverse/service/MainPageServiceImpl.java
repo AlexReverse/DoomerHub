@@ -1,5 +1,6 @@
 package org.alexreverse.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.controller.payload.AuthorInformationPayload;
 import org.alexreverse.controller.payload.EducationPayload;
@@ -14,13 +15,11 @@ import org.alexreverse.repository.EducationRepository;
 import org.alexreverse.repository.WorkExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,21 +123,15 @@ public class MainPageServiceImpl implements MainPageService {
     }
 
     @Override
-    public Mono<Void> updateAuthorInformation(UUID userId, String nickname, String name, String surName, String city, LocalDate birthDay, String description) {
+    public Mono<AuthorInformationDto> updateAuthorInformation(UUID userId, AuthorInformationPayload payload) {
         return authorInformationRepository.findById(userId)
-                .flatMap(mainPage -> {
-                    mainPage.setNickname(nickname);
-                    mainPage.setName(name);
-                    mainPage.setSurName(surName);
-                    mainPage.setCity(city);
-                    mainPage.setBirthDay(birthDay);
-                    mainPage.setDescription(description);
-                    mainPage.setNew(false);
-                    return authorInformationRepository.save(mainPage);
+                .switchIfEmpty(Mono.error(new EntityNotFoundException("")))
+                .map(entity -> {
+                    infoMapper.authorPayloadPatchEntity(payload, entity);
+                    return entity;
                 })
-                .map(page -> new ResponseEntity<>(page, HttpStatus.OK))
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND))
-                .then();
+                .flatMap(authorInformationRepository::save)
+                .map(infoMapper::authorToDto);
     }
 
     @Override

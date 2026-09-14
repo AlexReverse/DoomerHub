@@ -136,12 +136,8 @@ public class MainPageServiceRestController {
     @PatchMapping
     public Mono<ResponseEntity<Void>> updateAuthorInformation(JwtAuthenticationToken auth,
                                                               @Valid @RequestBody AuthorInformationPayload payload) {
-        return mainPageService.findAuthorInformation(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)))
-                .flatMap(unused ->
-                        mainPageService.updateAuthorInformation(UUID.fromString(auth.getToken().getClaimAsString(StandardClaimNames.SUB)),
-                                        payload.nickname(), payload.name(), payload.surName(),
-                                        payload.city(), payload.birthDay(), payload.description())
-                                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK))))
+        return mainPageService.updateAuthorInformation(UUID.fromString(auth.getName()), payload)
+                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
