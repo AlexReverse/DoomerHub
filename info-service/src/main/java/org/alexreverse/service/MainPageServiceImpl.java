@@ -2,9 +2,7 @@ package org.alexreverse.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.alexreverse.controller.payload.AuthorInformationPayload;
-import org.alexreverse.controller.payload.EducationPayload;
-import org.alexreverse.controller.payload.WorkExperiencePayload;
+import org.alexreverse.controller.payload.*;
 import org.alexreverse.dto.AuthorInformationDto;
 import org.alexreverse.dto.EducationDto;
 import org.alexreverse.dto.MainPageResponse;
@@ -107,7 +105,7 @@ public class MainPageServiceImpl implements MainPageService {
     }
 
     @Override
-    public Flux<EducationDto> createEducationsInformation(UUID userId, List<EducationPayload> payloads) {
+    public Flux<EducationDto> createEducationInformation(UUID userId, List<EducationPayload> payloads) {
         return Flux.fromIterable(payloads)
                 .map(payload -> infoMapper.payloadToEducation(userId, payload))
                 .flatMap(educationRepository::save)
@@ -115,7 +113,7 @@ public class MainPageServiceImpl implements MainPageService {
     }
 
     @Override
-    public Flux<WorkExperienceDto> createWorkExperiences(UUID userId, List<WorkExperiencePayload> payloads) {
+    public Flux<WorkExperienceDto> createWorkExperience(UUID userId, List<WorkExperiencePayload> payloads) {
         return Flux.fromIterable(payloads)
                 .map(payload -> infoMapper.payloadToWorkExperience(userId, payload))
                 .flatMap(workExperienceRepository::save)
@@ -135,10 +133,38 @@ public class MainPageServiceImpl implements MainPageService {
     }
 
     @Override
+    public Flux<EducationDto> updateEducationInformation(List<EducationPatchPayload> payloads) {
+        return Flux.fromIterable(payloads)
+                .flatMap(payload -> educationRepository.findById(payload.id())
+                        .switchIfEmpty(Mono.error(new EntityNotFoundException("")))
+                        .map(entity -> {
+                            infoMapper.educationPayloadPatchEntity(payload, entity);
+                            return entity;
+                        })
+                )
+                .flatMap(educationRepository::save)
+                .map(infoMapper::educationToDto);
+    }
+
+    @Override
+    public Flux<WorkExperienceDto> updateWorkExperience(List<WorkExperiencePatchPayload> payloads) {
+        return Flux.fromIterable(payloads)
+                .flatMap(payload -> workExperienceRepository.findById(payload.id())
+                        .switchIfEmpty(Mono.error(new EntityNotFoundException("")))
+                        .map(entity -> {
+                            infoMapper.workExperiencePayloadPatchEntity(payload, entity);
+                            return entity;
+                        })
+                )
+                .flatMap(workExperienceRepository::save)
+                .map(infoMapper::workToDto);
+    }
+
+    @Override
     public Mono<Void> deleteMainPageInformation(UUID userId) {
         return Mono.when(authorInformationRepository.deleteByUserId(userId),
-                        educationRepository.deleteAllByUserId(userId),
-                        workExperienceRepository.deleteAllByUserId(userId)
+                educationRepository.deleteAllByUserId(userId),
+                workExperienceRepository.deleteAllByUserId(userId)
         );
     }
 

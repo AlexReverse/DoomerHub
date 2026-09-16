@@ -1,8 +1,6 @@
 package org.alexreverse.service;
 
-import org.alexreverse.controller.payload.AuthorInformationPayload;
-import org.alexreverse.controller.payload.EducationPayload;
-import org.alexreverse.controller.payload.WorkExperiencePayload;
+import org.alexreverse.controller.payload.*;
 import org.alexreverse.dto.AuthorInformationDto;
 import org.alexreverse.dto.EducationDto;
 import org.alexreverse.dto.MainPageResponse;
@@ -27,11 +25,15 @@ public interface MainPageService {
 
     Mono<AuthorInformationDto> createAuthorInformation(UUID userId, AuthorInformationPayload payload);
 
-    Flux<EducationDto> createEducationsInformation(UUID userId, List<EducationPayload> payload);
+    Flux<EducationDto> createEducationInformation(UUID userId, List<EducationPayload> payload);
 
-    Flux<WorkExperienceDto> createWorkExperiences(UUID userId, List<WorkExperiencePayload> payload);
+    Flux<WorkExperienceDto> createWorkExperience(UUID userId, List<WorkExperiencePayload> payload);
 
     Mono<AuthorInformationDto> updateAuthorInformation(UUID userId, AuthorInformationPayload payload);
+
+    Flux<EducationDto> updateEducationInformation(List<EducationPatchPayload> payloads);
+
+    Flux<WorkExperienceDto> updateWorkExperience(List<WorkExperiencePatchPayload> payloads);
 
     Mono<Void> deleteMainPageInformation(UUID userId);
 

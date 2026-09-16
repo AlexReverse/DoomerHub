@@ -2,9 +2,7 @@ package org.alexreverse.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.alexreverse.controller.payload.AuthorInformationPayload;
-import org.alexreverse.controller.payload.EducationPayload;
-import org.alexreverse.controller.payload.WorkExperiencePayload;
+import org.alexreverse.controller.payload.*;
 import org.alexreverse.dto.AuthorInformationDto;
 import org.alexreverse.dto.EducationDto;
 import org.alexreverse.dto.MainPageResponse;
@@ -82,7 +80,7 @@ public class MainPageServiceRestController {
     }
 
     @PostMapping("education")
-    public ResponseEntity<Flux<EducationDto>> createEducationsInformation(JwtAuthenticationToken auth,
+    public ResponseEntity<Flux<EducationDto>> createEducationInformation(JwtAuthenticationToken auth,
                                                                           @Valid @RequestBody List<EducationPayload> payload,
                                                                           UriComponentsBuilder uriComponentsBuilder) {
         UUID userId = UUID.fromString(auth.getName());
@@ -92,11 +90,11 @@ public class MainPageServiceRestController {
                 .buildAndExpand()
                 .toUri();
 
-        return ResponseEntity.created(location).body(mainPageService.createEducationsInformation(userId, payload));
+        return ResponseEntity.created(location).body(mainPageService.createEducationInformation(userId, payload));
     }
 
     @PostMapping("work-experience")
-    public ResponseEntity<Flux<WorkExperienceDto>> createWorkExperiences(JwtAuthenticationToken auth,
+    public ResponseEntity<Flux<WorkExperienceDto>> createWorkExperience(JwtAuthenticationToken auth,
                                                                          @Valid @RequestBody List<WorkExperiencePayload> payload,
                                                                          UriComponentsBuilder uriComponentsBuilder) {
         UUID userId = UUID.fromString(auth.getName());
@@ -106,7 +104,7 @@ public class MainPageServiceRestController {
                 .buildAndExpand()
                 .toUri();
 
-        return ResponseEntity.created(location).body(mainPageService.createWorkExperiences(userId, payload));
+        return ResponseEntity.created(location).body(mainPageService.createWorkExperience(userId, payload));
     }
 
     @DeleteMapping
@@ -136,6 +134,20 @@ public class MainPageServiceRestController {
     public Mono<ResponseEntity<Void>> updateAuthorInformation(JwtAuthenticationToken auth,
                                                               @Valid @RequestBody AuthorInformationPayload payload) {
         return mainPageService.updateAuthorInformation(UUID.fromString(auth.getName()), payload)
+                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PatchMapping("education")
+    public Mono<ResponseEntity<Void>> updateEducationInformation(@Valid @RequestBody List<EducationPatchPayload> payloads) {
+        return mainPageService.updateEducationInformation(payloads)
+                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PatchMapping("work-experience")
+    public Mono<ResponseEntity<Void>> updateWorkExperience(@Valid @RequestBody List<WorkExperiencePatchPayload> payloads) {
+        return mainPageService.updateWorkExperience(payloads)
                 .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

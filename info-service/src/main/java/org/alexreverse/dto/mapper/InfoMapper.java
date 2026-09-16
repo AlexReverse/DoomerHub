@@ -1,8 +1,6 @@
 package org.alexreverse.dto.mapper;
 
-import org.alexreverse.controller.payload.AuthorInformationPayload;
-import org.alexreverse.controller.payload.EducationPayload;
-import org.alexreverse.controller.payload.WorkExperiencePayload;
+import org.alexreverse.controller.payload.*;
 import org.alexreverse.dto.AuthorInformationDto;
 import org.alexreverse.dto.EducationDto;
 import org.alexreverse.dto.WorkExperienceDto;
@@ -37,7 +35,11 @@ public interface InfoMapper {
 
     Education payloadToEducation(UUID userId, EducationPayload payload);
 
+    void educationPayloadPatchEntity(EducationPatchPayload payload, @MappingTarget Education entity);
+
     WorkExperienceDto workToDto(WorkExperience workExperience);
 
     WorkExperience payloadToWorkExperience(UUID userId, WorkExperiencePayload payload);
+
+    void workExperiencePayloadPatchEntity(WorkExperiencePatchPayload payload, @MappingTarget WorkExperience entity);
 }

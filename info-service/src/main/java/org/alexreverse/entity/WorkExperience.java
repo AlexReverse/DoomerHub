@@ -26,7 +26,7 @@ public class WorkExperience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", updatable = false)
     @NotNull
     private UUID userId;
 
