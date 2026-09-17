@@ -1,7 +1,9 @@
 package org.alexreverse.service;
 
 import lombok.RequiredArgsConstructor;
-import org.alexreverse.entity.Post;
+import org.alexreverse.controller.payload.UpdatePostPayload;
+import org.alexreverse.dto.PostDto;
+import org.alexreverse.dto.mapper.FeedbackMapper;
 import org.alexreverse.repository.PostRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +16,20 @@ public class DefaultPostService implements PostService {
 
     private final PostRepository postRepository;
 
+    private FeedbackMapper feedbackMapper;
+
     @Override
-    public Mono<Post> findPost(Long postId) {
-        return this.postRepository.findById(postId);
+    public Mono<PostDto> findPost(Long postId) {
+        return postRepository
+                .findById(postId)
+                .map(feedbackMapper::entityToDto);
     }
 
     @Override
-    public Mono<Void> updatePost(Long id, String title, String description) {
-        return this.postRepository.findById(id)
+    public Mono<Void> updatePost(Long id, UpdatePostPayload payload) {
+        return postRepository.findById(id)
                 .flatMap(post -> {
-                    post.setTitle(title);
-                    post.setDescription(description);
+                    feedbackMapper.updateEntity(payload, post);
                     return postRepository.save(post);
                 })
                 .map(post -> new ResponseEntity<>(post, HttpStatus.OK))
@@ -33,6 +38,6 @@ public class DefaultPostService implements PostService {
 
     @Override
     public Mono<Void> deletePost(Long id) {
-        return this.postRepository.deleteById(id);
+        return postRepository.deleteById(id);
     }
 }

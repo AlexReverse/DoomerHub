@@ -3,13 +3,13 @@ package org.alexreverse.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.controller.payload.UpdatePostPayload;
+import org.alexreverse.dto.PostDto;
 import org.alexreverse.entity.Post;
 import org.alexreverse.service.PostService;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -25,21 +25,22 @@ public class PostRestController {
     private final MessageSource messageSource;
 
     @ModelAttribute(name = "post", binding = false)
-    public Mono<Post> getPost(@PathVariable("postId") Long id) {
+    public Mono<PostDto> getPost(@PathVariable("postId") Long id) {
         return this.postService.findPost(id).switchIfEmpty(Mono.error(new NoSuchElementException("search.posts.error.not_found")));
     }
 
     @GetMapping
-    public Mono<Post> findPost(@ModelAttribute("post") Post post) {
+    public Mono<PostDto> findPost(@ModelAttribute("post") Post post) {
         return postService.findPost(post.getId());
     }
 
     @PatchMapping
     public Mono<ResponseEntity<Void>> updatePost(@PathVariable("postId") Long postId,
-                                        @Valid @RequestBody UpdatePostPayload payload) throws BindException {
+                                        @Valid @RequestBody UpdatePostPayload payload) {
 
             return this.postService.findPost(postId).flatMap(p ->
-                    postService.updatePost(postId, payload.title(), payload.description())
+                    postService
+                            .updatePost(postId, payload)
                             .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                     )
                     .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));

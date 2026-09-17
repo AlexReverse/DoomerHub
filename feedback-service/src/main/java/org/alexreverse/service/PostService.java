@@ -1,13 +1,14 @@
 package org.alexreverse.service;
 
-import org.alexreverse.entity.Post;
+import org.alexreverse.controller.payload.UpdatePostPayload;
+import org.alexreverse.dto.PostDto;
 import reactor.core.publisher.Mono;
 
 public interface PostService {
 
-    Mono<Post> findPost(Long id);
+    Mono<PostDto> findPost(Long id);
 
-    Mono<Void> updatePost(Long id, String title, String description);
+    Mono<Void> updatePost(Long id, UpdatePostPayload payload);
 
     Mono<Void> deletePost(Long id);
 }
