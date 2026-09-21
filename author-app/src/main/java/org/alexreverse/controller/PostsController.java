@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+import java.util.UUID;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -28,7 +31,7 @@ public class PostsController {
     @GetMapping("list")
     public Mono<String> getPostsListPage(Model model, @RequestParam(name = "filter", required = false) String filter) {
         model.addAttribute("filter", filter);
-        return this.postsClient.findAllPosts(filter)
+        return postsClient.findAllPosts(filter)
                 .collectList()
                 .doOnNext(posts -> model.addAttribute("posts", posts))
                 .thenReturn("search/posts/list");
@@ -41,7 +44,7 @@ public class PostsController {
 
     @GetMapping("by-user")
     public Mono<String> getPostsListByUserId(Model model, OAuth2AuthenticationToken token) {
-        return this.postsClient.findAllPostsByUser(token.getPrincipal().getAttribute("sub"))
+        return postsClient.findAllPostsByUser(UUID.fromString(Objects.requireNonNull(token.getPrincipal().getAttribute("sub"))))
                 .collectList()
                 .doOnNext(posts -> model.addAttribute("posts", posts))
                 .thenReturn("search/posts/by-user");
@@ -50,7 +53,7 @@ public class PostsController {
     @PostMapping("create")
     public Mono<String> createPost(NewPostPayload payload, Model model, OAuth2AuthenticationToken token) {
         try {
-            return this.postsClient.createPost(payload.title(), payload.description(),
+            return postsClient.createPost(payload.title(), payload.description(),
                             token.getPrincipal().getAttribute("sub"))
                     .thenReturn("redirect:/search/posts/list");
         } catch (Exception exception) {
@@ -66,10 +69,10 @@ public class PostsController {
                                                  @RequestParam(name = "filter", required = false) String filter,
                                               OAuth2AuthenticationToken token) {
         model.addAttribute("filter", filter);
-        return this.favouritePostsService.findFavouritePosts(token.getPrincipal().getAttribute("preferred_username"))
+        return favouritePostsService.findFavouritePosts(token.getPrincipal().getAttribute("preferred_username"))
                 .map(FavouritePost::postId)
                 .collectList()
-                .flatMap(favouritePosts -> this.postsClient.findAllPosts(filter)
+                .flatMap(favouritePosts -> postsClient.findAllPosts(filter)
                         .filter(post -> favouritePosts.contains(post.id()))
                         .collectList()
                         .doOnNext(posts -> model.addAttribute("posts", posts)))

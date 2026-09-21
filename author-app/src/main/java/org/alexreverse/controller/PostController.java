@@ -21,6 +21,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,11 +43,12 @@ public class PostController {
     }
 
     @GetMapping
-    public Mono<String> getPost(Post post, Model model, OAuth2AuthenticationToken token) {
+    public Mono<String> getPost(@ModelAttribute("post") Post post, Model model, OAuth2AuthenticationToken token) {
         Mono<FavouritePost> result = favouritePostsClient.findFavouritePostByPostIdAndUser(post.id(),
                 token.getPrincipal().getAttribute("preferred_username"));
         model.addAttribute("isCurrentAuthor",
-                post.userId().equals(token.getPrincipal().getAttribute("sub")));
+                UUID.fromString(Objects.requireNonNull(token.getPrincipal().getAttribute("sub")))
+                        .equals(post.userId()));
         model.addAttribute("inFavourite", result.hasElement());
         model.addAttribute("comments", postReviewsClient.findPostReviewsByPostId(post.id()));
         model.addAttribute("username", token.getPrincipal().getAttribute("preferred_username"));
@@ -61,7 +64,7 @@ public class PostController {
     public Mono<String> updatePost(@ModelAttribute(name = "post", binding = false) Post post,
                                    UpdatePostPayload payload, Model model, OAuth2AuthenticationToken token) {
         try {
-            if (!post.userId().equals(token.getPrincipal().getAttribute("sub"))) {
+            if (!post.userId().equals(UUID.fromString(Objects.requireNonNull(token.getPrincipal().getAttribute("sub"))))) {
                 throw new AccessDeniedException("The user %s is not authorized or has no rights for post id = %d"
                         .formatted(token.getPrincipal().getAttribute("sub"), post.id()));
             }
@@ -81,7 +84,7 @@ public class PostController {
     @PostMapping("delete")
     public Mono<String> deletePost(@ModelAttribute("post") Post post, OAuth2AuthenticationToken token) {
         try {
-            if (!post.userId().equals(token.getPrincipal().getAttribute("sub"))) {
+            if (!post.userId().equals(UUID.fromString(Objects.requireNonNull(token.getPrincipal().getAttribute("sub"))))) {
                 throw new AccessDeniedException("The user %s is not authorized or has no rights for post id = %d".formatted(
                         token.getPrincipal().getAttribute("sub"), post.id()));
             }
@@ -130,7 +133,7 @@ public class PostController {
                     model.addAttribute("payload", payload);
                     model.addAttribute("errors", exception.getErrors());
                     return favouritePostsClient.findFavouritePostByPostIdAndUser(id,
-                                    token.getPrincipal().getAttribute("sub"))
+                                    token.getPrincipal().getAttribute("preferred_username"))
                             .doOnNext(favouritePost -> model.addAttribute("inFavourite", true))
                             .thenReturn("search/posts/post");
                 });

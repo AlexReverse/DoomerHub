@@ -16,9 +16,10 @@ import java.util.List;
 public class WebClientPostReviewsClient implements PostReviewsClient {
 
     private final WebClient webClient;
+
     @Override
     public Flux<PostReview> findPostReviewsByPostId(Long postId) {
-        return this.webClient
+        return webClient
                 .get()
                 .uri("/feedback-api/post-reviews/by-post-id/{postId}", postId)
                 .retrieve()
@@ -27,7 +28,7 @@ public class WebClientPostReviewsClient implements PostReviewsClient {
 
     @Override
     public Mono<PostReview> createPostReview(Long postId, String review, String userName) {
-        return this.webClient
+        return webClient
                 .post()
                 .uri("/feedback-api/post-reviews")
                 .bodyValue(new NewPostReviewPayload(postId, review, userName))
@@ -41,7 +42,7 @@ public class WebClientPostReviewsClient implements PostReviewsClient {
 
     @Override
     public Mono<Void> deletePostReview(Long reviewId, String userName) {
-        return this.webClient
+        return webClient
                 .delete()
                 .uri("feedback-api/post-reviews/by-review-id/{reviewId:\\d+}&{userName}", reviewId, userName)
                 .retrieve()
@@ -51,7 +52,7 @@ public class WebClientPostReviewsClient implements PostReviewsClient {
 
     @Override
     public Mono<Void> deletePostReviewByPostId(Long postId) {
-        return this.webClient
+        return webClient
                 .delete()
                 .uri("feedback-api/post-reviews/by-post-id/{postId:\\d+}", postId)
                 .retrieve()

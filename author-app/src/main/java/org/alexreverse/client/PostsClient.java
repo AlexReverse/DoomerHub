@@ -4,15 +4,17 @@ import org.alexreverse.entity.Post;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 public interface PostsClient {
 
     Flux<Post> findAllPosts(String filter);
 
-    Flux<Post> findAllPostsByUser(String userId);
+    Flux<Post> findAllPostsByUser(UUID userId);
 
     Mono<Post> findPost(Long Id);
 
-    Mono<Post> createPost(String title, String description, String userId);
+    Mono<Post> createPost(String title, String description, UUID userId);
 
     Mono<Void> updatePost(Long postId, String title, String description);
 

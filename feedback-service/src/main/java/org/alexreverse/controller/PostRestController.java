@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.controller.payload.UpdatePostPayload;
 import org.alexreverse.dto.PostDto;
-import org.alexreverse.entity.Post;
 import org.alexreverse.service.PostService;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -22,23 +21,20 @@ import java.util.NoSuchElementException;
 public class PostRestController {
 
     private final PostService postService;
+
     private final MessageSource messageSource;
 
-    @ModelAttribute(name = "post", binding = false)
-    public Mono<PostDto> getPost(@PathVariable("postId") Long id) {
-        return this.postService.findPost(id).switchIfEmpty(Mono.error(new NoSuchElementException("search.posts.error.not_found")));
-    }
-
     @GetMapping
-    public Mono<PostDto> findPost(@ModelAttribute("post") Post post) {
-        return postService.findPost(post.getId());
+    public Mono<PostDto> findPost(@PathVariable("postId") Long id) {
+        return postService.findPost(id)
+                .switchIfEmpty(Mono.error(new NoSuchElementException("search.posts.error.not_found")));
     }
 
     @PatchMapping
     public Mono<ResponseEntity<Void>> updatePost(@PathVariable("postId") Long postId,
                                         @Valid @RequestBody UpdatePostPayload payload) {
 
-            return this.postService.findPost(postId).flatMap(p ->
+            return postService.findPost(postId).flatMap(p ->
                     postService
                             .updatePost(postId, payload)
                             .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
@@ -48,7 +44,7 @@ public class PostRestController {
 
     @DeleteMapping
     public Mono<ResponseEntity<Void>> deletePost(@PathVariable("postId") Long postId) {
-        return this.postService.findPost(postId).flatMap(p ->
+        return postService.findPost(postId).flatMap(p ->
                         postService.deletePost(postId)
                                 .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                 )
@@ -59,7 +55,7 @@ public class PostRestController {
     public ResponseEntity<ProblemDetail> handleNoSuchElementException(NoSuchElementException exception, Locale locale) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
-                        this.messageSource.getMessage(exception.getMessage(), new Object[0],
+                        messageSource.getMessage(exception.getMessage(), new Object[0],
                                 exception.getMessage(), locale)));
     }
 }

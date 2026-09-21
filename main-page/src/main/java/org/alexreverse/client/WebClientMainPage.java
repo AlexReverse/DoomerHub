@@ -23,7 +23,7 @@ public class WebClientMainPage implements MainPageClient {
 
     @Override
     public Flux<MainPage> findAllMainPage(String filter) {
-        return this.webClient.get()
+        return webClient.get()
                 .uri("/main-page", filter)
                 .retrieve()
                 .bodyToFlux(MainPage.class);
@@ -31,7 +31,7 @@ public class WebClientMainPage implements MainPageClient {
 
     @Override
     public Mono<MainPage> findMainPage() {
-        return this.webClient.get()
+        return webClient.get()
                 .uri("/main-page")
                 .retrieve()
                 .bodyToMono(MainPage.class);
@@ -39,7 +39,7 @@ public class WebClientMainPage implements MainPageClient {
 
     @Override
     public Mono<MainPage> createMainPage(String nickname, String name, String surName, String city, LocalDate birthDay, String description) {
-        return this.webClient
+        return webClient
                 .post()
                 .uri("/main-page")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -54,7 +54,7 @@ public class WebClientMainPage implements MainPageClient {
 
     @Override
     public Mono<Void> updateMainPage(String nickname, String name, String surName, String city, LocalDate birthDay, String description) {
-        return this.webClient
+        return webClient
                 .patch()
                 .uri("/main-page")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -71,7 +71,7 @@ public class WebClientMainPage implements MainPageClient {
     @Override
     public Mono<Void> deleteMainPage() {
         try {
-            return this.webClient
+            return webClient
                     .delete()
                     .uri("/main-page")
                     .retrieve()

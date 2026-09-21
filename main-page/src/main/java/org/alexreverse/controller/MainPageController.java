@@ -29,7 +29,7 @@ public class MainPageController {
     @GetMapping("search")
     public Mono<String> getMainPages(Model model, @RequestParam(name = "filter", required = false) String filter) {
         model.addAttribute("filte", filter);
-        return this.mainPageClient.findAllMainPage(filter)
+        return mainPageClient.findAllMainPage(filter)
                 .collectList()
                 .doOnNext(mainPages -> model.addAttribute("mainPages", mainPages))
                 .thenReturn("main-page/search");
@@ -38,7 +38,7 @@ public class MainPageController {
     @GetMapping
     @ModelAttribute(name = "mainPage")
     public Mono<MainPage> getMainPage() {
-        return this.mainPageClient.findMainPage().switchIfEmpty(Mono.error(new NoSuchElementException()));
+        return mainPageClient.findMainPage().switchIfEmpty(Mono.error(new NoSuchElementException()));
     }
 
     @GetMapping("create")
@@ -49,13 +49,13 @@ public class MainPageController {
     @GetMapping("edit")
     @ModelAttribute(name = "mainPage", binding = false)
     public Mono<MainPage> getMainPageEdit() {
-        return this.mainPageClient.findMainPage();
+        return mainPageClient.findMainPage();
     }
 
     @PostMapping("create")
     public Mono<String> createMainPage(MainPagePayload pagePayload) {
         try {
-            return this.mainPageClient.createMainPage(pagePayload.nickname(), pagePayload.name(), pagePayload.surName(),
+            return mainPageClient.createMainPage(pagePayload.nickname(), pagePayload.name(), pagePayload.surName(),
                     pagePayload.city(), pagePayload.birthDay(), pagePayload.description()).thenReturn("redirect:/main-page");
         } catch (Exception exception) {
             log.info(exception.getMessage());
@@ -67,7 +67,7 @@ public class MainPageController {
     public Mono<String> updateMainPage(MainPagePayload pagePayload, OAuth2AuthenticationToken token) {
         try {
             if (token.getPrincipal().getAttribute("sub") == null) throw new AccessDeniedException("User not authorized");
-            return this.mainPageClient.updateMainPage(pagePayload.nickname(), pagePayload.name(), pagePayload.surName(),
+            return mainPageClient.updateMainPage(pagePayload.nickname(), pagePayload.name(), pagePayload.surName(),
                     pagePayload.city(), pagePayload.birthDay(), pagePayload.description()).thenReturn("redirect:/main-page");
         } catch (AccessDeniedException exception) {
             log.warn(exception.getMessage());
@@ -80,7 +80,7 @@ public class MainPageController {
 
     @PostMapping("delete")
     public Mono<String> deleteMainPage() {
-        return this.mainPageClient.deleteMainPage().thenReturn("redirect:/");
+        return mainPageClient.deleteMainPage().thenReturn("redirect:/");
     }
 
     @ExceptionHandler({NoSuchElementException.class, WebClientResponseException.NotFound.class})

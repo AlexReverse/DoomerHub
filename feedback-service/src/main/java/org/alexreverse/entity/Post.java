@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -35,7 +36,7 @@ public class Post {
     @Column(name = "user_id")
     @NotNull
     @Size(max = 50)
-    private String userId;
+    private UUID userId;
 
     @Column(name = "post_date")
     @NotNull

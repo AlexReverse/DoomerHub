@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class WebClientPostsClient implements PostsClient {
@@ -23,15 +24,15 @@ public class WebClientPostsClient implements PostsClient {
 
     @Override
     public Flux<Post> findAllPosts(String filter) {
-        return this.webClient.get()
+        return webClient.get()
                 .uri("/search-api/posts?filter={filter}", filter)
                 .retrieve()
                 .bodyToFlux(Post.class);
     }
 
     @Override
-    public Flux<Post> findAllPostsByUser(String userId) {
-        return this.webClient.get()
+    public Flux<Post> findAllPostsByUser(UUID userId) {
+        return webClient.get()
                 .uri("/search-api/posts/by-user")
                 .retrieve()
                 .bodyToFlux(Post.class)
@@ -46,7 +47,7 @@ public class WebClientPostsClient implements PostsClient {
 
     @Override
     public Mono<Post> findPost(Long id) {
-        return this.webClient.get()
+        return webClient.get()
                 .uri("/search-api/posts/{postId}", id)
                 .retrieve()
                 .bodyToMono(Post.class)
@@ -54,8 +55,8 @@ public class WebClientPostsClient implements PostsClient {
     }
 
     @Override
-    public Mono<Post> createPost(String title, String description, String userId) {
-        return this.webClient
+    public Mono<Post> createPost(String title, String description, UUID userId) {
+        return webClient
                 .post()
                 .uri("/search-api/posts")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -70,7 +71,7 @@ public class WebClientPostsClient implements PostsClient {
 
     @Override
     public Mono<Void> updatePost(Long postId, String title, String description) {
-        return this.webClient
+        return webClient
                 .patch()
                 .uri("/search-api/posts/{postId}", postId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +88,7 @@ public class WebClientPostsClient implements PostsClient {
     @Override
     public Mono<Void> deletePost(Long postId) {
         try {
-            return this.webClient
+            return webClient
                     .delete()
                     .uri("/search-api/posts/{postId}", postId)
                     .retrieve()

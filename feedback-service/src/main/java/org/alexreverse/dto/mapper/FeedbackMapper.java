@@ -13,20 +13,23 @@ import org.alexreverse.entity.PostReview;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Mapper(componentModel = "spring")
 public interface FeedbackMapper {
 
-    Post payloadToEntity(NewPostPayload payload);
-
     PostDto entityToDto(Post entity);
+
+    Post createEntity(NewPostPayload payload, UUID userId, LocalDateTime postDate);
 
     void updateEntity(UpdatePostPayload payload, @MappingTarget Post entity);
 
-    PostReview payloadToEntity(NewPostReviewPayload payload);
-
     PostReviewDto entityToDto(PostReview entity);
 
-    FavouritePost payloadToEntity(NewFavouritePostPayload payload);
+    PostReview createEntity(NewPostReviewPayload payload, LocalDateTime postReviewDate);
 
     FavouritePostDto entityToDto(FavouritePost entity);
+
+    FavouritePost createEntity(NewFavouritePostPayload payload, LocalDateTime favouritePostDate);
 }

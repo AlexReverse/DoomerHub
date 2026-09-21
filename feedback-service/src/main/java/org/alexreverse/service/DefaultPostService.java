@@ -5,6 +5,7 @@ import org.alexreverse.controller.payload.UpdatePostPayload;
 import org.alexreverse.dto.PostDto;
 import org.alexreverse.dto.mapper.FeedbackMapper;
 import org.alexreverse.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class DefaultPostService implements PostService {
 
     private final PostRepository postRepository;
 
+    @Autowired
     private FeedbackMapper feedbackMapper;
 
     @Override

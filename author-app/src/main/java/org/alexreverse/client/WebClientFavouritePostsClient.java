@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class WebClientFavouritePostsClient implements FavouritePostsClient {
@@ -18,7 +19,7 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
     private final WebClient webClient;
     @Override
     public Flux<FavouritePost> findFavouritePosts(String userName) {
-        return this.webClient.get()
+        return webClient.get()
                 .uri("favourite/{userName}", userName)
                 .retrieve()
                 .bodyToFlux(FavouritePost.class);
@@ -26,7 +27,7 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
 
     @Override
     public Mono<FavouritePost> findFavouritePostByPostIdAndUser(Long postId, String userName) {
-        return this.webClient.get()
+        return webClient.get()
                 .uri("favourite/{userName}/by-post-id/{postId}", userName, postId)
                 .retrieve()
                 .bodyToMono(FavouritePost.class)
@@ -35,7 +36,7 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
 
     @Override
     public Mono<FavouritePost> addPostToFavourites(Long postId, String userName) {
-        return this.webClient.post()
+        return webClient.post()
                 .uri("favourite/{userName}", userName)
                 .bodyValue(new NewFavouritePostPayload(postId, userName))
                 .retrieve()
@@ -48,7 +49,7 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
 
     @Override
     public Mono<Void> removePostFromFavourites(Long postId, String userName) {
-        return this.webClient
+        return webClient
                 .delete()
                 .uri("favourite/{userName}/by-post-id/{postId}", userName, postId)
                 .retrieve()
@@ -58,7 +59,7 @@ public class WebClientFavouritePostsClient implements FavouritePostsClient {
 
     @Override
     public Mono<Void> deleteFavouritesFromPost(Long postId) {
-        return this.webClient
+        return webClient
                 .delete()
                 .uri("favourite/by-post-id/{postId:\\d+}", postId)
                 .retrieve()

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @ControllerAdvice
 public class ExceptionHandlingControllerAdvice {
 
@@ -20,8 +22,8 @@ public class ExceptionHandlingControllerAdvice {
                 .map(MessageSourceResolvable::getDefaultMessage)
                 .toList());
 
-        return Mono.just(ResponseEntity.badRequest()
+        return Mono.just(Objects.requireNonNull(ResponseEntity.badRequest()
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON)
-                .body(problemDetail).getBody());
+                .body(problemDetail).getBody()));
     }
 }

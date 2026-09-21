@@ -1,15 +1,18 @@
 package org.alexreverse.service;
 
-import org.alexreverse.entity.Post;
+import org.alexreverse.controller.payload.NewPostPayload;
+import org.alexreverse.dto.PostDto;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 public interface PostsService {
 
-    Flux<Post> findAllPosts(String filter, Pageable pageable);
+    Flux<PostDto> findAllPosts(String filter, Pageable pageable);
 
-    Mono<Post> createPost(String title, String description, String userId);
+    Mono<PostDto> createPost(NewPostPayload payload, UUID userId);
 
-    Flux<Post> findAllPostsByUser(String userId, Pageable pageable);
+    Flux<PostDto> findAllPostsByUser(UUID userId, Pageable pageable);
 }

@@ -1,4 +1,5 @@
 package org.alexreverse.controller.payload;
 
-public record NewPostPayload(
-    String title, String description, String userId) {}
+import java.util.UUID;
+
+public record NewPostPayload(String title, String description, UUID userId) {}

@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 
+import java.util.UUID;
+
 public interface PostRepository extends ReactiveCrudRepository<Post, Long> {
 
     @Query(value = "select p from Post p where p.title ilike :filter or p.description ilike :filter2")
@@ -16,5 +18,5 @@ public interface PostRepository extends ReactiveCrudRepository<Post, Long> {
 
     Flux<Post> findAllBy(Pageable pageable);
 
-    Flux<Post> findAllByUserIdOrderByPostDate(String userId, Pageable pageable);
+    Flux<Post> findAllByUserIdOrderByPostDate(UUID userId, Pageable pageable);
 }

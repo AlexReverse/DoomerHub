@@ -3,7 +3,7 @@ package org.alexreverse.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.controller.payload.NewPostReviewPayload;
-import org.alexreverse.entity.PostReview;
+import org.alexreverse.dto.PostReviewDto;
 import org.alexreverse.service.PostReviewsService;
 
 import org.springframework.http.ResponseEntity;
@@ -20,32 +20,30 @@ public class PostReviewsRestController {
     private final PostReviewsService postReviewsService;
 
     @GetMapping("by-post-id/{postId:\\d+}")
-    public Flux<PostReview> findPostReviewsByPostId(@PathVariable("postId") Long postId) {
+    public Flux<PostReviewDto> findPostReviewsByPostId(@PathVariable("postId") Long postId) {
         return postReviewsService.findPostReviewsByPostId(postId);
     }
 
     @PostMapping
-    public Mono<ResponseEntity<PostReview>> createPostReview(@Valid @RequestBody Mono<NewPostReviewPayload> payloadMono,
-                                                             UriComponentsBuilder uriComponentsBuilder) {
-        return payloadMono
-                .flatMap(payload -> this.postReviewsService.createPostReview(payload.postId(), payload.review(),
-                        payload.userName()))
+    public Mono<ResponseEntity<PostReviewDto>> createPostReview(@Valid @RequestBody NewPostReviewPayload payload,
+                                                                UriComponentsBuilder uriComponentsBuilder) {
+        return postReviewsService.createPostReview(payload)
                 .map(postReview -> ResponseEntity
                         .created(uriComponentsBuilder.replacePath("/feedback-api/post-reviews/{id}")
-                                .build(postReview.getId()))
+                                .build(postReview.id()))
                         .body(postReview));
     }
 
     @DeleteMapping("by-review-id/{reviewId:\\d+}&{userName}")
     public Mono<ResponseEntity<Void>> deletePostReview(@PathVariable("reviewId") Long reviewId,
                                        @PathVariable("userName") String userName) {
-        return this.postReviewsService.deletePostReview(reviewId, userName)
+        return postReviewsService.deletePostReview(reviewId, userName)
                 .then(Mono.just(ResponseEntity.noContent().build()));
     }
 
     @DeleteMapping("by-post-id/{postId:\\d+}")
     public Mono<ResponseEntity<Void>> deletePostReviewByPostId(@PathVariable("postId") Long postId) {
-        return this.postReviewsService.deletePostReviewByPostId(postId)
+        return postReviewsService.deletePostReviewByPostId(postId)
                 .then(Mono.just(ResponseEntity.noContent().build()));
     }
 

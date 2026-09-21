@@ -3,7 +3,7 @@ package org.alexreverse.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.alexreverse.controller.payload.NewPostPayload;
-import org.alexreverse.entity.Post;
+import org.alexreverse.dto.PostDto;
 import org.alexreverse.service.PostsService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +16,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("search-api/posts")
@@ -24,31 +26,30 @@ public class PostsRestController {
     private final PostsService postsService;
 
     @GetMapping
-    public Flux<Post> findPosts(@RequestParam(name = "filter", required = false) String filter,
-                                @RequestParam(defaultValue = "0") Integer page,
-                                @RequestParam(defaultValue = "10") Integer size) {
+    public Flux<PostDto> findPosts(@RequestParam(name = "filter", required = false) String filter,
+                                   @RequestParam(defaultValue = "0") Integer page,
+                                   @RequestParam(defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("postDate"));
-        return this.postsService.findAllPosts(filter, pageable);
+        return postsService.findAllPosts(filter, pageable);
     }
 
     @GetMapping("/by-user")
-    public Flux<Post> findPostsByUser(@AuthenticationPrincipal Jwt jwt,
+    public Flux<PostDto> findPostsByUser(@AuthenticationPrincipal Jwt jwt,
                                       @RequestParam(defaultValue = "0") Integer page,
                                       @RequestParam(defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        return this.postsService.findAllPostsByUser(jwt.getSubject(), pageable);
+        return postsService.findAllPostsByUser(UUID.fromString(jwt.getSubject()), pageable);
     }
 
     @PostMapping
-    public Mono<ResponseEntity<Post>> createPost(@AuthenticationPrincipal Jwt jwt,
-                                                 @Valid @RequestBody Mono<NewPostPayload> newPostPayloadMono,
-                                                 UriComponentsBuilder uriComponentsBuilder) {
-        return newPostPayloadMono
-                .flatMap(newPostPayload -> this.postsService.createPost(newPostPayload.title(),
-                        newPostPayload.description(), jwt.getSubject()))
+    public Mono<ResponseEntity<PostDto>> createPost(@AuthenticationPrincipal Jwt jwt,
+                                                    @Valid @RequestBody NewPostPayload payload,
+                                                    UriComponentsBuilder uriComponentsBuilder) {
+        return postsService.createPost(payload,
+                        UUID.fromString(jwt.getSubject()))
                 .map(postService -> ResponseEntity
                             .created(uriComponentsBuilder.replacePath("/search-api/posts/{postId}")
-                                    .build(postService.getId()))
+                                    .build(postService.id()))
                             .body(postService))
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
