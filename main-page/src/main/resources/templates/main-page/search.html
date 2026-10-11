@@ -7,16 +7,7 @@
     <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
 </head>
 <body>
-<header>
-    <div class="logo">
-        <a type="images/png" th:href="@{/images/favicon.png}"></a>
-    </div>
-    <nav>
-        <ul>
-            <li><a href="/main-page">Информация обо мне</a></li>
-        </ul>
-    </nav>
-</header>
+<div th:replace="~{fragments/header :: header}"></div>
 <h1>Список страниц</h1>
 <form method="get" data-th-action="@{/search/posts/list}">
     <label>Фильтр:<input type="text" name="filter" data-th-value="${filter}">

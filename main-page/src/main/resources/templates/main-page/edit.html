@@ -7,17 +7,7 @@
     <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
 </head>
 <body>
-<header>
-    <div class="logo">
-        <a th:href="@{/images/favicon.png}">Логотип</a>
-    </div>
-    <nav>
-        <ul>
-            <li><a href="http://localhost:8082/search/posts/list">Поиск постов</a></li>
-            <li><a href="/main-page">Вернуться обратно</a></li>
-        </ul>
-    </nav>
-</header>
+<div th:replace="~{fragments/header :: header}"></div>
 <h1>Добро пожаловать в Doomer Hub</h1>
 <form method="post" data-th-action="@{/main-page/edit}">
     <label>

@@ -187,47 +187,264 @@ a:hover {
 /* ============================================================
    4.  ШАПКА И НАВИГАЦИЯ
    ============================================================ */
-header {
+header#global-header {
     width: 100%;
-    max-width: 1200px;
+    max-width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
-    background: var(--bg-card);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    margin-bottom: 30px;
-    border: 1px solid var(--border-color);
+    justify-content: space-between;
+    background: #0f1e35;
+    border-bottom: 1px solid #1e3050;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding-right: 25px;
 }
-.logo a {
+
+header#global-header .logo a {
     display: inline-block;
-    width: 48px;
-    height: 48px;
-    background: var(--accent);
-    border-radius: 50%;
-    transition: transform 0.2s ease;
+    width: 60px;
+    height: 60px;
+    background-image: url('/images/favicon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.logo a:hover {
-    transform: scale(1.1);
+
+header#global-header .logo a:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 14px rgba(58, 134, 255, 0.6);
 }
-nav ul {
-    list-style: none;
+
+header#global-header nav {
+    flex: 1 1 auto;
     display: flex;
-    gap: 25px;
-    flex-wrap: wrap;
+    justify-content: flex-end;
 }
-nav ul li a {
-    color: var(--text-light);
+
+header#global-header nav ul {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    list-style: none;
+}
+
+header#global-header nav ul li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+header#global-header nav ul li > a,
+header#global-header nav ul li form.search-container {
+    width: 50px;
+    height: 40px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+header#global-header nav ul li > a img,
+header#global-header nav ul li form.search-container img {
+    width: 140px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
+    filter: invert(1) opacity(0.8);
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+header#global-header nav ul li > a:hover {
+    background: #1e3050;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+header#global-header nav ul li > a:hover img {
+    filter: invert(1) opacity(1)
+            drop-shadow(0 0 6px rgba(58, 134, 255, 0.9));
+    transform: scale(1.08);
+}
+
+header#global-header nav ul li form.search-container {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border-radius: 25px;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 10;        /* Поиск будет перекрывать соседей при раскрытии */
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+    margin-bottom: 0px;
+}
+
+header#global-header nav ul li:has(form.search-container) {
+    position: relative;
+    width: 50px;
+    flex-grow: 1;
+    height: 50px;
+}
+
+header#global-header nav ul li form.search-container img {
+    position: absolute;
+    top: 50%;
+    left: 25px;         /* Ровно половина от 50px */
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 12;
+    transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 0.2s ease;
+}
+
+header#global-header nav ul li form.search-container:hover,
+header#global-header nav ul li form.search-container:focus-within {
+    width: 400px;
+    background: #1e3050;
+    box-shadow: 0 0 0 5px rgba(58, 134, 255, 0.5);
+}
+
+header#global-header nav ul li form.search-container:hover img,
+header#global-header nav ul li form.search-container:focus-within img {
+    transform: translate(-50%, -50%);
+    filter: invert(1) opacity(1)
+            drop-shadow(0 0 8px rgba(58, 134, 255, 1));
+}
+
+header#global-header nav ul li form.search-container .search-input {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 85%;
+    height: 100%;
+    padding: 0;
+    font-size: 15px;
+    color: #e8eaed;
+    background: transparent;
+    border: none;
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    left: 50px;
+}
+
+header#global-header nav ul li form.search-container .search-input::placeholder {
+    color: #7a8291;
+}
+
+header#global-header nav ul li form.search-container:hover .search-input,
+header#global-header nav ul li form.search-container:focus-within .search-input {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.2s ease 0.15s; /* Задержка, чтобы текст появлялся после раскрытия */
+}
+
+header#global-header nav ul li[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -44px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    padding: 7px 14px;
+    font-size: 13px;
     font-weight: 500;
-    padding: 8px 14px;
+    color: #ffffff;
+    background: #3a86ff;
     border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 1100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
-nav ul li a:hover {
-    background: var(--bg-hover);
-    color: var(--accent);
-    text-decoration: none;
+
+header#global-header nav ul li[data-tooltip]::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    border: 5px solid transparent;
+    border-bottom-color: #3a86ff;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 1100;
+}
+
+header#global-header nav ul li[data-tooltip]:hover::after,
+header#global-header nav ul li[data-tooltip]:focus-within::after,
+header#global-header nav ul li[data-tooltip]:hover::before,
+header#global-header nav ul li[data-tooltip]:focus-within::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 900px) {
+    header#global-header nav ul li form.search-container:hover,
+    header#global-header nav ul li form.search-container:focus-within {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    header#global-header {
+        padding: 10px 16px;
+        min-height: 64px;
+    }
+
+    header#global-header nav ul li[data-tooltip]::after,
+    header#global-header nav ul li[data-tooltip]::before {
+        display: none;
+    }
+
+    header#global-header nav ul li > a,
+    header#global-header nav ul li form.search-container {
+        width: 44px;
+        height: 44px;
+    }
+
+    header#global-header nav ul li > a img,
+    header#global-header nav ul li form.search-container img {
+        width: 24px;
+        height: 24px;
+    }
+
+    header#global-header nav ul li form.search-container:hover,
+    header#global-header nav ul li form.search-container:focus-within {
+        width: 44px;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    header#global-header nav ul li form.search-container:hover img,
+    header#global-header nav ul li form.search-container:focus-within img {
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    header#global-header nav ul li form.search-container .search-input {
+        opacity: 0;
+        pointer-events: none;
+    }
 }
 
 /* ============================================================
@@ -465,7 +682,6 @@ ul.post-list li p {
 }
 .post-header h1 {
     flex: 1;
-    margin: 0;
 }
 
 .btn-fav {
@@ -1443,16 +1659,6 @@ ul.post-list li .post-description {
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.error-item {
-    color: #ff8a92;
-    padding: 6px 0 6px 28px;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23ff4d5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>') left center no-repeat;
-    background-size: 18px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    border-bottom: 1px solid rgba(220, 53, 69, 0.15);
 }
 
 .error-item:last-child {

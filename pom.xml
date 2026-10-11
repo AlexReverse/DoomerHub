@@ -5,8 +5,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>4.1.1</version>
+		<relativePath/>
 	</parent>
 	<groupId>com.doomer.hub</groupId>
 	<artifactId>DoomerHub</artifactId>
@@ -34,10 +34,10 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>21</java.version>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
-		<spring-boot.version>3.4.2</spring-boot.version>
+		<java.version>25</java.version>
+		<maven.compiler.source>25</maven.compiler.source>
+		<maven.compiler.target>25</maven.compiler.target>
+		<spring-boot.version>4.1.1</spring-boot.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -58,9 +58,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.12.1</version>
 				<configuration>
-					<parameters>true</parameters>
+                    <parameters>true</parameters>
+                    <release>25</release>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -182,13 +182,6 @@ nav ul li a:hover {
 }
 
 /* ===== Ссылки-действия (например, "Все посты" / "Избранные") ===== */
-/* Обратите внимание: на первой странице это .action-links, на второй – просто одиночная ссылка.
-   Чтобы унифицировать, стилизуем обе через общий класс или через селектор a[data-th-href*="posts"]?
-   Но проще добавить класс .action-link к таким ссылкам. Если класс не добавлен, можно стилизовать
-   ссылки, которые являются прямыми потомками body (кроме тех, что внутри header/nav).
-   Однако надёжнее предложить добавить класс .action-link в разметку. В примере ниже я покажу
-   стили для класса .action-link, а также для одиночной ссылки "Все посты" – можно стилизовать
-   её через селектор body > a[data-th-href]. Для единообразия лучше использовать класс. */
 .action-link,
 body > a[data-th-href*="/search/posts/"] {
     color: var(--accent);
@@ -450,3 +443,265 @@ body.error-page {
     margin-top: 1rem;
 }
 
+/* ============================================================
+ШАПКА И НАВИГАЦИЯ
+   ============================================================ */
+header#global-header {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0f1e35;
+    border-bottom: 1px solid #1e3050;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding-right: 25px;
+}
+
+header#global-header .logo a {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background-image: url('/images/favicon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+header#global-header .logo a:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 14px rgba(58, 134, 255, 0.6);
+}
+
+header#global-header nav {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+header#global-header nav ul {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    list-style: none;
+}
+
+header#global-header nav ul li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+header#global-header nav ul li > a,
+header#global-header nav ul li form.search-container {
+    width: 50px;
+    height: 40px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+header#global-header nav ul li > a img,
+header#global-header nav ul li form.search-container img {
+    width: 140px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
+    filter: invert(1) opacity(0.8);
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+header#global-header nav ul li > a:hover {
+    background: #1e3050;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+header#global-header nav ul li > a:hover img {
+    filter: invert(1) opacity(1)
+            drop-shadow(0 0 6px rgba(58, 134, 255, 0.9));
+    transform: scale(1.08);
+}
+
+header#global-header nav ul li form.search-container {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border-radius: 25px;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 10;        /* Поиск будет перекрывать соседей при раскрытии */
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+    margin-bottom: 0px;
+}
+
+header#global-header nav ul li:has(form.search-container) {
+    position: relative;
+    width: 50px;
+    flex-grow: 1;
+    height: 50px;
+}
+
+header#global-header nav ul li form.search-container img {
+    position: absolute;
+    top: 50%;
+    left: 25px;         /* Ровно половина от 50px */
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 12;
+    transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 0.2s ease;
+}
+
+header#global-header nav ul li form.search-container:hover,
+header#global-header nav ul li form.search-container:focus-within {
+    width: 400px;
+    background: #1e3050;
+    box-shadow: 0 0 0 5px rgba(58, 134, 255, 0.5);
+}
+
+header#global-header nav ul li form.search-container:hover img,
+header#global-header nav ul li form.search-container:focus-within img {
+    transform: translate(-50%, -50%);
+    filter: invert(1) opacity(1)
+            drop-shadow(0 0 8px rgba(58, 134, 255, 1));
+}
+
+header#global-header nav ul li form.search-container .search-input {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 85%;
+    height: 100%;
+    padding: 0;
+    font-size: 15px;
+    color: #e8eaed;
+    background: transparent;
+    border: none;
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    left: 50px;
+}
+
+header#global-header nav ul li form.search-container .search-input::placeholder {
+    color: #7a8291;
+}
+
+header#global-header nav ul li form.search-container:hover .search-input,
+header#global-header nav ul li form.search-container:focus-within .search-input {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.2s ease 0.15s; /* Задержка, чтобы текст появлялся после раскрытия */
+}
+
+header#global-header nav ul li[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -44px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffffff;
+    background: #3a86ff;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 1100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+header#global-header nav ul li[data-tooltip]::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    border: 5px solid transparent;
+    border-bottom-color: #3a86ff;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 1100;
+}
+
+header#global-header nav ul li[data-tooltip]:hover::after,
+header#global-header nav ul li[data-tooltip]:focus-within::after,
+header#global-header nav ul li[data-tooltip]:hover::before,
+header#global-header nav ul li[data-tooltip]:focus-within::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 900px) {
+    header#global-header nav ul li form.search-container:hover,
+    header#global-header nav ul li form.search-container:focus-within {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    header#global-header {
+        padding: 10px 16px;
+        min-height: 64px;
+    }
+
+    header#global-header nav ul li[data-tooltip]::after,
+    header#global-header nav ul li[data-tooltip]::before {
+        display: none;
+    }
+
+    header#global-header nav ul li > a,
+    header#global-header nav ul li form.search-container {
+        width: 44px;
+        height: 44px;
+    }
+
+    header#global-header nav ul li > a img,
+    header#global-header nav ul li form.search-container img {
+        width: 24px;
+        height: 24px;
+    }
+
+    header#global-header nav ul li form.search-container:hover,
+    header#global-header nav ul li form.search-container:focus-within {
+        width: 44px;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    header#global-header nav ul li form.search-container:hover img,
+    header#global-header nav ul li form.search-container:focus-within img {
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    header#global-header nav ul li form.search-container .search-input {
+        opacity: 0;
+        pointer-events: none;
+    }
+}

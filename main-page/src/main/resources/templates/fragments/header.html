@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<header th:fragment="header" id="global-header">
+    <div class="logo">
+        <a type="image/png" th:href="@{/images/favicon.png}"></a>
+    </div>
+    <nav>
+        <ul>
+            <li data-tooltip="Поиск постов">
+                <form data-th-action="@{http://localhost:8082/search/posts/list}" method="GET" class="search-container">
+                    <input type="text" name="query" class="search-input" placeholder="Поиск постов...">
+                    <img th:src="@{/icons/sistrix-brands-solid-full.svg}" alt="sistrix-brands-solid-full"/>
+                </form>
+            </li>
+            <li data-tooltip="Поиск вакансий">
+                <form action="http://localhost:8086/job-search" method="GET" class="search-container">
+                    <input type="text" name="jobQuery" class="search-input" placeholder="Поиск вакансий...">
+                    <img th:src="@{/icons/clipboard-list-solid-full.svg}" alt="clipboard-list-solid-full"/>
+                </form>
+            </li>
+            <li data-tooltip="Мои посты">
+                <a data-th-href="@{http://localhost:8082/search/posts/by-user}">
+                    <img th:src="@{/icons/folder-open-solid-full.svg}" alt="folder-open-solid-full"/>
+                </a>
+            </li>
+            <li data-tooltip="Избранные посты">
+                <a data-th-href="@{http://localhost:8082/search/posts/favourites}">
+                    <img th:src="@{/icons/heart-solid-full.svg}" alt="heart-solid-full"/>
+                </a>
+            </li>
+            <li data-tooltip="Создать пост">
+                <a data-th-href="@{http://localhost:8082/search/posts/create}">
+                    <img th:src="@{/icons/scroll-solid-full.svg}" alt="scroll-solid-full"/>
+                </a>
+            </li>
+            <li data-tooltip="Информация обо мне">
+                <a href="/main-page">
+                    <img th:src="@{/icons/circle-user-solid-full.svg}" alt="circle-user-solid-full"/>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+</html>

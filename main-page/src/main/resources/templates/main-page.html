@@ -7,16 +7,9 @@
     <link rel="shortcut icon" type="images/png" th:href="@{/images/favicon.png}"/>
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}"></div>
 <header>
-    <div class="logo">
-        <a type="images/png" th:href="@{/images/favicon.png}">Логотип</a>
-    </div>
-    <nav>
-        <ul>
-            <li><a href="http://localhost:8082/search/posts/list">Поиск постов</a></li>
-            <li><a href="/main-page/edit">Редактирование</a></li>
-        </ul>
-    </nav>
+    <li><a href="/main-page/edit">Редактирование</a></li>
 </header>
 <div class="profile-container">
     <h1 data-th-text="${mainPage.nickname}" class="profile-nickname"></h1>
